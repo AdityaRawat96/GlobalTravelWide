@@ -1,0 +1,32 @@
+.nav-link-wallet-tab {
+  color: white !important;
+  padding: 10px 20px !important;
+  margin: 10px !important;
+  border-radius: 10px !important;
+}
+
+.nav-link-wallet-tab.active {
+  background-color: rgb(241 250 255 / 30%) !important;
+}
+
+.amount-tags-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+}
+
+.amount-tags-container > div,
+.saved-card,
+.saved-address {
+  cursor: pointer;
+}
+.payment-method-header {
+  display: flex;
+  flex-direction: row;
+}
+
+@media (max-width: 800px) {
+  .payment-method-header {
+    flex-direction: column;
+  }
+}
