@@ -1,4 +1,4 @@
-# Global TravelWide Web Application - Admin Dashboard and CRM
+# Global TravelWide - CRM
 
 This is the Admin Dashboard and CRM for the Global TravelWide web application. It is built using PHP Laravel 8.
 
