@@ -120,7 +120,7 @@
                     <!--end::Accept-->
                     <!--begin::Submit button-->
                     <div class="d-grid mb-10">
-                        <button type="submit" id="kt_sign_up_submit" class="btn btn-theme">
+                        <button type="submit" id="kt_sign_up_submit" class="btn btn-primary">
                             <!--begin::Indicator label-->
                             <span class="indicator-label">Sign up</span>
                             <!--end::Indicator label-->

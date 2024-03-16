@@ -37,7 +37,7 @@
                     <br><br>
                     <form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
                         @csrf
-                        <button type="submit" class="btn btn-sm btn-theme">Send again</button>
+                        <button type="submit" class="btn btn-sm btn-primary">Send again</button>
                     </form>
                 </div>
                 <!--end::Action-->

@@ -74,7 +74,7 @@
                     <!--end::Input group=-->
                     <!--begin::Action-->
                     <div class="d-grid mb-10">
-                        <button type="button" id="kt_new_password_submit" class="btn btn-theme">
+                        <button type="button" id="kt_new_password_submit" class="btn btn-primary">
                             <!--begin::Indicator label-->
                             <span class="indicator-label">Submit</span>
                             <!--end::Indicator label-->

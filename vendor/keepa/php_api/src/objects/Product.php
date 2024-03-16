@@ -34,7 +34,7 @@ class Product
 
     /**
      * Comma separated list of image names of the product. Full Amazon image path:<br>
-     * https://images-na.ssl-images-amazon.com/images/I/_image name_
+     * https://m.media-amazon.com/images/I/_image name_
      * @var string|null
      */
     public $imagesCSV = null;
@@ -296,6 +296,41 @@ class Product
      */
     public $isEligibleForTradeIn = false;
 
+
+    /**
+     * @deprecated use the field referralFeePercentage instead
+     * @var int|null
+     */
+    public $referralFeePercent = null;
+
+    /**
+     * The referral fee percent is determined by either the current price or, in the absence of a current offer, the previous one. If neither of these prices is available for reference, the fee percent is calculated based on a standard sales price of 100.00. *null* if not available.
+     * Example: 12
+     * @var double|null
+     */
+    public $referralFeePercentage = null;
+
+    /**
+     * States the last time we have updated the monthlySold field, in Keepa Time minutes. Undefined if the monthlySold has no value.
+     * Use {@link KeepaTime#keepaMinuteToUnixInMillis(int)} (long)} to get an uncompressed timestamp (Unix epoch time).
+     * @var int|null
+     */
+    public $lastSoldUpdate = null;
+
+    /**
+     * How often this product was bought in the past month. This field represents the bought past month metric found on Amazon search result pages. It is not an estimate. Undefined if it has no value. Most ASINs do not have this value set. The value is variation specific.
+     * Example: 1000 - the ASIN was bought at least 1000 times in the past month.
+     * @var int|null
+     */
+    public $monthlySold = null;
+
+    /**
+     * Contains historical values of the monthlySold field. Undefined if it has no value.
+     * Format: [ keepaTime, monthlySold, … ]
+     * @var int[]|null
+     */
+    public $monthlySoldHistory = null;
+
     /**
      * Whether or not the product is eligible for super saver shipping by Amazon (not FBA).
      * @var bool
@@ -324,6 +359,15 @@ class Product
      * @var int
      */
     public $lastEbayUpdate = 0;
+
+    /**
+     * The most recent update of the stock data for this product’s offers, in Keepa Time minutes.<br>
+     * Has the value 0 unless the stock parameter was used and stock data was collected at least once.
+     * Use {@link KeepaTime#keepaMinuteToUnixInMillis(int)} (long)} to get an uncompressed timestamp (Unix epoch time).
+     * @var int
+     */
+    public $lastStockUpdate = 0;
+
 
     /**
      * Availability of the Amazon offer {@link Product.AvailabilityType}.
@@ -445,6 +489,22 @@ class Product
     public $buyBoxSellerIdHistory = null;
 
     /**
+     * Optional field. Only set if the offers or buybox parameter was used in the Product Request.
+     * A history of the used buy box winners, containing the sellerIds 159, offer sub-condition and FBA status in the format:
+     * Keepa time minutes, seller id, condition, isFBA, […].
+     * If no seller qualified for the used buy box the sellerId "" (empty String) is used.
+     *
+     * condition can have the following values:
+     * “2” - Used - Like New, “3” - Used - Very Good, “4” - Used - Good, “5” - Used - Acceptable
+     * isFBA is either “1” - offer is FBA or “0” - offer is merchant fulfilled.
+     * Example: [“2860926”, “ATVPDKIKX0DER”, “4”, “1”, …]
+     * <p>Use {@link KeepaTime#keepaMinuteToUnixInMillis(String)} (long)} to get an uncompressed timestamp (Unix epoch time).</p>
+     * @var string[]|null
+     */
+    public $buyBoxUsedHistory = null;
+
+
+    /**
      * Only valid if the offers parameter was used in the Product Request.
      * Boolean indicating if the ASIN will be redirected to another one on Amazon
      * (example: the ASIN has the color black variation, which is not available any more
@@ -458,6 +518,28 @@ class Product
      * @var bool
      */
     public $isSNS = false;
+
+    /**
+     * Suggested Lower Price for the Buy Box, if the buy box is suppressed.
+     * @var int|null
+     */
+    public $suggestedLowerPrice = null;
+
+
+	/**
+     * Competitive Price Threshold (CPT) for the Buy Box, if the buy box is suppressed.
+     * @var int|null
+     */
+	public $competitivePriceThreshold = null;
+
+	/**
+     * The hazardous material type of this product, if applicable.
+     * @var \Keepa\helper\HazardousMaterial[]|null
+     * /
+     */
+	public $hazardousMaterials = null;
+
+
 
     /**
      * Only valid if the offers parameter was used in the Product Request. Boolean indicating if the system was able to retrieve fresh offer information.

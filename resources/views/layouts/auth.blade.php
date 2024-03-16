@@ -11,8 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content="article" />
-    <meta property="og:title"
-        content="{{env('APP_NAME')}} | Revolutionizing your business operations through comprehensive fulfillment and shipping services." />
+    <meta property="og:title" content="{{env('APP_NAME')}}" />
     <meta property="og:url" content="{{env('APP_URL')}}" />
     <meta property="og:site_name" content="{{env('APP_NAME')}} | Auth" />
     <link rel="canonical" href="{{env('APP_URL')}}" />
@@ -70,20 +69,6 @@
 </body>
 <!--end::Body-->
 <style>
-.btn-theme {
-    background-color: #FF004F;
-    color: white !important;
-    padding-left: 30px !important;
-    padding-right: 30px !important;
-}
-
-.btn-theme:hover,
-.btn-theme:focus,
-.btn-theme:active {
-    color: white !important;
-    background-color: #FF004F !important;
-}
-
 @media (max-width: 992px) {
     .auth_asde_img {
         display: none;

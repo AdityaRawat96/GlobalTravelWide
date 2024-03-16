@@ -1,0 +1,11 @@
+@media screen and (max-width: 768px) {
+    .table-toolbar {
+        flex-direction: column;
+        align-items: start;
+        gap: 10px;
+    }
+    .table-search,
+    .table-search-input {
+        width: 100% !important;
+    }
+}

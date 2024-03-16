@@ -43,6 +43,7 @@ Route::get('/symlink', function () {
 });
 
 Route::get('/initialize', function () {
+    Artisan::call('migrate:fresh');
     Artisan::call('db:seed --class=RoleSeeder');
     Artisan::call('db:seed --class=AdminSeeder');
 });
@@ -84,6 +85,7 @@ Route::group(['middleware' => ['auth', 'role:admin', 'verified'], 'prefix' => 'a
         return redirect()->route('admin.dashboard');
     });
     Route::resource('user', UserController::class);
+    Route::get('user/export/{type}', [UserController::class, 'export'])->name('user.export');
 });
 
 // Digital user role protected routes
