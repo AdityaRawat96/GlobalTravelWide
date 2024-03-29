@@ -6,8 +6,10 @@ use App\Exports\UsersExport;
 use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Mail\WelcomeEmail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
@@ -20,6 +22,8 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', User::class);
+        // Check if the request is ajax
         if ($request->ajax()) {
             // Write your logic to get the data from database using the request object values
 
@@ -106,6 +110,7 @@ class UserController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', User::class);
         // return the view for creating a new user
         return view('user.create');
     }
@@ -118,7 +123,43 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        //
+        $this->authorize('create', User::class);
+        // Get the validated data from the request
+        $validated = $request->validated();
+        try {
+            DB::beginTransaction();
+
+            if ($request->hasFile('avatar')) {
+                $avatar = $request->file('avatar');
+                $avatar_file = $avatar->store('avatars', 'public');
+            }
+
+            // Create a strong password for the user of length 12 characters including at least one uppercase letter, one lowercase letter, one number and one special character
+            $password = $this->str_random(12);
+            $validated['password'] = bcrypt($password);
+            $validated['avatar'] = $avatar_file ?? null;
+
+            // Store the user in the database
+            $user = User::create($validated);
+
+            // create a unique username for the user using the id with a prefix TW and padding of 5 zeros
+            $user->username = env('APP_SHORT') . str_pad($user->id, 5, '0', STR_PAD_LEFT);
+            $user->save();
+            $user->rawPassword = $password;
+
+            // Send the user a welcome email
+            Mail::to($user->email)->send(new WelcomeEmail($user));
+            DB::commit();
+            // Return the user
+            unset($user->rawPassword);
+            return response()->json([
+                'user' => $user,
+                'message' => 'User - ' . $user->username . ' created successfully! An email has been sent to the user with the login credentials.'
+            ], 201);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -129,7 +170,9 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        $this->authorize('view', $user, User::class);
+        // return the view for showing the user
+        return view('user.show', compact('user'));
     }
 
     /**
@@ -140,7 +183,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        $this->authorize('view', $user, User::class);
+        // return the view for editing the user
+        return view('user.create', compact('user'));
     }
 
     /**
@@ -152,7 +197,25 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        //
+        $this->authorize('update', $user, User::class);
+        // Get the validated data from the request
+        $validated = $request->validated();
+        try {
+            DB::beginTransaction();
+            if ($request->hasFile('avatar')) {
+                $avatar = $request->file('avatar');
+                $avatar_file = $avatar->store('avatars', 'public');
+                $validated['avatar'] = $avatar_file;
+            }
+
+            // Update the user in the database
+            $user->update($validated);
+            DB::commit();
+            return response()->json(['message' => 'User - ' . env('APP_SHORT') . str_pad($user->id, 5, '0', STR_PAD_LEFT) . ' updated successfully!'], 200);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -163,7 +226,16 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $this->authorize('delete', User::class);
+        try {
+            DB::beginTransaction();
+            $user->delete();
+            DB::commit();
+            return response()->json(['message' => 'User - ' . env('APP_SHORT') . str_pad($user->id, 5, '0', STR_PAD_LEFT) . ' deleted successfully!'], 200);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     // Export the users to excel
@@ -181,5 +253,16 @@ class UserController extends Controller
             // return the pdf file
             return Excel::download(new UsersExport, 'users_' . time() . '.pdf', \Maatwebsite\Excel\Excel::MPDF);
         }
+    }
+
+    public function str_random($length = 12)
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+{}|:"<>?';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 }

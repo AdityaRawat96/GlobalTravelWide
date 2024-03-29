@@ -9,4 +9,9 @@ class Invoice extends Model
 {
     use HasFactory;
     protected $guarded = ['_token'];
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
 }

@@ -11,7 +11,7 @@
             <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                 <!--begin::Title-->
                 <h1 class="page-heading d-flex fw-bold fs-3 flex-column justify-content-center my-0">
-                    Add User
+                    {{isset($user) ? "Update" : "Add" }} User
                 </h1>
                 <!--end::Title-->
                 <!--begin::Breadcrumb-->
@@ -48,9 +48,7 @@
             <!--begin::Basic info-->
             <div class="card mb-5 mb-xl-10">
                 <!--begin::Card header-->
-                <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
-                    data-bs-target="#kt_account_profile_details" aria-expanded="true"
-                    aria-controls="kt_account_profile_details">
+                <div class="card-header border-0">
                     <!--begin::Card title-->
                     <div class="card-title m-0">
                         <h3 class="fw-bold m-0">Profile Details</h3>
@@ -59,15 +57,16 @@
                 </div>
                 <!--begin::Card header-->
                 <!--begin::Content-->
-                <div id="kt_account_settings_profile_details" class="collapse show">
+                <div class="content">
                     <!--begin::Form-->
-                    <form class="form" action="{{route('admin.user.store')}}" id="kt_account_profile_details_form"
-                        method="POST">
+                    <form class="form"
+                        action="{{isset($user) ? route('admin.user.update', $user->id) : route('admin.user.store')}}"
+                        id="kt_create_form" method="{{isset($user) ? 'PUT' : 'POST'}}">
                         @csrf
                         <!--begin::Card body-->
                         <div class="card-body border-top p-9">
                             <!--begin::Input group-->
-                            <div class="row mb-6">
+                            <div class="row mb-6 fv-row">
                                 <!--begin::Label-->
                                 <label class="col-lg-4 col-form-label fw-semibold fs-6">Avatar</label>
                                 <!--end::Label-->
@@ -77,9 +76,15 @@
                                     <div class="image-input image-input-outline" data-kt-image-input="true"
                                         style="background-image: url({{asset('media/svg/avatars/blank.svg')}})">
                                         <!--begin::Preview existing avatar-->
+                                        @if(isset($user->avatar))
+                                        <div class="image-input-wrapper w-125px h-125px"
+                                            style="background-image: url({{asset('storage/'.$user->avatar)}})">
+                                        </div>
+                                        @else
                                         <div class="image-input-wrapper w-125px h-125px"
                                             style="background-image: url({{asset('media/svg/avatars/blank.svg')}})">
                                         </div>
+                                        @endif
                                         <!--end::Preview existing avatar-->
                                         <!--begin::Label-->
                                         <label
@@ -116,6 +121,40 @@
                                     <!--end::Hint-->
                                 </div>
                                 <!--end::Col-->
+                                <div class="fv-plugins-message-container invalid-feedback"></div>
+                            </div>
+                            <!--end::Input group-->
+                            <!--begin::Input group-->
+                            <div class="row mb-6">
+                                <!--begin::Label-->
+                                <label class="col-lg-4 col-form-label required fw-semibold fs-6">Role</label>
+                                <!--end::Label-->
+                                <!--begin::Col-->
+                                <div class="col-lg-8">
+                                    <!--begin::Row-->
+                                    <div class="row">
+                                        <!--begin::Col-->
+                                        <div class="col-lg-6 fv-row">
+                                            <select name="role" class="form-select form-select-lg form-select-solid"
+                                                data-control="select2" data-placeholder="Select a role">
+                                                <option value="">Select a role</option>
+                                                <option value="admin"
+                                                    {{isset($user->role) && $user->role == 'admin' ? 'selected' : null}}>
+                                                    Admin</option>
+                                                <option value="digital"
+                                                    {{isset($user->role) && $user->role == 'digital' ? 'selected' : null}}>
+                                                    Digital</option>
+                                                <option value="marketing"
+                                                    {{isset($user->role) && $user->role == 'marketing' ? 'selected' : null}}>
+                                                    Marketing</option>
+                                            </select>
+                                            <div class="fv-plugins-message-container invalid-feedback"></div>
+                                        </div>
+                                        <!--end::Col-->
+                                    </div>
+                                    <!--end::Row-->
+                                </div>
+                                <!--end::Col-->
                             </div>
                             <!--end::Input group-->
                             <!--begin::Input group-->
@@ -131,14 +170,18 @@
                                         <div class="col-lg-6 fv-row">
                                             <input type="text" name="first_name"
                                                 class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"
-                                                placeholder="First name" value="" />
+                                                placeholder="First name"
+                                                value="{{isset($user->first_name) ? $user->first_name : null}}" />
+                                            <div class="fv-plugins-message-container invalid-feedback"></div>
                                         </div>
                                         <!--end::Col-->
                                         <!--begin::Col-->
                                         <div class="col-lg-6 fv-row">
                                             <input type="text" name="last_name"
                                                 class="form-control form-control-lg form-control-solid"
-                                                placeholder="Last name" value="" />
+                                                placeholder="Last name"
+                                                value="{{isset($user->last_name) ? $user->last_name : null}}" />
+                                            <div class="fv-plugins-message-container invalid-feedback"></div>
                                         </div>
                                         <!--end::Col-->
                                     </div>
@@ -150,13 +193,16 @@
                             <!--begin::Input group-->
                             <div class="row mb-6">
                                 <!--begin::Label-->
-                                <label class="col-lg-4 col-form-label required fw-semibold fs-6">Company</label>
+                                <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                                    <span class="required">Phone</span>
+                                </label>
                                 <!--end::Label-->
                                 <!--begin::Col-->
                                 <div class="col-lg-8 fv-row">
-                                    <input type="text" name="company"
+                                    <input type="tel" name="phone"
                                         class="form-control form-control-lg form-control-solid"
-                                        placeholder="Company name" value="" />
+                                        placeholder="Phone number"
+                                        value="{{isset($user->phone) ? $user->phone : null}}" />
                                 </div>
                                 <!--end::Col-->
                             </div>
@@ -165,16 +211,17 @@
                             <div class="row mb-6">
                                 <!--begin::Label-->
                                 <label class="col-lg-4 col-form-label fw-semibold fs-6">
-                                    <span class="required">Contact Phone</span>
+                                    <span class="required">Email</span>
                                     <i class="fas fa-exclamation-circle ms-1 fs-7" data-bs-toggle="tooltip"
-                                        title="Phone number must be active"></i>
+                                        title="Email address must be active"></i>
                                 </label>
                                 <!--end::Label-->
                                 <!--begin::Col-->
                                 <div class="col-lg-8 fv-row">
-                                    <input type="tel" name="phone"
+                                    <input type="email" name="email"
                                         class="form-control form-control-lg form-control-solid"
-                                        placeholder="Phone number" value="" />
+                                        placeholder="Email address"
+                                        value="{{isset($user->email) ? $user->email : null}}" />
                                 </div>
                                 <!--end::Col-->
                             </div>
@@ -183,11 +230,12 @@
                         <!--end::Card body-->
                         <!--begin::Actions-->
                         <div class="card-footer d-flex justify-content-end py-6 px-9">
-                            <button type="reset" class="btn btn-light btn-active-light-primary me-2"
-                                onclick="window.location.reload()">Discard</button>
-                            <button type="button" id="kt_account_profile_details_submit" class="btn btn-primary">
-                                <span class="indicator-label">Save
-                                    Changes</span>
+                            <button type="reset"
+                                class="reset btn btn-light btn-active-light-primary me-2">Discard</button>
+                            <button type="button" id="kt_form_submit" class="btn btn-primary">
+                                <span class="indicator-label">
+                                    {{isset($user) ? 'Update' : 'Save'}}</span>
+                                </span>
                                 <span class="indicator-progress">Please wait...
                                     <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                             </button>

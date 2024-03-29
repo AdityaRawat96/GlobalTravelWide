@@ -15,12 +15,12 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('invoice_id')->nullable()->constrained('invoices')->onDelete('cascade');
-            $table->foreignId('refund_id')->nullable()->constrained('refunds')->onDelete('cascade');
-            $table->foreignId('catalogue_id')->constrained('catalogues')->onDelete('cascade');
+            $table->string('type');
+            $table->integer('ref_id');
+            $table->foreignId('catalogue_id');
             $table->integer('quantity');
-            $table->float('cost_price');
-            $table->float('selling_price');
+            $table->float('cost');
+            $table->float('price');
             $table->float('revenue');
             $table->timestamps();
         });

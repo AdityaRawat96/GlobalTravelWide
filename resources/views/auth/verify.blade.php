@@ -3,13 +3,13 @@
 @section('content')
 <!--begin::Page bg image-->
 <style>
-    body {
-        background-image: url("{{ asset('media/auth/bg5.jpg') }}");
-    }
+body {
+    background-image: url("{{ asset('media/auth/bg5.jpg') }}");
+}
 
-    [data-theme="dark"] body {
-        background-image: url("{{ asset('media/auth/bg5-dark.jpg') }}")
-    }
+[data-theme="dark"] body {
+    background-image: url("{{ asset('media/auth/bg5-dark.jpg') }}")
+}
 </style>
 <!--end::Page bg image-->
 <!--begin::Authentication - Signup Welcome Message -->
@@ -22,7 +22,7 @@
                 <!--begin::Logo-->
                 <div class="mb-14">
                     <a href="{{route('home')}}" class="">
-                        <img alt="Logo" src="{{asset('media/logos/custom-2.svg')}}" class="h-40px" />
+                        <img alt="Logo" src="{{asset('media/logos/logo.png')}}" class="h-40px" />
                     </a>
                 </div>
                 <!--end::Logo-->
@@ -52,8 +52,10 @@
 
                 <!--begin::Illustration-->
                 <div class="mb-0">
-                    <img src="{{asset('media/auth/please-verify-your-email.png')}}" class="mw-100 mh-300px theme-light-show" alt="" />
-                    <img src="{{asset('media/auth/please-verify-your-email-dark.png')}}" class="mw-100 mh-300px theme-dark-show" alt="" />
+                    <img src="{{asset('media/auth/please-verify-your-email.png')}}"
+                        class="mw-100 mh-300px theme-light-show" alt="" />
+                    <img src="{{asset('media/auth/please-verify-your-email-dark.png')}}"
+                        class="mw-100 mh-300px theme-dark-show" alt="" />
                 </div>
                 <!--end::Illustration-->
             </div>

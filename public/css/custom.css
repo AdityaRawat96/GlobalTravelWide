@@ -1,3 +1,45 @@
+table .btn-sm {
+    width: 100px !important;
+    margin-left: auto;
+}
+
+.card-sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 80px;
+    z-index: 1000;
+    min-width: 300px;
+    max-width: 300px;
+}
+.dropzone.dropzone-queue .dropzone-item .dropzone-file .dropzone-filename {
+    max-width: 160px;
+}
+.dropzone-start,
+.dropzone-progress {
+    display: none !important;
+}
+
+.dropzone.dropzone-queue .dropzone-item .dropzone-toolbar {
+    margin-left: 0;
+}
+
+.dropzone-local-file {
+    color: #5e6278 !important;
+}
+
+@media screen and (max-width: 1400px) {
+    .card-sticky {
+        position: relative;
+        max-width: none;
+        min-width: none;
+        top: 0;
+    }
+
+    .dropzone.dropzone-queue .dropzone-item .dropzone-file .dropzone-filename {
+        max-width: none;
+    }
+}
+
 @media screen and (max-width: 768px) {
     .table-toolbar {
         flex-direction: column;

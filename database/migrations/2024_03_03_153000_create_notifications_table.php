@@ -18,7 +18,6 @@ class CreateNotificationsTable extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->string('title');
             $table->longText('description');
-            $table->longText('attachments')->nullable();
             $table->timestamps();
         });
     }

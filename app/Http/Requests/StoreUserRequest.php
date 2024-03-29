@@ -13,7 +13,8 @@ class StoreUserRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        // only allow the user to store a new user if they have role of admin
+        return $this->user()->role === 'admin';
     }
 
     /**
@@ -24,7 +25,12 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'role' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'phone' => ['required', 'string', 'max:255'],
+            'avatar' => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
         ];
     }
 }

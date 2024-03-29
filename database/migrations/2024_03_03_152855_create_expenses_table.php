@@ -19,7 +19,6 @@ class CreateExpensesTable extends Migration
             $table->float('amount');
             $table->date('date');
             $table->longText('notes')->nullable();
-            $table->longText('attachments')->nullable();
             $table->timestamps();
         });
     }

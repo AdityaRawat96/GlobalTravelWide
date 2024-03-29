@@ -25,7 +25,6 @@ class CreateQuotationsTable extends Migration
             $table->float('revenue');
             $table->date('quotation_date');
             $table->longText('notes')->nullable();
-            $table->longText('attachments')->nullable();
             $table->timestamps();
         });
     }

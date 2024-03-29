@@ -9,4 +9,9 @@ class Product extends Model
 {
     use HasFactory;
     protected $guarded = ['_token'];
+
+    public function catalogue()
+    {
+        return $this->belongsTo(Catalogue::class);
+    }
 }

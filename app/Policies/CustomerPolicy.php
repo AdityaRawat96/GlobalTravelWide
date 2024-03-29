@@ -18,7 +18,8 @@ class CustomerPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        // only allow the user to view the list of customers if they have role of admin
+        return $user->role === 'admin';
     }
 
     /**
@@ -30,7 +31,8 @@ class CustomerPolicy
      */
     public function view(User $user, Customer $customer)
     {
-        //
+        // only allow the customer to view the list of customers if they have role of admin or if customer foreign key added_by is the same as the authenticated user
+        return $user->role === 'admin' || $user->id === $customer->added_by;
     }
 
     /**
@@ -41,7 +43,8 @@ class CustomerPolicy
      */
     public function create(User $user)
     {
-        //
+        // only allow the user to store a new customer if they have role of admin or digital
+        return $user->role === 'admin' || $user->role === 'digital';
     }
 
     /**
@@ -53,7 +56,8 @@ class CustomerPolicy
      */
     public function update(User $user, Customer $customer)
     {
-        //
+        // only allow the customer to view the list of customers if they have role of admin or if customer foreign key added_by is the same as the authenticated user
+        return $user->role === 'admin' || $user->id === $customer->added_by;
     }
 
     /**
@@ -65,7 +69,8 @@ class CustomerPolicy
      */
     public function delete(User $user, Customer $customer)
     {
-        //
+        // only allow the customer to view the list of customers if they have role of admin or if customer foreign key added_by is the same as the authenticated user
+        return $user->role === 'admin' || $user->id === $customer->added_by;
     }
 
     /**

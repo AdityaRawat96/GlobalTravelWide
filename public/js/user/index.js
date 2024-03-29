@@ -12,7 +12,7 @@ var KTDatatablesServerSide = (function () {
             searchDelay: 500,
             processing: true,
             serverSide: true,
-            order: [[1, "asc"]],
+            order: [[0, "asc"]],
             stateSave: false,
             select: {
                 style: "multi",
@@ -23,7 +23,6 @@ var KTDatatablesServerSide = (function () {
                 url: "/admin/user",
             },
             columns: [
-                { data: null },
                 { data: "id" },
                 { data: "full_name" },
                 { data: "role" },
@@ -34,28 +33,12 @@ var KTDatatablesServerSide = (function () {
             ],
             columnDefs: [
                 {
-                    targets: 0,
-                    orderable: false,
-                    searchable: false,
-                    render: function (data) {
-                        return `
-                            <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                <input class="form-check-input" type="checkbox" value="${data}" />
-                            </div>`;
-                    },
-                },
-                {
-                    targets: 2,
-                    orderable: false,
-                    searchable: false,
-                },
-                {
                     targets: -1,
                     data: null,
                     orderable: false,
                     searchable: false,
                     className: "text-end",
-                    render: function (data, type, row) {
+                    render: function (data) {
                         return `
                             <a href="#" class="btn btn-light btn-active-light-primary btn-sm d-flex gap-2" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-flip="top-end">
                                 Actions
@@ -72,15 +55,27 @@ var KTDatatablesServerSide = (function () {
                             <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3" data-kt-docs-table-filter="edit_row">
+                                    <a href="/admin/user/${parseInt(
+                                        data.id.substring(2),
+                                        10
+                                    )}" class="menu-link px-3" data-kt-docs-table-filter="view_row">
+                                        View
+                                    </a>
+                                </div>
+                                <!--end::Menu item-->
+                                <!--begin::Menu item-->
+                                <div class="menu-item px-3">
+                                    <a href="/admin/user/${parseInt(
+                                        data.id.substring(2),
+                                        10
+                                    )}/edit" class="menu-link px-3" data-kt-docs-table-filter="edit_row">
                                         Edit
                                     </a>
                                 </div>
                                 <!--end::Menu item-->
-
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3" data-kt-docs-table-filter="delete_row">
+                                    <a href="#" class="menu-link px-3 text-danger" data-kt-docs-table-filter="delete_row">
                                         Delete
                                     </a>
                                 </div>
@@ -97,8 +92,6 @@ var KTDatatablesServerSide = (function () {
 
         // Re-init functions on every table re-draw -- more info: https://datatables.net/reference/event/draw
         dt.on("draw", function () {
-            initToggleToolbar();
-            toggleToolbars();
             handleDeleteRows();
             KTMenu.createInstances();
         });
@@ -130,7 +123,7 @@ var KTDatatablesServerSide = (function () {
                 const parent = e.target.closest("tr");
 
                 // Get record name
-                const recordName = parent.querySelectorAll("td")[1].innerText;
+                const recordName = parent.querySelectorAll("td")[0].innerText;
 
                 // SweetAlert2 pop up --- official docs reference: https://sweetalert2.github.io/
                 Swal.fire({
@@ -146,26 +139,44 @@ var KTDatatablesServerSide = (function () {
                     },
                 }).then(function (result) {
                     if (result.value) {
-                        // Simulate delete request -- for demo purpose only
-                        Swal.fire({
-                            text: "Deleting " + recordName,
-                            icon: "info",
-                            buttonsStyling: false,
-                            showConfirmButton: false,
-                            timer: 2000,
-                        }).then(function () {
-                            Swal.fire({
-                                text: "You have deleted " + recordName + "!.",
-                                icon: "success",
-                                buttonsStyling: false,
-                                confirmButtonText: "Ok, got it!",
-                                customClass: {
-                                    confirmButton: "btn fw-bold btn-primary",
-                                },
-                            }).then(function () {
-                                // delete row data from server and re-draw datatable
-                                dt.draw();
-                            });
+                        $.ajax({
+                            url: `/admin/user/${parseInt(
+                                recordName.substring(2),
+                                10
+                            )}`,
+                            headers: {
+                                "X-CSRF-TOKEN": $(
+                                    'meta[name="csrf-token"]'
+                                ).attr("content"),
+                            },
+                            type: "DELETE", // user.destroy
+                            success: function (result) {
+                                // Do something with the result
+                                Swal.fire({
+                                    text: result.message,
+                                    icon: "success",
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: {
+                                        confirmButton: "btn btn-primary",
+                                    },
+                                }).then(function (e) {
+                                    // delete row data from server and re-draw datatable
+                                    dt.draw();
+                                });
+                            },
+                            error: function (err) {
+                                // Do something with the error
+                                Swal.fire({
+                                    text: err.responseJSON.message,
+                                    icon: "error",
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: {
+                                        confirmButton: "btn btn-primary",
+                                    },
+                                });
+                            },
                         });
                     } else if (result.dismiss === "cancel") {
                         Swal.fire({
@@ -183,130 +194,11 @@ var KTDatatablesServerSide = (function () {
         });
     };
 
-    // Init toggle toolbar
-    var initToggleToolbar = function () {
-        // Toggle selected action toolbar
-        // Select all checkboxes
-        const container = document.querySelector("#kt_datatable");
-        const checkboxes = container.querySelectorAll('[type="checkbox"]');
-        // Select elements
-        const deleteSelected = document.querySelector(
-            '[data-kt-docs-table-select="selected_count"]'
-        );
-        // Toggle delete selected toolbar
-        checkboxes.forEach((c) => {
-            // Checkbox on click event
-            c.addEventListener("click", function () {
-                setTimeout(function () {
-                    toggleToolbars();
-                }, 50);
-            });
-        });
-        // Deleted selected rows
-        deleteSelected.addEventListener("click", function () {
-            // SweetAlert2 pop up --- official docs reference: https://sweetalert2.github.io/
-            Swal.fire({
-                text: "Are you sure you want to delete selected records?",
-                icon: "warning",
-                showCancelButton: true,
-                buttonsStyling: false,
-                showLoaderOnConfirm: true,
-                confirmButtonText: "Yes, delete!",
-                cancelButtonText: "No, cancel",
-                customClass: {
-                    confirmButton: "btn fw-bold btn-danger",
-                    cancelButton: "btn fw-bold btn-active-light-primary",
-                },
-            }).then(function (result) {
-                if (result.value) {
-                    // Simulate delete request -- for demo purpose only
-                    Swal.fire({
-                        text: "Deleting selected records",
-                        icon: "info",
-                        buttonsStyling: false,
-                        showConfirmButton: false,
-                        timer: 2000,
-                    }).then(function () {
-                        Swal.fire({
-                            text: "You have deleted all selected records!.",
-                            icon: "success",
-                            buttonsStyling: false,
-                            confirmButtonText: "Ok, got it!",
-                            customClass: {
-                                confirmButton: "btn fw-bold btn-primary",
-                            },
-                        }).then(function () {
-                            // delete row data from server and re-draw datatable
-                            dt.draw();
-                        });
-                        // Remove header checked box
-                        const headerCheckbox =
-                            container.querySelectorAll('[type="checkbox"]')[0];
-                        headerCheckbox.checked = false;
-                    });
-                } else if (result.dismiss === "cancel") {
-                    Swal.fire({
-                        text: "Selected records was not deleted.",
-                        icon: "error",
-                        buttonsStyling: false,
-                        confirmButtonText: "Ok, got it!",
-                        customClass: {
-                            confirmButton: "btn fw-bold btn-primary",
-                        },
-                    });
-                }
-            });
-        });
-    };
-
-    // Toggle toolbars
-    var toggleToolbars = function () {
-        // Define variables
-        const container = document.querySelector("#kt_datatable");
-        const toolbarBase = document.querySelector(
-            '[data-kt-docs-table-toolbar="base"]'
-        );
-        const toolbarSelected = document.querySelector(
-            '[data-kt-docs-table-toolbar="selected"]'
-        );
-        const selectedCount = document.querySelector(
-            '[data-kt-docs-table-select="selected_count"]'
-        );
-
-        // Select refreshed checkbox DOM elements
-        const allCheckboxes = container.querySelectorAll(
-            'tbody [type="checkbox"]'
-        );
-
-        // Detect checkboxes state & count
-        let checkedState = false;
-        let count = 0;
-
-        // Count checked boxes
-        allCheckboxes.forEach((c) => {
-            if (c.checked) {
-                checkedState = true;
-                count++;
-            }
-        });
-
-        // Toggle toolbars
-        if (checkedState) {
-            selectedCount.innerHTML = count;
-            toolbarBase.classList.add("d-none");
-            toolbarSelected.classList.remove("d-none");
-        } else {
-            toolbarBase.classList.remove("d-none");
-            toolbarSelected.classList.add("d-none");
-        }
-    };
-
     // Public methods
     return {
         init: function () {
             initDatatable();
             handleSearchDatatable();
-            initToggleToolbar();
             handleDeleteRows();
         },
     };

@@ -20,14 +20,13 @@ class CreateInvoicesTable extends Migration
             $table->integer('company_id');
             $table->integer('customer_id');
             $table->foreignId('user_id')->constrained('users');
-            $table->date('payment_date');
+            $table->date('due_date');
             $table->date('departure_date');
             $table->float('total');
             $table->float('revenue');
             $table->date('invoice_date');
             $table->string('status')->default('pending');
             $table->longText('notes')->nullable();
-            $table->longText('attachments')->nullable();
             $table->timestamps();
         });
     }

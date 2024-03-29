@@ -3,17 +3,18 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateProductRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Determine if the product is authorized to make this request.
      *
      * @return bool
      */
     public function authorize()
     {
-        return false;
+        return $this->user()->role === 'admin' || $this->user()->role === 'digital';
     }
 
     /**
@@ -24,7 +25,13 @@ class UpdateProductRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'invoice_id' => ['required', 'integer', 'max:255'],
+            'refund_id' => ['required', 'integer', 'max:255'],
+            'catalogue_id' => ['required', 'integer', 'max:255'],
+            'quantity' => ['required', 'integer', 'max:255'],
+            'cost_price' => ['required', 'integer', 'max:255'],
+            'selling_price' => ['required', 'integer', 'max:255'],
+            'revenue' => ['required', 'integer', 'max:255'],
         ];
     }
 }

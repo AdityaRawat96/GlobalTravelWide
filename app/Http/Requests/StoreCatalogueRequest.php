@@ -13,7 +13,7 @@ class StoreCatalogueRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return $this->user()->role === 'admin';
     }
 
     /**
@@ -24,7 +24,9 @@ class StoreCatalogueRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string', 'max:1500'],
+            'status' => ['required', 'string', 'max:255'],
         ];
     }
 }

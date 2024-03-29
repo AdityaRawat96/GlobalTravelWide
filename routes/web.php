@@ -4,8 +4,12 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\AdminController as AdminController;
-use App\Http\Controllers\UserController as UserController;
+use App\Http\Controllers\CatalogueController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController as OrderController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Artisan;
 
 /*
@@ -46,6 +50,7 @@ Route::get('/initialize', function () {
     Artisan::call('migrate:fresh');
     Artisan::call('db:seed --class=RoleSeeder');
     Artisan::call('db:seed --class=AdminSeeder');
+    Artisan::call('db:seed --class=CompanySeeder');
 });
 
 Route::get('/', function () {
@@ -53,7 +58,7 @@ Route::get('/', function () {
         return redirect('/' . Auth::user()->role . '/dashboard');
     }
     return view('auth.login');
-});
+})->name('home');
 
 Auth::routes(['verify' => true]);
 
@@ -86,6 +91,13 @@ Route::group(['middleware' => ['auth', 'role:admin', 'verified'], 'prefix' => 'a
     });
     Route::resource('user', UserController::class);
     Route::get('user/export/{type}', [UserController::class, 'export'])->name('user.export');
+    Route::resource('customer', CustomerController::class);
+    Route::get('customer/export/{type}', [CustomerController::class, 'export'])->name('customer.export');
+    Route::resource('catalogue', CatalogueController::class);
+    Route::get('catalogue/export/{type}', [CatalogueController::class, 'export'])->name('catalogue.export');
+    Route::resource('product', ProductController::class);
+    Route::resource('invoice', InvoiceController::class);
+    Route::get('invoice/export/{type}', [InvoiceController::class, 'export'])->name('invoice.export');
 });
 
 // Digital user role protected routes

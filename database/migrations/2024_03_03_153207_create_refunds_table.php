@@ -26,7 +26,6 @@ class CreateRefundsTable extends Migration
             $table->float('revenue');
             $table->string('status')->default('pending');
             $table->longText('notes')->nullable();
-            $table->longText('attachments')->nullable();
             $table->timestamps();
         });
     }

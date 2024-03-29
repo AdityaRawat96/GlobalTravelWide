@@ -9,4 +9,9 @@ class Catalogue extends Model
 {
     use HasFactory;
     protected $guarded = ['_token'];
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }

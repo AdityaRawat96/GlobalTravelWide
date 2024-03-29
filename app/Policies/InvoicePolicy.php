@@ -18,7 +18,8 @@ class InvoicePolicy
      */
     public function viewAny(User $user)
     {
-        //
+        // only allow the user to view the list of invoices if they have role of admin
+        return $user->role === 'admin';
     }
 
     /**
@@ -30,7 +31,8 @@ class InvoicePolicy
      */
     public function view(User $user, Invoice $invoice)
     {
-        //
+        // only allow the user to view the list of invoices if they have role of admin or if invoice foreign key user_id is the same as the authenticated user
+        return $user->role === 'admin' || $user->id === $invoice->user_id;
     }
 
     /**
@@ -41,7 +43,8 @@ class InvoicePolicy
      */
     public function create(User $user)
     {
-        //
+        // only allow the user to store a new invoice if they have role of admin or digital
+        return $user->role === 'admin' || $user->role === 'digital';
     }
 
     /**
@@ -53,7 +56,8 @@ class InvoicePolicy
      */
     public function update(User $user, Invoice $invoice)
     {
-        //
+        // only allow the user to update an invoice if they have role of admin or if invoice foreign key user_id is the same as the authenticated user
+        return $user->role === 'admin' || $user->id === $invoice->user_id;
     }
 
     /**
@@ -65,7 +69,8 @@ class InvoicePolicy
      */
     public function delete(User $user, Invoice $invoice)
     {
-        //
+        // only allow the user to delete an invoice if they have role of admin or if invoice foreign key user_id is the same as the authenticated user
+        return $user->role === 'admin' || $user->id === $invoice->user_id;
     }
 
     /**
