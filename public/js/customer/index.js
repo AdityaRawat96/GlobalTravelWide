@@ -20,7 +20,7 @@ var KTDatatablesServerSide = (function () {
                 className: "row-selected",
             },
             ajax: {
-                url: "/admin/customer",
+                url: `/${siteUserRole}/customer`,
             },
             columns: [
                 { data: "id" },
@@ -54,27 +54,30 @@ var KTDatatablesServerSide = (function () {
                             <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
-                                    <a href="/admin/customer/${parseInt(
-                                        data.id.substring(1),
-                                        10
-                                    )}" class="menu-link px-3" data-kt-docs-table-filter="view_row">
+                                    <a href="/${siteUserRole}/customer/${parseInt(
+                            data.id.substring(1),
+                            10
+                        )}" class="menu-link px-3" data-kt-docs-table-filter="view_row">
                                         View
                                     </a>
                                 </div>
                                 <!--end::Menu item-->
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
-                                    <a href="/admin/customer/${parseInt(
-                                        data.id.substring(1),
-                                        10
-                                    )}/edit" class="menu-link px-3" data-kt-docs-table-filter="edit_row">
+                                    <a href="/${siteUserRole}/customer/${parseInt(
+                            data.id.substring(1),
+                            10
+                        )}/edit" class="menu-link px-3" data-kt-docs-table-filter="edit_row">
                                         Edit
                                     </a>
                                 </div>
                                 <!--end::Menu item-->
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
-                                    <a href="#" class="menu-link px-3 text-danger" data-kt-docs-table-filter="delete_row">
+                                    <a href="/${siteUserRole}/customer/${parseInt(
+                            data.id.substring(1),
+                            10
+                        )}" class="menu-link px-3 text-danger" data-kt-docs-table-filter="delete_row">
                                         Delete
                                     </a>
                                 </div>
@@ -139,10 +142,7 @@ var KTDatatablesServerSide = (function () {
                 }).then(function (result) {
                     if (result.value) {
                         $.ajax({
-                            url: `/admin/customer/${parseInt(
-                                recordName.substring(1),
-                                10
-                            )}`,
+                            url: e.target.getAttribute("href"),
                             headers: {
                                 "X-CSRF-TOKEN": $(
                                     'meta[name="csrf-token"]'

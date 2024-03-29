@@ -11,7 +11,7 @@
             <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                 <!--begin::Title-->
                 <h1 class="page-heading d-flex fw-bold fs-3 flex-column justify-content-center my-0">
-                    {{ "C" . str_pad($invoice->id, 5, '0', STR_PAD_LEFT) }}
+                    {{ str_pad($invoice->invoice_id, 5, '0', STR_PAD_LEFT) }}
                 </h1>
                 <!--end::Title-->
                 <!--begin::Breadcrumb-->
@@ -45,74 +45,131 @@
     <div id="kt_app_content" class="app-content flex-column-fluid">
         <!--begin::Content container-->
         <div id="kt_app_content_container" class="app-container container-xxl">
-            <!--begin::Basic info-->
-            <div class="card mb-5 mb-xl-10">
-                <!--begin::Card header-->
-                <div class="card-header border-0">
-                    <!--begin::Card title-->
-                    <div class="card-title m-0">
-                        <h3 class="fw-bold m-0">Profile Details</h3>
-                    </div>
-                    <!--end::Card title-->
-                </div>
-                <!--begin::Card header-->
+            <!--begin::Layout-->
+            <div class="d-flex flex-column flex-xxl-row">
                 <!--begin::Content-->
-                <div class="content">
-                    <!--begin::Card body-->
-                    <div class="card-body border-top p-9">
-                        <!--begin::Input group-->
-                        <div class="row mb-6">
-                            <!--begin::Label-->
-                            <label class="col-lg-4 col-form-label fw-semibold fs-6">Name</label>
-                            <!--end::Label-->
-                            <!--begin::Col-->
-                            <div class="col-lg-8 fv-row">
-                                <input type="text" name="name" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="Full name" value="{{isset($invoice->name) ? $invoice->name : null}}" disabled />
-                                <div class="fv-plugins-message-container invalid-feedback"></div>
-                            </div>
-                            <!--end::Col-->
+                <div class="flex-xxl-row-fluid mb-10 mb-xxl-0 me-xxl-7 me-xxxl-10">
+                    <!--begin::Card-->
+                    <div class="card">
+                        <!--begin::Card body-->
+                        <div class="card-body p-12">
+                            @include('pdf.invoice', ['invoice' => $invoice, 'invoice_products' => $invoice_products,
+                            'invoice_payments' => $invoice_payments, 'view' => true])
                         </div>
-                        <!--end::Input group-->
-                        <!--begin::Input group-->
-                        <div class="row mb-6">
-                            <!--begin::Label-->
-                            <label class="col-lg-4 col-form-label fw-semibold fs-6">
-                                <span>Status</span>
-                            </label>
-                            <!--end::Label-->
-                            <!--begin::Col-->
-                            <div class="col-lg-8 fv-row">
-                                <input type="text" name="status" class="form-control form-control-lg form-control-solid" placeholder="Status" value="{{isset($invoice->status) ? ucfirst($invoice->status) : null}}" disabled />
-                            </div>
-                            <!--end::Col-->
-                        </div>
-                        <!--end::Input group-->
-                        <!--begin::Input group-->
-                        <div class="row mb-6">
-                            <!--begin::Label-->
-                            <label class="col-lg-4 col-form-label fw-semibold fs-6">
-                                Description
-                            </label>
-                            <!--end::Label-->
-                            <!--begin::Col-->
-                            <div class="col-lg-8 fv-row">
-                                <textarea name="description" class="form-control form-control-lg form-control-solid" rows="3" placeholder="Description" disabled>{{isset($invoice->description) ? $invoice->description : null}}</textarea>
-                            </div>
-                            <!--end::Col-->
-                        </div>
-                        <!--end::Input group-->
+                        <!--end::Card body-->
                     </div>
-                    <!--end::Card body-->
-                    <!--begin::Actions-->
-                    <div class="card-footer d-flex justify-content-end py-6 px-9">
-                        <button type="reset" class="reset btn btn-light btn-active-light-primary me-2">Discard</button>
-                        <a href="{{route('admin.invoice.edit', $invoice->id)}}" class="btn btn-primary">Edit</a>
-                    </div>
-                    <!--end::Actions-->
+                    <!--end::Card-->
                 </div>
                 <!--end::Content-->
+                <!--begin::Sidebar-->
+                <div class="flex-xxl-auto min-w-xxl-300px">
+                    <!--begin::Card-->
+                    <div class="card card-sticky">
+                        <!--begin::Card body-->
+                        <div class="card-body p-10">
+                            @if($invoice->notes)
+                            <!--begin::Input group-->
+                            <div class="mb-10">
+                                <!--begin::Label-->
+                                <label class="form-label fw-bold fs-6 text-gray-700">Notes</label>
+                                <!--end::Label-->
+                                <p>
+                                    {{$invoice->notes}}
+                                </p>
+                            </div>
+                            <!--end::Input group-->
+                            <!--begin::Separator-->
+                            <div class="separator separator-dashed mb-8"></div>
+                            <!--end::Separator-->
+                            @endif
+                            <!--begin::Input group-->
+                            <div class="mb-10">
+                                <!--begin::Label-->
+                                <label class="form-label fw-bold fs-6 text-gray-700">Attachments</label>
+                                <!--end::Label-->
+                                <!--begin::FileInput-->
+                                <!-- <input type="file" name="logo" class="form-control form-control-solid" /> -->
+                                <!--begin::Input group-->
+                                <div class="form-group fv-row">
+                                    <!--begin::Col-->
+                                    <div class="col-12">
+                                        <!--begin::Dropzone-->
+                                        <div class="dropzone dropzone-queue mb-2" id="kt_dropzonejs">
+                                            <!--begin::Controls-->
+                                            <div class="dropzone-panel mb-lg-0 mb-2 d-none">
+                                                <a class="dropzone-select btn btn-sm btn-primary me-2">Attach files</a>
+                                                <a class="dropzone-remove-all btn btn-sm btn-light-primary">Remove
+                                                    All</a>
+                                            </div>
+                                            <!--end::Controls-->
+
+                                            <!--begin::Items-->
+                                            <div class="dropzone-items wm-200px">
+                                                <div class="dropzone-item" style="display:none">
+                                                    <!--begin::File-->
+                                                    <div class="dropzone-file">
+                                                        <a href="#" class="dropzone-filename d-block"
+                                                            title="some_image_file_name.jpg">
+                                                            <span data-dz-name>some_image_file_name.jpg</span>
+                                                            <strong>(<span data-dz-size>340kb</span>)</strong>
+                                                        </a>
+                                                        <div class="dropzone-error" data-dz-errormessage></div>
+                                                    </div>
+                                                    <!--end::File-->
+                                                </div>
+                                            </div>
+                                            <!--end::Items-->
+                                        </div>
+                                        <!--end::Dropzone-->
+                                        @if(count($invoice_attachments) == 0)
+                                        <!--begin::Hint-->
+                                        <span class="form-text text-muted">
+                                            No attachments found.
+                                        </span>
+                                        <!--end::Hint-->
+                                        @endif
+                                    </div>
+                                    <!--end::Col-->
+                                </div>
+                                <!--end::Input group-->
+                                <!--end::FileInput-->
+                            </div>
+                            <!--end::Input group-->
+                            <!--begin::Separator-->
+                            <div class="separator separator-dashed mb-8"></div>
+                            <!--end::Separator-->
+                            <!--begin::Actions-->
+                            <div class="mb-0">
+                                <!--begin::Row-->
+                                <div class="row mb-5">
+                                    <!--begin::Col-->
+                                    <div class="col">
+                                        <a href="#"
+                                            class="btn btn-light btn-active-light-primary w-100 reset">Dismiss</a>
+                                    </div>
+                                    <!--end::Col-->
+                                    <!--begin::Col-->
+                                    <div class="col">
+                                        <a href="{{route(Auth::user()->role . '.invoice.showPdf', $invoice->id)}}"
+                                            class="btn btn-primary btn-active-light-primary w-100">Download</a>
+                                    </div>
+                                    <!--end::Col-->
+                                </div>
+                                <!--end::Row-->
+                                <!--begin::Secondary button-->
+                                <a href="{{'/' . Auth::user()->role . '/invoice/' . $invoice->id}}"
+                                    class="btn fw-bold btn-danger w-100" id="delete-invoice">Delete</a>
+                                <!--end::Secondary button-->
+                            </div>
+                            <!--end::Actions-->
+                        </div>
+                        <!--end::Card body-->
+                    </div>
+                    <!--end::Card-->
+                </div>
+                <!--end::Sidebar-->
             </div>
-            <!--end::Basic info-->
+            <!--end::Layout-->
         </div>
         <!--end::Content container-->
     </div>
@@ -134,4 +191,35 @@
 <!--begin::Custom Javascript(used for this page only)-->
 <script src="{{asset('js/invoice/show.js')}}"></script>
 <!--end::Custom Javascript-->
+@foreach ($invoice_attachments as $attach)
+<?php
+$path = Storage::url($attach->path) . $attach->url;
+?>
+
+<script>
+$("document").ready(() => {
+    var path = "{{ $path }}";
+    var fileSize = "{$fileSize}}";
+    var file = new File([path], "{{ $attach->name }}", {
+        type: "{{ $attach->mime_type }}",
+        lastModified: "{{ $attach->updated_at }}",
+        size: "{{ $attach->size }}" // Set file size in bytes
+    });
+    file['status'] = "added";
+    file['_removeLink'] = "a.dz-remove";
+    file['webkitRelativePath'] = "";
+    file['accepted'] = true;
+    file['dataURL'] = path;
+    file['upload'] = {
+        bytesSent: 0,
+        filename: "{{ $attach->name }}",
+        progress: 100,
+        total: "{{ $attach->size }}", // Set total file size in bytes
+        uuid: "{{ md5($attach->id) }}"
+    };
+    myDropzone.emit("addedfile", file, path);
+    myDropzone.files.push(file);
+});
+</script>
+@endforeach
 @stop

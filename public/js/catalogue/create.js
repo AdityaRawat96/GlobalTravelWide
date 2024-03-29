@@ -37,7 +37,7 @@ var KTCatalogueSettings = (function () {
                         n.resetForm();
                         window.history.length > 2
                             ? window.history.back()
-                            : (window.location.href = "/admin/catalogue");
+                            : (window.location.href = `/${siteUserRole}/catalogue`);
                     }),
                         $("#kt_create_form").on("submit", function (e) {
                             e.preventDefault();

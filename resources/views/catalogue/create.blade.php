@@ -59,7 +59,9 @@
                 <!--begin::Content-->
                 <div class="content">
                     <!--begin::Form-->
-                    <form class="form" action="{{isset($catalogue) ? route('admin.catalogue.update', $catalogue->id) : route('admin.catalogue.store')}}" id="kt_create_form" method="{{isset($catalogue) ? 'PUT' : 'POST'}}">
+                    <form class="form"
+                        action="{{isset($catalogue) ? route(Auth::user()->role . '.catalogue.update', $catalogue->id) : route(Auth::user()->role . '.catalogue.store')}}"
+                        id="kt_create_form" method="{{isset($catalogue) ? 'PUT' : 'POST'}}">
                         @csrf
                         <!--begin::Card body-->
                         <div class="card-body border-top p-9">
@@ -70,7 +72,10 @@
                                 <!--end::Label-->
                                 <!--begin::Col-->
                                 <div class="col-lg-8 fv-row">
-                                    <input type="text" name="name" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="Catalogue name" value="{{isset($catalogue->name) ? $catalogue->name : null}}" />
+                                    <input type="text" name="name"
+                                        class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"
+                                        placeholder="Catalogue name"
+                                        value="{{isset($catalogue->name) ? $catalogue->name : null}}" />
                                     <div class="fv-plugins-message-container invalid-feedback"></div>
                                 </div>
                                 <!--end::Col-->
@@ -85,11 +90,14 @@
                                 <!--end::Label-->
                                 <!--begin::Col-->
                                 <div class="col-lg-8 fv-row">
-                                    <select name="status" class="form-select form-select-lg form-select-solid" data-control="select2" data-placeholder="Select a status">
+                                    <select name="status" class="form-select form-select-lg form-select-solid"
+                                        data-control="select2" data-placeholder="Select a status">
                                         <option></option>
-                                        <option value="active" {{isset($catalogue->status) && $catalogue->status == 'active' ? 'selected' : null}}>
+                                        <option value="active"
+                                            {{isset($catalogue->status) && $catalogue->status == 'active' ? 'selected' : null}}>
                                             Active</option>
-                                        <option value="inactive" {{isset($catalogue->status) && $catalogue->status == 'inactive' ? 'selected' : null}}>
+                                        <option value="inactive"
+                                            {{isset($catalogue->status) && $catalogue->status == 'inactive' ? 'selected' : null}}>
                                             Inactive</option>
                                     </select>
                                 </div>
@@ -105,7 +113,9 @@
                                 <!--end::Label-->
                                 <!--begin::Col-->
                                 <div class="col-lg-8 fv-row">
-                                    <textarea name="description" class="form-control form-control-lg form-control-solid" rows="3" placeholder="Description">{{isset($catalogue->description) ? $catalogue->description : null}}</textarea>
+                                    <textarea name="description" class="form-control form-control-lg form-control-solid"
+                                        rows="3"
+                                        placeholder="Description">{{isset($catalogue->description) ? $catalogue->description : null}}</textarea>
                                 </div>
                                 <!--end::Col-->
                             </div>
@@ -114,7 +124,8 @@
                         <!--end::Card body-->
                         <!--begin::Actions-->
                         <div class="card-footer d-flex justify-content-end py-6 px-9">
-                            <button type="reset" class="reset btn btn-light btn-active-light-primary me-2">Discard</button>
+                            <button type="reset"
+                                class="reset btn btn-light btn-active-light-primary me-2">Discard</button>
                             <button type="button" id="kt_form_submit" class="btn btn-primary">
                                 <span class="indicator-label">
                                     {{isset($catalogue) ? 'Update' : 'Save'}}</span>

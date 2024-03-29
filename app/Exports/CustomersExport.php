@@ -6,8 +6,11 @@ use App\Models\Customer;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
-class CustomersExport implements FromCollection, WithHeadings
+class CustomersExport implements FromCollection, WithHeadings, WithStyles, ShouldAutoSize
 {
     /**
      * @return \Illuminate\Support\Collection
@@ -36,6 +39,17 @@ class CustomersExport implements FromCollection, WithHeadings
             'Email',
             'Phone',
             'Added By',
+        ];
+    }
+
+    public function styles(Worksheet $sheet)
+    {
+        $sheet->getParent()->getDefaultStyle()->getAlignment()->setHorizontal('left');
+        $sheet->getParent()->getDefaultStyle()->getAlignment()->setVertical('center');
+
+        return [
+            // Style the first row as bold text
+            1 => ['font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']], 'fill' => ['fillType' => 'solid', 'startColor' => ['rgb' => '2d4154']]],
         ];
     }
 }

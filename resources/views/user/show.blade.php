@@ -68,13 +68,16 @@
                             <!--begin::Col-->
                             <div class="col-lg-8">
                                 <!--begin::Image input-->
-                                <div class="image-input image-input-outline" data-kt-image-input="false" style="background-image: url({{asset('media/svg/avatars/blank.svg')}})">
+                                <div class="image-input image-input-outline" data-kt-image-input="false"
+                                    style="background-image: url({{asset('media/svg/avatars/blank.svg')}})">
                                     <!--begin::Preview existing avatar-->
                                     @if(isset($user->avatar))
-                                    <div class="image-input-wrapper w-125px h-125px" style="background-image: url({{asset('storage/'.$user->avatar)}})">
+                                    <div class="image-input-wrapper w-125px h-125px"
+                                        style="background-image: url({{asset('storage/'.$user->avatar)}})">
                                     </div>
                                     @else
-                                    <div class="image-input-wrapper w-125px h-125px" style="background-image: url({{asset('media/svg/avatars/blank.svg')}})">
+                                    <div class="image-input-wrapper w-125px h-125px"
+                                        style="background-image: url({{asset('media/svg/avatars/blank.svg')}})">
                                     </div>
                                     @endif
                                     <!--end::Preview existing avatar-->
@@ -95,7 +98,9 @@
                                 <div class="row">
                                     <!--begin::Col-->
                                     <div class="col-lg-6 fv-row">
-                                        <input type="text" name="role" class="form-control form-control-lg form-control-solid" placeholder="Role" value="{{isset($user->role) ? ucfirst($user->role) : null}}" disabled />
+                                        <input type="text" name="role"
+                                            class="form-control form-control-lg form-control-solid" placeholder="Role"
+                                            value="{{isset($user->role) ? ucfirst($user->role) : null}}" disabled />
                                     </div>
                                     <!--end::Col-->
                                 </div>
@@ -115,13 +120,19 @@
                                 <div class="row">
                                     <!--begin::Col-->
                                     <div class="col-lg-6 fv-row">
-                                        <input type="text" name="first_name" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="First name" value="{{isset($user->first_name) ? $user->first_name : null}}" disabled />
+                                        <input type="text" name="first_name"
+                                            class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"
+                                            placeholder="First name"
+                                            value="{{isset($user->first_name) ? $user->first_name : null}}" disabled />
 
                                     </div>
                                     <!--end::Col-->
                                     <!--begin::Col-->
                                     <div class="col-lg-6 fv-row">
-                                        <input type="text" name="last_name" class="form-control form-control-lg form-control-solid" placeholder="Last name" value="{{isset($user->last_name) ? $user->last_name : null}}" disabled />
+                                        <input type="text" name="last_name"
+                                            class="form-control form-control-lg form-control-solid"
+                                            placeholder="Last name"
+                                            value="{{isset($user->last_name) ? $user->last_name : null}}" disabled />
 
                                     </div>
                                     <!--end::Col-->
@@ -140,7 +151,9 @@
                             <!--end::Label-->
                             <!--begin::Col-->
                             <div class="col-lg-8 fv-row">
-                                <input type="tel" name="phone" class="form-control form-control-lg form-control-solid" placeholder="Phone number" value="{{isset($user->phone) ? $user->phone : null}}" disabled />
+                                <input type="tel" name="phone" class="form-control form-control-lg form-control-solid"
+                                    placeholder="Phone number" value="{{isset($user->phone) ? $user->phone : null}}"
+                                    disabled />
                             </div>
                             <!--end::Col-->
                         </div>
@@ -154,7 +167,9 @@
                             <!--end::Label-->
                             <!--begin::Col-->
                             <div class="col-lg-8 fv-row">
-                                <input type="email" name="email" class="form-control form-control-lg form-control-solid" placeholder="Email address" value="{{isset($user->email) ? $user->email : null}}" disabled />
+                                <input type="email" name="email" class="form-control form-control-lg form-control-solid"
+                                    placeholder="Email address" value="{{isset($user->email) ? $user->email : null}}"
+                                    disabled />
                             </div>
                             <!--end::Col-->
                         </div>
@@ -164,7 +179,8 @@
                     <!--begin::Actions-->
                     <div class="card-footer d-flex justify-content-end py-6 px-9">
                         <button type="reset" class="reset btn btn-light btn-active-light-primary me-2">Discard</button>
-                        <a href="{{route('admin.user.edit', $user->id)}}" class="btn btn-primary">Edit</a>
+                        <a href="{{route(Auth::user()->role . '.user.edit', $user->id)}}"
+                            class="btn btn-primary">Edit</a>
                     </div>
                     <!--end::Actions-->
                 </div>

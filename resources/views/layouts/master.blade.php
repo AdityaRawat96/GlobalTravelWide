@@ -37,6 +37,7 @@
     <script>
     var defaultThemeMode = "light";
     var themeMode;
+    var siteUserRole = "{{Auth::user()->role}}";
     if (document.documentElement) {
         if (document.documentElement.hasAttribute("data-theme-mode")) {
             themeMode = document.documentElement.getAttribute("data-theme-mode");

@@ -90,24 +90,24 @@
                                 data-kt-menu="true">
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
-                                    <a href="{{route('admin.invoice.export', 'excel')}}" class="menu-link px-3"
-                                        data-kt-export="excel">
+                                    <a href="{{route(Auth::user()->role . '.invoice.export', 'excel')}}"
+                                        class="menu-link px-3" data-kt-export="excel">
                                         Export as Excel
                                     </a>
                                 </div>
                                 <!--end::Menu item-->
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
-                                    <a href="{{route('admin.invoice.export', 'csv')}}" class="menu-link px-3"
-                                        data-kt-export="csv">
+                                    <a href="{{route(Auth::user()->role . '.invoice.export', 'csv')}}"
+                                        class="menu-link px-3" data-kt-export="csv">
                                         Export as CSV
                                     </a>
                                 </div>
                                 <!--end::Menu item-->
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
-                                    <a href="{{route('admin.invoice.export', 'pdf')}}" class="menu-link px-3"
-                                        data-kt-export="pdf">
+                                    <a href="{{route(Auth::user()->role . '.invoice.export', 'pdf')}}"
+                                        class="menu-link px-3" data-kt-export="pdf">
                                         Export as PDF
                                     </a>
                                 </div>
@@ -116,7 +116,7 @@
                             <!--end::Menu-->
                             <!--end::Export dropdown-->
                             <!--begin::Add Record -->
-                            <a href="{{route('admin.invoice.create')}}">
+                            <a href="{{route(Auth::user()->role . '.invoice.create')}}">
                                 <button type="button" class="btn btn-primary">Add Invoice</button>
                             </a>
                             <!--end::Add Record -->

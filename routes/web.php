@@ -97,6 +97,7 @@ Route::group(['middleware' => ['auth', 'role:admin', 'verified'], 'prefix' => 'a
     Route::get('catalogue/export/{type}', [CatalogueController::class, 'export'])->name('catalogue.export');
     Route::resource('product', ProductController::class);
     Route::resource('invoice', InvoiceController::class);
+    Route::get('invoice/showPdf/{id}', [InvoiceController::class, 'showPdf'])->name('invoice.showPdf');
     Route::get('invoice/export/{type}', [InvoiceController::class, 'export'])->name('invoice.export');
 });
 

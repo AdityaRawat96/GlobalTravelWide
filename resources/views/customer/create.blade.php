@@ -60,7 +60,7 @@
                 <div class="content">
                     <!--begin::Form-->
                     <form class="form"
-                        action="{{isset($customer) ? route('admin.customer.update', $customer->id) : route('admin.customer.store')}}"
+                        action="{{isset($customer) ? route(Auth::user()->role . '.customer.update', $customer->id) : route(Auth::user()->role . '.customer.store')}}"
                         id="kt_create_form" method="{{isset($customer) ? 'PUT' : 'POST'}}">
                         @csrf
                         <!--begin::Card body-->

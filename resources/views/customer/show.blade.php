@@ -67,7 +67,10 @@
                             <!--end::Label-->
                             <!--begin::Col-->
                             <div class="col-lg-8 fv-row">
-                                <input type="text" name="name" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="Full name" value="{{isset($customer->name) ? $customer->name : null}}" disabled />
+                                <input type="text" name="name"
+                                    class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"
+                                    placeholder="Full name" value="{{isset($customer->name) ? $customer->name : null}}"
+                                    disabled />
                                 <div class="fv-plugins-message-container invalid-feedback"></div>
                             </div>
                             <!--end::Col-->
@@ -82,7 +85,9 @@
                             <!--end::Label-->
                             <!--begin::Col-->
                             <div class="col-lg-8 fv-row">
-                                <input type="tel" name="phone" class="form-control form-control-lg form-control-solid" placeholder="Phone number" value="{{isset($customer->phone) ? $customer->phone : null}}" disabled />
+                                <input type="tel" name="phone" class="form-control form-control-lg form-control-solid"
+                                    placeholder="Phone number"
+                                    value="{{isset($customer->phone) ? $customer->phone : null}}" disabled />
                             </div>
                             <!--end::Col-->
                         </div>
@@ -96,7 +101,9 @@
                             <!--end::Label-->
                             <!--begin::Col-->
                             <div class="col-lg-8 fv-row">
-                                <input type="email" name="email" class="form-control form-control-lg form-control-solid" placeholder="Email address" value="{{isset($customer->email) ? $customer->email : null}}" disabled />
+                                <input type="email" name="email" class="form-control form-control-lg form-control-solid"
+                                    placeholder="Email address"
+                                    value="{{isset($customer->email) ? $customer->email : null}}" disabled />
                             </div>
                             <!--end::Col-->
                         </div>
@@ -106,7 +113,8 @@
                     <!--begin::Actions-->
                     <div class="card-footer d-flex justify-content-end py-6 px-9">
                         <button type="reset" class="reset btn btn-light btn-active-light-primary me-2">Discard</button>
-                        <a href="{{route('admin.customer.edit', $customer->id)}}" class="btn btn-primary">Edit</a>
+                        <a href="{{route(Auth::user()->role . '.customer.edit', $customer->id)}}"
+                            class="btn btn-primary">Edit</a>
                     </div>
                     <!--end::Actions-->
                 </div>

@@ -45,13 +45,14 @@ class InvoiceController extends Controller
                 ->select(
                     'invoices.id',
                     'invoices.invoice_id',
-                    'invoices.status',
+                    'invoices.status as status',
                     'invoices.ref_number',
                     DB::raw("CONCAT('" . env('APP_SHORT', 'TW') . "', LPAD(invoices.user_id, 5, '0')) as user_id"),
                     DB::raw("CONCAT('C', LPAD(invoices.customer_id, 5, '0')) as customer_id"),
                     'customers.name as customer_name',
-                    'invoices.departure_date',
-                    'invoices.invoice_date',
+                    DB::raw("DATE_FORMAT(invoices.departure_date, '%d-%m-%Y') as departure_date"),
+                    DB::raw("DATE_FORMAT(invoices.invoice_date, '%d-%m-%Y') as invoice_date"),
+                    'invoices.due_date',
                     'invoices.total'
                 );
 
@@ -96,6 +97,17 @@ class InvoiceController extends Controller
                 ->addColumn('added_by', function ($data) {
                     return env('APP_SHORT') . str_pad($data->added_by, 5, '0', STR_PAD_LEFT);
                 })
+                ->addColumn('total', function ($data) {
+                    return number_format(($data->total), 2, '.', '');
+                })
+                ->addColumn('status', function ($data) {
+                    if ($data->due_date < date('Y-m-d') && $data->status == 'pending') {
+                        return '<span class="badge badge-danger">Overdue</span>';
+                    } else {
+                        return '<span class="badge badge-success">' . ucfirst($data->status) . '</span>';
+                    }
+                })
+                ->rawColumns(['status'])
                 ->make(true);
             return $datatable;
         }
@@ -231,9 +243,22 @@ class InvoiceController extends Controller
     {
         $this->authorize('view', $invoice, Invoice::class);
         // return the view for showing the invoice
-        $pdf = Pdf::loadView('pdf.invoice', []);
+        $invoice_products = Product::where('type', 'invoice')->where('ref_id', $invoice->id)->get();
+        $invoice_payments = Payment::where('type', 'invoice')->where('ref_id', $invoice->id)->get();
+        $invoice_attachments = Attachment::where('type', 'invoice')->where('ref_id', $invoice->id)->get();
+        return view('invoice.show')->with(['invoice' => $invoice, 'invoice_products' => $invoice_products, 'invoice_payments' => $invoice_payments, 'invoice_attachments' => $invoice_attachments]);
+    }
+
+
+    public function showPdf(Request $request, $id)
+    {
+        $invoice = Invoice::where('id', $id)->first();
+        $this->authorize('view', $invoice, Invoice::class);
+        // return the view for showing the invoice
+        $invoice_products = Product::where('type', 'invoice')->where('ref_id', $invoice->id)->get();
+        $invoice_payments = Payment::where('type', 'invoice')->where('ref_id', $invoice->id)->get();
+        $pdf = Pdf::loadView('pdf.invoice', ['invoice' => $invoice, 'invoice_products' => $invoice_products, 'invoice_payments' => $invoice_payments, 'view' => false]);
         return $pdf->download('invoice.pdf');
-        return view('invoice.show', compact('invoice'));
     }
 
     /**
@@ -411,6 +436,18 @@ class InvoiceController extends Controller
         $this->authorize('delete', $invoice, Invoice::class);
         try {
             DB::beginTransaction();
+
+            // Delete the invoice products
+            Product::where('type', 'invoice')->where('ref_id', $invoice->id)->delete();
+            // Delete the invoice payments
+            Payment::where('type', 'invoice')->where('ref_id', $invoice->id)->delete();
+            // Delete the invoice attachments
+            $attachments = Attachment::where('type', 'invoice')->where('ref_id', $invoice->id)->get();
+            foreach ($attachments as $attachment) {
+                Storage::disk('public')->delete($attachment->url);
+                $attachment->delete();
+            }
+            // Delete the invoice
             $invoice->delete();
             DB::commit();
             return response()->json(['message' => 'Invoice - ' . $invoice->invoice_id . ' deleted successfully!'], 200);

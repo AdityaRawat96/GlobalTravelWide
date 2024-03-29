@@ -11,9 +11,22 @@ table .btn-sm {
     min-width: 300px;
     max-width: 300px;
 }
-.dropzone.dropzone-queue .dropzone-item .dropzone-file .dropzone-filename {
+
+.dropzone.dropzone-queue .dropzone-item .dropzone-file {
+    flex-grow: 1;
+    flex: 1;
+    position: relative;
+    width: 100%;
+}
+
+.attachments-create
+    .dropzone.dropzone-queue
+    .dropzone-item
+    .dropzone-file
+    .dropzone-filename {
     max-width: 160px;
 }
+
 .dropzone-start,
 .dropzone-progress {
     display: none !important;
@@ -35,7 +48,11 @@ table .btn-sm {
         top: 0;
     }
 
-    .dropzone.dropzone-queue .dropzone-item .dropzone-file .dropzone-filename {
+    .attachments-create
+        .dropzone.dropzone-queue
+        .dropzone-item
+        .dropzone-file
+        .dropzone-filename {
         max-width: none;
     }
 }

@@ -180,12 +180,82 @@ var KTAppInvoicesCreate = (function () {
                 }),
                 t();
         },
+        handleDeleteRows: function () {
+            // Select all delete buttons
+            const deleteButton = document.getElementById("delete-invoice");
+
+            // Delete button on click
+            deleteButton.addEventListener("click", function (e) {
+                e.preventDefault();
+
+                Swal.fire({
+                    text: "Are you sure you want to delete this invoice?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    buttonsStyling: false,
+                    confirmButtonText: "Yes, delete!",
+                    cancelButtonText: "No, cancel",
+                    customClass: {
+                        confirmButton: "btn fw-bold btn-danger",
+                        cancelButton: "btn fw-bold btn-active-light-primary",
+                    },
+                }).then(function (result) {
+                    if (result.value) {
+                        $.ajax({
+                            url: e.target.getAttribute("href"),
+                            headers: {
+                                "X-CSRF-TOKEN": $(
+                                    'meta[name="csrf-token"]'
+                                ).attr("content"),
+                            },
+                            type: "DELETE", // invoice.destroy
+                            success: function (result) {
+                                // Do something with the result
+                                Swal.fire({
+                                    text: result.message,
+                                    icon: "success",
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: {
+                                        confirmButton: "btn btn-primary",
+                                    },
+                                }).then(function (e) {
+                                    window.location.href = `/${siteUserRole}/invoice`;
+                                });
+                            },
+                            error: function (err) {
+                                // Do something with the error
+                                Swal.fire({
+                                    text: err.responseJSON.message,
+                                    icon: "error",
+                                    buttonsStyling: !1,
+                                    confirmButtonText: "Ok, got it!",
+                                    customClass: {
+                                        confirmButton: "btn btn-primary",
+                                    },
+                                });
+                            },
+                        });
+                    } else if (result.dismiss === "cancel") {
+                        Swal.fire({
+                            text: recordName + " was not deleted.",
+                            icon: "error",
+                            buttonsStyling: false,
+                            confirmButtonText: "Ok, got it!",
+                            customClass: {
+                                confirmButton: "btn fw-bold btn-primary",
+                            },
+                        });
+                    }
+                });
+            });
+        },
         eventChange: function () {
             $("#customer").on("change", function () {
                 var e = $(this).val();
                 $(".customer_details").addClass("d-none"),
                     $.ajax({
-                        url: "/admin/customer/" + e,
+                        url: `/${siteUserRole}/customer/` + e,
                         type: "GET",
                         success: function (e) {
                             $("#customer_email").val(e.email);
@@ -201,7 +271,7 @@ var KTAppInvoicesCreate = (function () {
                 function (event) {
                     var e = event.target.value;
                     $.ajax({
-                        url: "/admin/catalogue/" + e,
+                        url: `/${siteUserRole}/catalogue/` + e,
                         type: "GET",
                         success: function (response) {
                             // set closest .details element
@@ -252,6 +322,7 @@ var KTAppInvoicesCreate = (function () {
 KTUtil.onDOMContentLoaded(function () {
     KTAppInvoicesCreate.init();
     KTAppInvoicesCreate.eventChange();
+    KTAppInvoicesCreate.handleDeleteRows();
 });
 var myDropzone;
 var FormSubmission = (function () {
@@ -317,10 +388,9 @@ var FormSubmission = (function () {
                 })),
                 $(document).ready(function (e) {
                     $(".reset").on("click", function (e) {
-                        n.resetForm();
                         window.history.length > 2
                             ? window.history.back()
-                            : (window.location.href = "/admin/invoice");
+                            : (window.location.href = `/${siteUserRole}/invoice`);
                     }),
                         $("#kt_create_form").on("submit", function (e) {
                             e.preventDefault();
@@ -544,7 +614,7 @@ var FormSubmission = (function () {
 
             myDropzone = new Dropzone(id, {
                 // Make the whole body a dropzone
-                url: "/admin/invoice/upload",
+                url: `/${siteUserRole}/invoice/upload`,
                 parallelUploads: 20,
                 autoProcessQueue: false,
                 paramName: "file",
