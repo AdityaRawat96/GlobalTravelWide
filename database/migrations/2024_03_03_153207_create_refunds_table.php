@@ -20,8 +20,8 @@ class CreateRefundsTable extends Migration
             $table->integer('company_id');
             $table->integer('customer_id');
             $table->foreignId('user_id')->constrained('users');
-            $table->date('applied_date');
             $table->date('refund_date');
+            $table->date('due_date');
             $table->float('total');
             $table->float('revenue');
             $table->string('status')->default('pending');

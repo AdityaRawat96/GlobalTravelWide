@@ -18,7 +18,8 @@ class ExpensePolicy
      */
     public function viewAny(User $user)
     {
-        //
+        // only allow the user to view the list of expenses if they have role of admin 
+        return $user->role === 'admin';
     }
 
     /**
@@ -30,7 +31,8 @@ class ExpensePolicy
      */
     public function view(User $user, Expense $expense)
     {
-        //
+        // only allow the expense to view the list of expenses if they have role of admin 
+        return $user->role === 'admin';
     }
 
     /**
@@ -41,7 +43,8 @@ class ExpensePolicy
      */
     public function create(User $user)
     {
-        //
+        // only allow the user to store a new expense if they have role of admin 
+        return $user->role === 'admin';
     }
 
     /**
@@ -53,7 +56,8 @@ class ExpensePolicy
      */
     public function update(User $user, Expense $expense)
     {
-        //
+        // only allow the expense to view the list of expenses if they have role of admin 
+        return $user->role === 'admin';
     }
 
     /**
@@ -65,7 +69,8 @@ class ExpensePolicy
      */
     public function delete(User $user, Expense $expense)
     {
-        //
+        // only allow the expense to view the list of expenses if they have role of admin
+        return $user->role === 'admin';
     }
 
     /**

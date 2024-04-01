@@ -9,4 +9,9 @@ class Hotel extends Model
 {
     use HasFactory;
     protected $guarded = ['_token'];
+
+    public function quotation()
+    {
+        return $this->belongsTo(Quotation::class);
+    }
 }

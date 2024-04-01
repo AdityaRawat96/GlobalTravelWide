@@ -13,7 +13,8 @@ class StoreReminderRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        // only allow the user to store a new reminder if they have role of admin or digital
+        return $this->user()->role === 'admin' || $this->user()->role === 'digital';
     }
 
     /**
@@ -24,7 +25,9 @@ class StoreReminderRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'customer_id' => ['required', 'exists:customers,id'],
+            'date' => ['required', 'datetime'],
+            'notes' => ['required', 'string', 'max:2000'],
         ];
     }
 }

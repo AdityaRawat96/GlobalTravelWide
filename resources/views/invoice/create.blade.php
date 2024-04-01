@@ -538,67 +538,11 @@
                                                 </tr>
                                                 @endforeach
                                                 @else
-                                                <tr class="border-bottom border-bottom-dashed"
-                                                    data-kt-element="payment">
-                                                    <td class="pe-7">
-                                                        <!--begin::Input group-->
-                                                        <div class="mb-5 fv-row">
-                                                            <select name="payment_mode[]"
-                                                                class="form-select form-select-lg form-select-solid"
-                                                                data-control="select2"
-                                                                data-placeholder="Select a payment mode"
-                                                                data-kt-element="payment_mode">
-                                                                <option value="">Select a payment mode</option>
-                                                                <option value="bank">Bank Payment</option>
-                                                                <option value="cash">Cash Payment</option>
-                                                                <option value="other">Other</option>
-                                                            </select>
-                                                            <div class="fv-plugins-message-container invalid-feedback">
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="ps-0">
-                                                        <div class="mb-5 fv-row">
-                                                            <input class="form-control form-control-solid"
-                                                                placeholder="Select payment date" name="payment_date[]"
-                                                                data-kt-element="payment_date" />
-                                                            <div class="fv-plugins-message-container invalid-feedback">
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="mb-5 fv-row">
-                                                            <input type="text"
-                                                                class="form-control form-control-solid text-end"
-                                                                name="payment_amount[]" placeholder="0.00" value="0.00"
-                                                                data-kt-element="payment_amount" />
-                                                            <div class="fv-plugins-message-container invalid-feedback">
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="pt-5 text-end">
-                                                        <button type="button"
-                                                            class="btn btn-icon btn-active-color-primary"
-                                                            data-kt-element="remove-payment">
-                                                            <!--begin::Svg Icon | path: icons/duotune/general/gen027.svg-->
-                                                            <span class="svg-icon svg-icon-3">
-                                                                <svg width="24" height="24" viewBox="0 0 24 24"
-                                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path
-                                                                        d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z"
-                                                                        fill="currentColor" />
-                                                                    <path opacity="0.5"
-                                                                        d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z"
-                                                                        fill="currentColor" />
-                                                                    <path opacity="0.5"
-                                                                        d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z"
-                                                                        fill="currentColor" />
-                                                                </svg>
-                                                            </span>
-                                                            <!--end::Svg Icon-->
-                                                        </button>
-                                                    </td>
+                                                <!--begin::Empty template-->
+                                                <tr data-kt-element="empty">
+                                                    <th colspan="5" class="text-muted text-center py-10">No items</th>
                                                 </tr>
+                                                <!--end::Empty template-->
                                                 @endif
                                             </tbody>
                                             <!--end::Table body-->
@@ -637,7 +581,7 @@
 
                                     <!--begin::Notes-->
                                     <div class="mb-0">
-                                        <label class="form-label fs-6 fw-bold text-gray-700">Notes</label>
+                                        <label class="form-label fs-6 fw-bold text-gray-700">Internal Notes</label>
                                         <textarea name="notes" class="form-control form-control-solid" rows="3"
                                             placeholder="Thanks for your business">{{isset($invoice) ? $invoice->notes : null}}</textarea>
                                     </div>

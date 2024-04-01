@@ -18,7 +18,8 @@ class NotificationPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        // only allow the user to view the list of notifications if they have role of admin or digital
+        return $user->role === 'admin' || $user->role === 'digital';
     }
 
     /**
@@ -30,7 +31,8 @@ class NotificationPolicy
      */
     public function view(User $user, Notification $notification)
     {
-        //
+        // only allow the notification to view the list of notifications if they have role of admin or digital
+        return $user->role === 'admin' || $user->role === 'digital';
     }
 
     /**
@@ -41,7 +43,8 @@ class NotificationPolicy
      */
     public function create(User $user)
     {
-        //
+        // only allow the user to store a new notification if they have role of admin 
+        return $user->role === 'admin';
     }
 
     /**
@@ -53,7 +56,8 @@ class NotificationPolicy
      */
     public function update(User $user, Notification $notification)
     {
-        //
+        // only allow the notification to view the list of notifications if they have role of admin 
+        return $user->role === 'admin';
     }
 
     /**
@@ -65,7 +69,8 @@ class NotificationPolicy
      */
     public function delete(User $user, Notification $notification)
     {
-        //
+        // only allow the notification to view the list of notifications if they have role of admin
+        return $user->role === 'admin';
     }
 
     /**

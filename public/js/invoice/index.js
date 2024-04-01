@@ -5,6 +5,7 @@ var KTDatatablesServerSide = (function () {
     // Shared variables
     var table;
     var dt;
+    var filter = [];
 
     // Private functions
     var initDatatable = function () {
@@ -16,6 +17,9 @@ var KTDatatablesServerSide = (function () {
             stateSave: false,
             ajax: {
                 url: `/${siteUserRole}/invoice`,
+                data: function (d) {
+                    d.filter = filter;
+                },
             },
             columns: [
                 { data: "invoice_id" },
@@ -76,6 +80,16 @@ var KTDatatablesServerSide = (function () {
                         `;
                     },
                 },
+
+                // format total column like 2000 => 2,000.00 and align to right
+                {
+                    targets: 4,
+                    render: function (data) {
+                        return parseFloat(data)
+                            .toFixed(2)
+                            .replace(/\d(?=(\d{3})+\.)/g, "$&,");
+                    },
+                },
             ],
         });
 
@@ -95,6 +109,38 @@ var KTDatatablesServerSide = (function () {
         );
         filterSearch.addEventListener("keyup", function (e) {
             dt.search(e.target.value).draw();
+        });
+    };
+
+    // Filter Datatable
+    var handleFilterDatatable = () => {
+        // Select filter options
+        var filterOptions = document.querySelectorAll(".filter-option");
+        const applyFilterButton = document.querySelector("#apply_filter");
+        const clearFilterButton = document.querySelector("#reset_filter");
+
+        // Filter datatable on submit
+        applyFilterButton.addEventListener("click", function () {
+            // Get filter values
+            filter = [];
+            filterOptions.forEach((r) => {
+                if (r.value) {
+                    filter.push({
+                        name: r.getAttribute("data-filter-target"),
+                        type: r.getAttribute("data-filter-type"),
+                        comparator: r.value.split(",")[0],
+                        value: r.value.split(",")[1],
+                    });
+                }
+            });
+            dt.ajax.reload();
+        });
+
+        // Clear filter on reset
+        clearFilterButton.addEventListener("click", function () {
+            $(".filter-option").val(null).trigger("change");
+            filter = [];
+            dt.ajax.reload();
         });
     };
 
@@ -188,6 +234,7 @@ var KTDatatablesServerSide = (function () {
             initDatatable();
             handleSearchDatatable();
             handleDeleteRows();
+            handleFilterDatatable();
         },
     };
 })();

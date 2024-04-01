@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '7eac364c180df3288cb4bd1f8235720b8996cb6d',
+        'reference' => 'aac3bf12f96ef8d023fb1b571e76bcb2d3e94632',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -78,6 +78,17 @@
             'replaced' => array(
                 0 => '*',
             ),
+        ),
+        'cyberwizard/dbsafeguard' => array(
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '7894728e2a4a000d716e245384aeff9c9645b8e4',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../cyberwizard/dbsafeguard',
+            'aliases' => array(
+                0 => '9999999-dev',
+            ),
+            'dev_requirement' => false,
         ),
         'davedevelopment/hamcrest-php' => array(
             'dev_requirement' => true,
@@ -480,7 +491,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '7eac364c180df3288cb4bd1f8235720b8996cb6d',
+            'reference' => 'aac3bf12f96ef8d023fb1b571e76bcb2d3e94632',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

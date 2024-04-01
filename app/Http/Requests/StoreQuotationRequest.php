@@ -13,7 +13,8 @@ class StoreQuotationRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        // only allow the user to store a new quotation if they have role of admin or digital
+        return $this->user()->role === 'admin' || $this->user()->role === 'digital';
     }
 
     /**
@@ -24,7 +25,34 @@ class StoreQuotationRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'quotation_id' => ['required', 'unique:quotations'],
+            'ref_number' => ['nullable', 'string', 'max:255'],
+            'company_id' => 'required',
+            'customer_id' => 'required',
+            'quotation_date' => ['required', 'date'],
+            'cost' => ['required', 'numeric'],
+            'price' => ['required', 'numeric'],
+            'airline_notes' => ['nullable', 'string', 'max:2000'],
+            'hotel_notes' => ['nullable', 'string', 'max:2000'],
+            'notes' => ['nullable', 'string', 'max:2000'],
+            'airline_name' => ['array'],
+            'airline_name.*' => ['string'],
+            'departure_airport' => ['array'],
+            'departure_airport.*' => ['string'],
+            'arrival_airport' => ['array'],
+            'arrival_airport.*' => ['string'],
+            'departure_time' => ['array'],
+            'departure_time.*' => ['datetime'],
+            'arrival_time' => ['array'],
+            'arrival_time.*' => ['datetime'],
+            'hotel_name' => ['array'],
+            'hotel_name.*' => ['string'],
+            'checkin_time' => ['array'],
+            'checkin_time.*' => ['datetime'],
+            'checkout_time' => ['array'],
+            'checkout_time.*' => ['datetime'],
+            'file' => ['array', 'max:5'],
+            'file.*' => ['file', 'max:5120'],
         ];
     }
 }

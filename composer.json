@@ -10,6 +10,7 @@
   "require": {
     "php": "^8.0.13",
     "barryvdh/laravel-dompdf": "^2.1",
+    "cyberwizard/dbsafeguard": "dev-main",
     "fideloper/proxy": "^4.4",
     "fruitcake/laravel-cors": "^2.0",
     "guzzlehttp/guzzle": "^7.0.1",

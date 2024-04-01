@@ -18,8 +18,6 @@ class UsersExport implements FromCollection, WithHeadings, WithStyles, ShouldAut
     public function collection()
     {
         $app_short_name = env('APP_SHORT', 'TW');
-        // Append short name to the user id
-
         $users = User::select(
             DB::raw("CONCAT('" . $app_short_name . "', LPAD(id, 5, '0')) as user_id"),
             DB::raw("CONCAT(first_name, ' ', last_name) as full_name"),

@@ -13,7 +13,8 @@ class UpdatePnrRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        // only allow the user to update a new pnr if they have role of admin or digital
+        return $this->user()->role === 'admin' || $this->user()->role === 'digital';
     }
 
     /**
@@ -24,7 +25,10 @@ class UpdatePnrRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'number' => ['required', 'string'],
+            'date' => ['required', 'datetime'],
+            'status' => ['required', 'string'],
+            'notes' => ['required', 'string', 'max:2000'],
         ];
     }
 }

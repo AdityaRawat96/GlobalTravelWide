@@ -18,7 +18,8 @@ class ReminderPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        // only allow the user to view the list of reminders if they have role of admin or digital
+        return $user->role === 'admin' || $user->role === 'digital';
     }
 
     /**
@@ -30,7 +31,8 @@ class ReminderPolicy
      */
     public function view(User $user, Reminder $reminder)
     {
-        //
+        // only allow the reminder to view the list of reminders if they have role of admin or digital
+        return $user->role === 'admin' || $user->role === 'digital';
     }
 
     /**
@@ -41,7 +43,8 @@ class ReminderPolicy
      */
     public function create(User $user)
     {
-        //
+        // only allow the user to store a new reminder if they have role of admin or digital
+        return $user->role === 'admin' || $user->role === 'digital';
     }
 
     /**
@@ -53,7 +56,8 @@ class ReminderPolicy
      */
     public function update(User $user, Reminder $reminder)
     {
-        //
+        // only allow the reminder to view the list of reminders if they have role of admin or digital
+        return $user->role === 'admin' || $user->role === 'digital';
     }
 
     /**
@@ -65,7 +69,8 @@ class ReminderPolicy
      */
     public function delete(User $user, Reminder $reminder)
     {
-        //
+        // only allow the reminder to view the list of reminders if they have role of admin or digital
+        return $user->role === 'admin' || $user->role === 'digital';
     }
 
     /**

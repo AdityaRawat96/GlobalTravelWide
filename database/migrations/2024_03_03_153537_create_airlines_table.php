@@ -15,14 +15,12 @@ class CreateAirlinesTable extends Migration
     {
         Schema::create('airlines', function (Blueprint $table) {
             $table->id();
-            $table->integer('ref_id');
             $table->foreignId('quotation_id')->constrained('quotations')->onDelete('cascade');
             $table->string('name');
             $table->dateTime('departure_time');
             $table->dateTime('arrival_time');
             $table->string('departure_airport');
             $table->string('arrival_airport');
-            $table->longText('notes')->nullable();
             $table->timestamps();
         });
     }

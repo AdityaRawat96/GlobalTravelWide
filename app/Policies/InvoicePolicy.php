@@ -18,8 +18,8 @@ class InvoicePolicy
      */
     public function viewAny(User $user)
     {
-        // only allow the user to view the list of invoices if they have role of admin
-        return $user->role === 'admin';
+        // only allow the user to view the list of invoices if they have role of admin or digital
+        return $user->role === 'admin' || $user->role === 'digital';
     }
 
     /**

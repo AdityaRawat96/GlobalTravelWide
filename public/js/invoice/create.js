@@ -53,7 +53,7 @@ var KTAppInvoicesCreate = (function () {
                     '[data-kt-element="items"] [data-kt-element="item"]'
                 ).length
             ) {
-                var t = e
+                var t = document
                     .querySelector('[data-kt-element="empty-template"] tr')
                     .cloneNode(!0);
                 e.querySelector('[data-kt-element="items"] tbody').appendChild(
@@ -73,7 +73,7 @@ var KTAppInvoicesCreate = (function () {
                     '[data-kt-element="payments"] [data-kt-element="payment"]'
                 ).length
             ) {
-                var t = e
+                var t = document
                     .querySelector('[data-kt-element="empty-template"] tr')
                     .cloneNode(!0);
                 e.querySelector(
@@ -183,6 +183,10 @@ var KTAppInvoicesCreate = (function () {
         handleDeleteRows: function () {
             // Select all delete buttons
             const deleteButton = document.getElementById("delete-invoice");
+
+            if (!deleteButton) {
+                return;
+            }
 
             // Delete button on click
             deleteButton.addEventListener("click", function (e) {
@@ -633,7 +637,6 @@ var FormSubmission = (function () {
                 ).onclick = function () {
                     myDropzone.enqueueFile(file);
                 };
-                console.log(file);
                 if (file.upload.progress == 100) {
                     file.previewElement.querySelector(
                         id + " .dropzone-filename"
@@ -724,5 +727,4 @@ KTUtil.onDOMContentLoaded(function () {
     FormSubmission.init();
     FormSubmission.initializeDropZone();
     FormSubmission.addValidation("items", "item");
-    FormSubmission.addValidation("payments", "payment");
 });

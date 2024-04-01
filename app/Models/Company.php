@@ -14,4 +14,14 @@ class Company extends Model
     {
         return $this->hasMany(Invoice::class);
     }
+
+    public function refunds()
+    {
+        return $this->hasMany(Refund::class);
+    }
+
+    public function quotations()
+    {
+        return $this->hasMany(Quotation::class);
+    }
 }

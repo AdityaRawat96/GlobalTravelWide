@@ -11,7 +11,7 @@
             <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                 <!--begin::Title-->
                 <h1 class="page-heading d-flex fw-bold fs-3 flex-column justify-content-center my-0">
-                    {{ "C" . str_pad($catalogue->id, 5, '0', STR_PAD_LEFT) }}
+                    {{ str_pad($catalogue->id, 5, '0', STR_PAD_LEFT) }}
                 </h1>
                 <!--end::Title-->
                 <!--begin::Breadcrumb-->
@@ -67,10 +67,7 @@
                             <!--end::Label-->
                             <!--begin::Col-->
                             <div class="col-lg-8 fv-row">
-                                <input type="text" name="name"
-                                    class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"
-                                    placeholder="Full name"
-                                    value="{{isset($catalogue->name) ? $catalogue->name : null}}" disabled />
+                                <input type="text" name="name" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="Full name" value="{{isset($catalogue->name) ? $catalogue->name : null}}" disabled />
                                 <div class="fv-plugins-message-container invalid-feedback"></div>
                             </div>
                             <!--end::Col-->
@@ -85,10 +82,7 @@
                             <!--end::Label-->
                             <!--begin::Col-->
                             <div class="col-lg-8 fv-row">
-                                <input type="text" name="status" class="form-control form-control-lg form-control-solid"
-                                    placeholder="Status"
-                                    value="{{isset($catalogue->status) ? ucfirst($catalogue->status) : null}}"
-                                    disabled />
+                                <input type="text" name="status" class="form-control form-control-lg form-control-solid" placeholder="Status" value="{{isset($catalogue->status) ? ucfirst($catalogue->status) : null}}" disabled />
                             </div>
                             <!--end::Col-->
                         </div>
@@ -102,9 +96,7 @@
                             <!--end::Label-->
                             <!--begin::Col-->
                             <div class="col-lg-8 fv-row">
-                                <textarea name="description" class="form-control form-control-lg form-control-solid"
-                                    rows="3" placeholder="Description"
-                                    disabled>{{isset($catalogue->description) ? $catalogue->description : null}}</textarea>
+                                <textarea name="description" class="form-control form-control-lg form-control-solid" rows="3" placeholder="Description" disabled>{{isset($catalogue->description) ? $catalogue->description : null}}</textarea>
                             </div>
                             <!--end::Col-->
                         </div>
@@ -114,8 +106,7 @@
                     <!--begin::Actions-->
                     <div class="card-footer d-flex justify-content-end py-6 px-9">
                         <button type="reset" class="reset btn btn-light btn-active-light-primary me-2">Discard</button>
-                        <a href="{{route(Auth::user()->role . '.catalogue.edit', $catalogue->id)}}"
-                            class="btn btn-primary">Edit</a>
+                        <a href="{{route(Auth::user()->role . '.catalogue.edit', $catalogue->id)}}" class="btn btn-primary">Edit</a>
                     </div>
                     <!--end::Actions-->
                 </div>

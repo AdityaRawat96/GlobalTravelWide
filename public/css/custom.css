@@ -44,7 +44,7 @@ table .btn-sm {
     .card-sticky {
         position: relative;
         max-width: none;
-        min-width: none;
+        min-width: unset;
         top: 0;
     }
 

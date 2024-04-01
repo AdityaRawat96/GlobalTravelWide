@@ -13,7 +13,8 @@ class StoreNotificationRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        // only allow the user to store a new notification if they have role of admin
+        return $this->user()->role === 'admin';
     }
 
     /**
@@ -24,7 +25,11 @@ class StoreNotificationRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'date' => ['required', 'date'],
+            'title' => ['required', 'string'],
+            'description' => ['required', 'string', 'max:2000'],
+            'file' => ['array', 'max:5'],
+            'file.*' => ['file', 'max:5120'],
         ];
     }
 }

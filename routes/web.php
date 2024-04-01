@@ -6,10 +6,19 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AdminController as AdminController;
 use App\Http\Controllers\CatalogueController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController as OrderController;
+use App\Http\Controllers\PnrController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QueryController;
+use App\Http\Controllers\QuotationController;
+use App\Http\Controllers\RefundController;
+use App\Http\Controllers\ReminderController;
+use App\Http\Controllers\SalesController;
 use Illuminate\Support\Facades\Artisan;
 
 /*
@@ -89,6 +98,70 @@ Route::group(['middleware' => ['auth', 'role:admin', 'verified'], 'prefix' => 'a
     Route::get('/', function () {
         return redirect()->route('admin.dashboard');
     });
+
+    Route::group(['prefix' => 'profile', 'as' => 'profile.'], function () {
+        Route::get('/', [ProfileController::class, 'index'])->name('view');
+        Route::post('/update', [ProfileController::class, 'updateProfileDetails'])->name('update');
+        Route::post('/updateEmail', [ProfileController::class, 'updateEmail'])->name('updateEmail');
+        Route::post('/updatePassword', [ProfileController::class, 'updatePassword'])->name('updatePassword');
+    });
+
+    Route::resource('user', UserController::class);
+    Route::get('user/export/{type}', [UserController::class, 'export'])->name('user.export');
+
+    Route::resource('customer', CustomerController::class);
+    Route::get('customer/export/{type}', [CustomerController::class, 'export'])->name('customer.export');
+
+    Route::resource('catalogue', CatalogueController::class);
+    Route::get('catalogue/export/{type}', [CatalogueController::class, 'export'])->name('catalogue.export');
+
+    Route::resource('product', ProductController::class);
+    Route::resource('invoice', InvoiceController::class);
+    Route::get('invoice/showPdf/{id}', [InvoiceController::class, 'showPdf'])->name('invoice.showPdf');
+    Route::get('invoice/export/{type}', [InvoiceController::class, 'export'])->name('invoice.export');
+
+    Route::resource('refund', RefundController::class);
+    Route::get('refund/showPdf/{id}', [RefundController::class, 'showPdf'])->name('refund.showPdf');
+    Route::get('refund/export/{type}', [RefundController::class, 'export'])->name('refund.export');
+
+    Route::resource('quotation', QuotationController::class);
+    Route::get('quotation/showPdf/{id}', [QuotationController::class, 'showPdf'])->name('quotation.showPdf');
+    Route::get('quotation/export/{type}', [QuotationController::class, 'export'])->name('quotation.export');
+
+    Route::resource('sale', SalesController::class);
+    Route::get('sale/export/{type}', [SalesController::class, 'export'])->name('sale.export');
+    Route::get('sale/exportDetails/{type}', [SalesController::class, 'exportDetails'])->name('sale.exportDetails');
+    Route::post('sale/{id}', [SalesController::class, 'show'])->name('sale.show');
+
+    Route::resource('expense', ExpenseController::class);
+    Route::get('expense/export/{type}', [ExpenseController::class, 'export'])->name('expense.export');
+
+    Route::resource('notification', NotificationController::class);
+    Route::get('notification/export/{type}', [NotificationController::class, 'export'])->name('notification.export');
+
+    Route::resource('pnr', PnrController::class);
+    Route::get('pnr/export/{type}', [PnrController::class, 'export'])->name('pnr.export');
+
+    Route::resource('query', QueryController::class);
+    Route::get('query/export/{type}', [QueryController::class, 'export'])->name('query.export');
+
+    Route::resource('reminder', ReminderController::class);
+    Route::get('reminder/export/{type}', [ReminderController::class, 'export'])->name('reminder.export');
+});
+
+// Digital user role protected routes
+Route::group(['middleware' => ['auth', 'role:digital', 'verified'], 'prefix' => 'digital', 'as' => 'digital.'], function () {
+    Route::get('/', function () {
+        return redirect()->route('digital.dashboard');
+    });
+
+    Route::group(['prefix' => 'profile', 'as' => 'profile.'], function () {
+        Route::get('/', [ProfileController::class, 'index'])->name('view');
+        Route::post('/update', [ProfileController::class, 'updateProfileDetails'])->name('update');
+        Route::post('/updateEmail', [ProfileController::class, 'updateEmail'])->name('updateEmail');
+        Route::post('/updatePassword', [ProfileController::class, 'updatePassword'])->name('updatePassword');
+    });
+
     Route::resource('user', UserController::class);
     Route::get('user/export/{type}', [UserController::class, 'export'])->name('user.export');
     Route::resource('customer', CustomerController::class);
@@ -99,13 +172,14 @@ Route::group(['middleware' => ['auth', 'role:admin', 'verified'], 'prefix' => 'a
     Route::resource('invoice', InvoiceController::class);
     Route::get('invoice/showPdf/{id}', [InvoiceController::class, 'showPdf'])->name('invoice.showPdf');
     Route::get('invoice/export/{type}', [InvoiceController::class, 'export'])->name('invoice.export');
-});
-
-// Digital user role protected routes
-Route::group(['middleware' => ['auth', 'role:digital', 'verified'], 'prefix' => 'digital', 'as' => 'digital.'], function () {
-    Route::get('/', function () {
-        return redirect()->route('digital.dashboard');
-    });
+    Route::resource('refund', RefundController::class);
+    Route::get('refund/showPdf/{id}', [RefundController::class, 'showPdf'])->name('refund.showPdf');
+    Route::get('refund/export/{type}', [RefundController::class, 'export'])->name('refund.export');
+    Route::resource('quotation', QuotationController::class);
+    Route::get('quotation/showPdf/{id}', [QuotationController::class, 'showPdf'])->name('quotation.showPdf');
+    Route::get('quotation/export/{type}', [QuotationController::class, 'export'])->name('quotation.export');
+    Route::resource('sale', SalesController::class);
+    Route::get('sale/export/{type}', [SalesController::class, 'export'])->name('sale.export');
 });
 
 // Marketing user role protected routes

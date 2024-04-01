@@ -47,18 +47,15 @@ class UserController extends Controller
 
             // Add the search query trim the search value and check if it is not empty
             if (!empty($search['value'])) {
-                // Loop columns and if they are searchable then add a where clause for first one and orWhere for the rest. if name exists whose values is an array loop that array and add the items to search
-                $column_searched = false;
-                foreach ($columns as $column) {
-                    if ($column['searchable'] == 'true') {
-                        if (!$column_searched) {
-                            $query->where($column['data'], 'like', '%' . $search['value'] . '%');
-                            $column_searched = true;
-                        } else {
+                $query->where(function ($query) use ($columns, $search) {
+                    $query->where('first_name', 'like', '%' . $search['value'] . '%');
+                    $query->orWhere('last_name', 'like', '%' . $search['value'] . '%');
+                    foreach ($columns as $column) {
+                        if ($column['searchable'] == 'true' && $column['data'] != 'full_name') {
                             $query->orWhere($column['data'], 'like', '%' . $search['value'] . '%');
                         }
                     }
-                }
+                });
             }
 
             // Add the order by clause if the column is orderable

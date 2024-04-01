@@ -53,15 +53,32 @@ class InvoiceController extends Controller
                     DB::raw("DATE_FORMAT(invoices.departure_date, '%d-%m-%Y') as departure_date"),
                     DB::raw("DATE_FORMAT(invoices.invoice_date, '%d-%m-%Y') as invoice_date"),
                     'invoices.due_date',
-                    'invoices.total'
+                    'invoices.total',
                 );
+
+            // Check if the user is not an admin
+            if (auth()->user()->role != 'admin') {
+                $query->where('invoices.user_id', auth()->user()->id);
+            }
+
+
+            // only if the filter is not empty and exists filter the records
+            if (!empty($request->filter) && isset($request->filter)) {
+                foreach ($request->filter as $filter) {
+                    if ($filter['type'] == 'text') {
+                        $query->where($filter['name'], $filter['comparator'], $filter['value']);
+                    } else if ($filter['type'] == 'date') {
+                        $query->whereDate($filter['name'], $filter['comparator'], $filter['value']);
+                    }
+                }
+            }
 
             // Add the search query trim the search value and check if it is not empty
             if (!empty($search['value'])) {
                 $query->where(function ($query) use ($columns, $search) {
                     $query->where('customers.name', 'like', '%' . $search['value'] . '%');
                     foreach ($columns as $column) {
-                        if ($column['searchable'] == 'true') {
+                        if ($column['searchable'] == 'true' && $column['data'] != 'customer_name') {
                             $query->orWhere($column['data'], 'like', '%' . $search['value'] . '%');
                         }
                     }
@@ -103,16 +120,18 @@ class InvoiceController extends Controller
                 ->addColumn('status', function ($data) {
                     if ($data->due_date < date('Y-m-d') && $data->status == 'pending') {
                         return '<span class="badge badge-danger">Overdue</span>';
+                    } else if ($data->status == 'paid') {
+                        return '<span class="badge badge-success">Paid</span>';
                     } else {
-                        return '<span class="badge badge-success">' . ucfirst($data->status) . '</span>';
+                        return '<span class="badge badge-warning">Pending</span>';
                     }
                 })
                 ->rawColumns(['status'])
                 ->make(true);
             return $datatable;
         }
-
-        return view('invoice.index');
+        $companies = Company::select('id', 'name')->get();
+        return view('invoice.index')->with(['companies' => $companies]);
     }
 
     /**
@@ -156,16 +175,18 @@ class InvoiceController extends Controller
             return response()->json(['error' => 'The products, quantity, cost and price must be of the same length'], 400);
         }
 
-        $payment_mode = $validated['payment_mode'];
-        unset($validated['payment_mode']);
-        $payment_date = $validated['payment_date'];
-        unset($validated['payment_date']);
-        $payment_amount = $validated['payment_amount'];
-        unset($validated['payment_amount']);
+        if (isset($validated['payment_mode'])) {
+            $payment_mode = $validated['payment_mode'];
+            unset($validated['payment_mode']);
+            $payment_date = $validated['payment_date'];
+            unset($validated['payment_date']);
+            $payment_amount = $validated['payment_amount'];
+            unset($validated['payment_amount']);
 
-        // Check if the payment_mode, payment_date and payment_amount are of the same length
-        if (count($payment_mode) != count($payment_date) || count($payment_mode) != count($payment_amount)) {
-            return response()->json(['error' => 'The payment mode, payment date and payment amount must be of the same length'], 400);
+            // Check if the payment_mode, payment_date and payment_amount are of the same length
+            if (count($payment_mode) != count($payment_date) || count($payment_mode) != count($payment_amount)) {
+                return response()->json(['error' => 'The payment mode, payment date and payment amount must be of the same length'], 400);
+            }
         }
 
         try {
@@ -174,8 +195,10 @@ class InvoiceController extends Controller
             $validated['user_id'] = auth()->user()->id;
             $validated['total'] = array_sum($price);
             $validated['revenue'] = array_sum($price) - array_sum($cost);
-            if (array_sum($price) == array_sum($payment_amount)) {
+            if (isset($payment_amount) && array_sum($price) == array_sum($payment_amount)) {
                 $validated['status'] = 'paid';
+            } else {
+                $validated['status'] = 'pending';
             }
             // Store the invoice in the database
             $invoice = Invoice::create($validated);
@@ -194,16 +217,18 @@ class InvoiceController extends Controller
                 Product::create($product);
             }
 
-            // Store invoice payments
-            foreach ($payment_mode as $key => $mode) {
-                $payment = [
-                    'type' => 'invoice',
-                    'ref_id' => $invoice->id,
-                    'mode' => $mode,
-                    'date' => $payment_date[$key],
-                    'amount' => $payment_amount[$key]
-                ];
-                Payment::create($payment);
+            if (isset($payment_mode)) {
+                // Store invoice payments
+                foreach ($payment_mode as $key => $mode) {
+                    $payment = [
+                        'type' => 'invoice',
+                        'ref_id' => $invoice->id,
+                        'mode' => $mode,
+                        'date' => $payment_date[$key],
+                        'amount' => $payment_amount[$key]
+                    ];
+                    Payment::create($payment);
+                }
             }
 
             // Store invoice attacahments
@@ -318,16 +343,18 @@ class InvoiceController extends Controller
             return response()->json(['error' => 'The products, quantity, cost and price must be of the same length'], 400);
         }
 
-        $payment_mode = $validated['payment_mode'];
-        unset($validated['payment_mode']);
-        $payment_date = $validated['payment_date'];
-        unset($validated['payment_date']);
-        $payment_amount = $validated['payment_amount'];
-        unset($validated['payment_amount']);
+        if (isset($validated['payment_mode'])) {
+            $payment_mode = $validated['payment_mode'];
+            unset($validated['payment_mode']);
+            $payment_date = $validated['payment_date'];
+            unset($validated['payment_date']);
+            $payment_amount = $validated['payment_amount'];
+            unset($validated['payment_amount']);
 
-        // Check if the payment_mode, payment_date and payment_amount are of the same length
-        if (count($payment_mode) != count($payment_date) || count($payment_mode) != count($payment_amount)) {
-            return response()->json(['error' => 'The payment mode, payment date and payment amount must be of the same length'], 400);
+            // Check if the payment_mode, payment_date and payment_amount are of the same length
+            if (count($payment_mode) != count($payment_date) || count($payment_mode) != count($payment_amount)) {
+                return response()->json(['error' => 'The payment mode, payment date and payment amount must be of the same length'], 400);
+            }
         }
 
         try {
@@ -335,8 +362,10 @@ class InvoiceController extends Controller
 
             $validated['total'] = array_sum($price);
             $validated['revenue'] = array_sum($price) - array_sum($cost);
-            if (array_sum($price) == array_sum($payment_amount)) {
+            if (isset($payment_amount) && array_sum($price) == array_sum($payment_amount)) {
                 $validated['status'] = 'paid';
+            } else {
+                $validated['status'] = 'pending';
             }
             // Update the invoice in the database
             $invoice->update($validated);
@@ -358,15 +387,18 @@ class InvoiceController extends Controller
 
             // Update invoice payments
             Payment::where('type', 'invoice')->where('ref_id', $invoice->id)->delete();
-            foreach ($payment_mode as $key => $mode) {
-                $payment = [
-                    'type' => 'invoice',
-                    'ref_id' => $invoice->id,
-                    'mode' => $mode,
-                    'date' => $payment_date[$key],
-                    'amount' => $payment_amount[$key]
-                ];
-                Payment::create($payment);
+
+            if (isset($payment_mode)) {
+                foreach ($payment_mode as $key => $mode) {
+                    $payment = [
+                        'type' => 'invoice',
+                        'ref_id' => $invoice->id,
+                        'mode' => $mode,
+                        'date' => $payment_date[$key],
+                        'amount' => $payment_amount[$key]
+                    ];
+                    Payment::create($payment);
+                }
             }
 
             $existing_files = Attachment::where('type', 'invoice')->where('ref_id', $invoice->id)->get();

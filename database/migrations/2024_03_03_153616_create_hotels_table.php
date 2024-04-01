@@ -17,10 +17,8 @@ class CreateHotelsTable extends Migration
             $table->id();
             $table->foreignId('quotation_id')->constrained('quotations')->onDelete('cascade');
             $table->string('name');
-            $table->dateTime('departure_time');
             $table->dateTime('checkin_time');
             $table->dateTime('checkout_time');
-            $table->longText('notes')->nullable();
             $table->timestamps();
         });
     }

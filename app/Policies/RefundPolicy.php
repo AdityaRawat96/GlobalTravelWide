@@ -18,7 +18,8 @@ class RefundPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        // only allow the user to view the list of refunds if they have role of admin or digital
+        return $user->role === 'admin' || $user->role === 'digital';
     }
 
     /**
@@ -30,7 +31,8 @@ class RefundPolicy
      */
     public function view(User $user, Refund $refund)
     {
-        //
+        // only allow the user to view the list of refunds if they have role of admin or if refund foreign key user_id is the same as the authenticated user
+        return $user->role === 'admin' || $user->id === $refund->user_id;
     }
 
     /**
@@ -41,7 +43,8 @@ class RefundPolicy
      */
     public function create(User $user)
     {
-        //
+        // only allow the user to store a new refund if they have role of admin or digital
+        return $user->role === 'admin' || $user->role === 'digital';
     }
 
     /**
@@ -53,7 +56,8 @@ class RefundPolicy
      */
     public function update(User $user, Refund $refund)
     {
-        //
+        // only allow the user to update an refund if they have role of admin or if refund foreign key user_id is the same as the authenticated user
+        return $user->role === 'admin' || $user->id === $refund->user_id;
     }
 
     /**
@@ -65,7 +69,8 @@ class RefundPolicy
      */
     public function delete(User $user, Refund $refund)
     {
-        //
+        // only allow the user to delete an refund if they have role of admin or if refund foreign key user_id is the same as the authenticated user
+        return $user->role === 'admin' || $user->id === $refund->user_id;
     }
 
     /**

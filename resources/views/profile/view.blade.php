@@ -52,7 +52,7 @@
                         <!--begin: Pic-->
                         <div class="me-7 mb-4">
                             <div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
-                                <img src="{{isset($data['user']->avatar) ? Storage::disk('s3')->url($data['user']->avatar) : asset('media/svg/avatars/blank.svg')}}"
+                                <img src="{{isset($data['user']->avatar) ? asset('storage/'.$data['user']->avatar) : asset('media/svg/avatars/blank.svg')}}"
                                     alt="image" />
                             </div>
                         </div>
@@ -89,25 +89,6 @@
                                     <!--end::Name-->
                                     <!--begin::Info-->
                                     <div class="fw-semibold fs-6 mb-4 pe-2">
-                                        @if($data['user']->role == 'user' && isset($data['user_data']->company))
-                                        <a href="#"
-                                            class="d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2">
-                                            <!--begin::Svg Icon | path: icons/duotune/communication/com006.svg-->
-                                            <span class="svg-icon svg-icon-4 me-1">
-                                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path opacity="0.3"
-                                                        d="M16.5 9C16.5 13.125 13.125 16.5 9 16.5C4.875 16.5 1.5 13.125 1.5 9C1.5 4.875 4.875 1.5 9 1.5C13.125 1.5 16.5 4.875 16.5 9Z"
-                                                        fill="currentColor" />
-                                                    <path
-                                                        d="M9 16.5C10.95 16.5 12.75 15.75 14.025 14.55C13.425 12.675 11.4 11.25 9 11.25C6.6 11.25 4.57499 12.675 3.97499 14.55C5.24999 15.75 7.05 16.5 9 16.5Z"
-                                                        fill="currentColor" />
-                                                    <rect x="7" y="6" width="4" height="4" rx="2" fill="currentColor" />
-                                                </svg>
-                                            </span>
-                                            <!--end::Svg Icon-->{{$data['user_data']->company}}
-                                        </a>
-                                        @endif
                                         @if($data['user']->role == 'admin')
                                         <a href="#"
                                             class="d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2">
@@ -167,15 +148,6 @@
                             <a class="nav-link nav-link-profile-tab text-active-primary ms-0 me-10 py-5" href=""
                                 data-target="#profile-tab-settings">Settings</a>
                         </li>
-                        <!--end::Nav item-->
-                        @if(Auth::user()->role != "admin")
-                        <!--begin::Nav item-->
-                        <li class="nav-item mt-2">
-                            <a class="nav-link nav-link-profile-tab text-active-primary ms-0 me-10 py-5" href=""
-                                data-target="#profile-tab-billing">Billing</a>
-                        </li>
-                        <!--end::Nav item-->
-                        @endif
                     </ul>
                     <!--begin::Navs-->
                 </div>
@@ -189,11 +161,6 @@
                 <div class="profile-sections-tab-container" id="profile-tab-settings">
                     @include('profile.tabs.settings')
                 </div>
-                @if(Auth::user()->role != "admin")
-                <div class="profile-sections-tab-container" id="profile-tab-billing">
-                    @include('profile.tabs.billing')
-                </div>
-                @endif
             </div>
 
         </div>
@@ -208,10 +175,6 @@
 @stop
 
 @section('pagespecificmodals')
-@include('profile.modals.add_address_modal')
-@include('profile.modals.update_address_modal')
-@include('profile.modals.add_card_modal')
-@include('profile.modals.update_card_modal')
 @stop
 
 @section('pagespecificstyles')
@@ -239,15 +202,7 @@
 <script src="{{asset('js/custom/apps/profile/settings.js')}}"></script>
 <script src="{{asset('js/custom/apps/profile/emailUpdate.js')}}"></script>
 <script src="{{asset('js/custom/apps/profile/passwordUpdate.js')}}"></script>
-<script src="{{asset('js/custom/apps/profile/billing.js')}}"></script>
 <script src="{{asset('js/widgets.bundle.js')}}"></script>
 <script src="{{asset('js/custom/widgets.js')}}"></script>
-
-<!-- <script src="{{asset('js/custom/pages/user-profile/general.js')}}"></script>
-<script src="{{asset('js/custom/account/billing/general.js')}}"></script> -->
-<script src="{{asset('js/custom/utilities/modals/new-card.js')}}"></script>
-<script src="{{asset('js/custom/utilities/modals/update-card.js')}}"></script>
-<script src="{{asset('js/custom/utilities/modals/new-address.js')}}"></script>
-<script src="{{asset('js/custom/utilities/modals/update-address.js')}}"></script>
 <!--end::Custom Javascript-->
 @stop

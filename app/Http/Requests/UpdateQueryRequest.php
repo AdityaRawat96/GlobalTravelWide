@@ -13,7 +13,8 @@ class UpdateQueryRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        // only allow the user to update a new query if they have role of admin or digital
+        return $this->user()->role === 'admin' || $this->user()->role === 'digital';
     }
 
     /**
@@ -24,7 +25,10 @@ class UpdateQueryRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'customer_id' => ['required', 'exists:customers,id'],
+            'date' => ['required', 'date'],
+            'status' => ['required', 'string'],
+            'notes' => ['required', 'string', 'max:2000'],
         ];
     }
 }

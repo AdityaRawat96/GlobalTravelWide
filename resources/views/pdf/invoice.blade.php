@@ -141,7 +141,7 @@
                     <td>{{$product->quantity}}</td>
                     <td>{{$product->catalogue->name}}</td>
                     <td>{{$product->catalogue->description}}</td>
-                    <td style="text-align: right">£ {{ number_format($product->price, 2, '.', '') }}</td>
+                    <td style="text-align: right">£ {{ number_format($product->price, 2, '.', ',') }}</td>
                 </tr>
                 @endforeach
             </tbody>
@@ -157,7 +157,7 @@
         ">
             <tr>
                 <th style="text-align: left">Total:</th>
-                <th style="text-align: right">£ {{number_format($invoice->total, 2, '.', '')}}</th>
+                <th style="text-align: right">£ {{number_format($invoice->total, 2, '.', ',')}}</th>
             </tr>
             <?php $amount_paid = 0; ?>
             @foreach($invoice_payments as $payment)
@@ -165,13 +165,13 @@
                 <td style="text-align: left">{{ucfirst($payment->mode)}} Payment on
                     {{date("d-m-Y", strtotime($payment->date))}}
                 </td>
-                <td style="text-align: right">£ {{ number_format($payment->amount, 2, '.', '') }}</td>
+                <td style="text-align: right">£ {{ number_format($payment->amount, 2, '.', ',') }}</td>
             </tr>
             <?php $amount_paid += $payment->amount; ?>
             @endforeach
             <tr>
                 <th style="text-align: left">Amount Due:</th>
-                <th style="text-align: right">£ {{number_format(($invoice->total - $amount_paid), 2, '.', '')}}</th>
+                <th style="text-align: right">£ {{number_format(($invoice->total - $amount_paid), 2, '.', ',')}}</th>
             </tr>
         </table>
         <br />
