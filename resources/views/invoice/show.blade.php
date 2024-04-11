@@ -35,6 +35,15 @@
             <!--end::Page title-->
             <!--begin::Actions-->
             <div class="d-flex align-items-center gap-2 gap-lg-3">
+                @if($invoice->type == 'Office Invoice')
+                <a href="{{ '/' . Auth::user()->role . '/invoice/' . $invoice->id . '?currency=pkr' }}">
+                    <button class="btn btn-primary btn-sm">Customer copy</button>
+                </a>
+                @else
+                <a href="{{ '/' . Auth::user()->role . '/invoice/' . $invoice->id }}">
+                    <button class="btn btn-primary btn-sm">Office copy</button>
+                </a>
+                @endif
             </div>
             <!--end::Actions-->
         </div>
@@ -67,6 +76,22 @@
                     <div class="card card-sticky">
                         <!--begin::Card body-->
                         <div class="card-body p-10">
+                            <div class="mb-10">
+                                <!--begin::Label-->
+                                <label class="form-label fw-bold fs-6 text-gray-700">Carrier</label>
+                                <!--end::Label-->
+                                <p>
+                                    {{isset($invoice->carrier) ? "C" . str_pad($invoice->carrier->id, 5, '0', STR_PAD_LEFT) . " - " . $invoice->carrier->name : '-'}}
+                                </p>
+                            </div>
+                            <div class="mb-10">
+                                <!--begin::Label-->
+                                <label class="form-label fw-bold fs-6 text-gray-700">Affiliate</label>
+                                <!--end::Label-->
+                                <p>
+                                    {{isset($invoice->affiliate) ? "C" . str_pad($invoice->affiliate->id, 5, '0', STR_PAD_LEFT) . " - " . $invoice->affiliate->name : '-'}}
+                                </p>
+                            </div>
                             @if($invoice->notes)
                             <!--begin::Input group-->
                             <div class="mb-10">
@@ -108,8 +133,7 @@
                                                 <div class="dropzone-item" style="display:none">
                                                     <!--begin::File-->
                                                     <div class="dropzone-file">
-                                                        <a href="#" class="dropzone-filename d-block"
-                                                            title="some_image_file_name.jpg">
+                                                        <a href="#" class="dropzone-filename d-block" title="some_image_file_name.jpg">
                                                             <span data-dz-name>some_image_file_name.jpg</span>
                                                             <strong>(<span data-dz-size>340kb</span>)</strong>
                                                         </a>
@@ -144,21 +168,26 @@
                                 <div class="row mb-5">
                                     <!--begin::Col-->
                                     <div class="col">
-                                        <a href="#"
-                                            class="btn btn-light btn-active-light-primary w-100 reset">Dismiss</a>
+                                        <a href="#" class="btn btn-light btn-active-light-primary w-100 reset">Dismiss</a>
                                     </div>
                                     <!--end::Col-->
                                     <!--begin::Col-->
                                     <div class="col">
-                                        <a href="{{route(Auth::user()->role . '.invoice.showPdf', $invoice->id)}}"
-                                            class="btn btn-primary btn-active-light-primary w-100">Download</a>
+                                        @if($invoice->type == 'Office Invoice')
+                                        <a href="{{ '/' . Auth::user()->role . '/invoice/showPdf/' . $invoice->id }}" class="btn btn-primary btn-active-light-primary w-100">
+                                            Download
+                                        </a>
+                                        @else
+                                        <a href="{{ '/' . Auth::user()->role . '/invoice/showPdf/' . $invoice->id . '?currency=pkr' }}" class="btn btn-primary btn-active-light-primary w-100">
+                                            Download
+                                        </a>
+                                        @endif
                                     </div>
                                     <!--end::Col-->
                                 </div>
                                 <!--end::Row-->
                                 <!--begin::Secondary button-->
-                                <a href="{{'/' . Auth::user()->role . '/invoice/' . $invoice->id}}"
-                                    class="btn fw-bold btn-danger w-100" id="delete-invoice">Delete</a>
+                                <a href="{{'/' . Auth::user()->role . '/invoice/' . $invoice->id}}" class="btn fw-bold btn-danger w-100" id="delete-invoice">Delete</a>
                                 <!--end::Secondary button-->
                             </div>
                             <!--end::Actions-->
@@ -197,29 +226,29 @@ $path = Storage::url($attach->path) . $attach->url;
 ?>
 
 <script>
-$("document").ready(() => {
-    var path = "{{ $path }}";
-    var fileSize = "{$fileSize}}";
-    var file = new File([path], "{{ $attach->name }}", {
-        type: "{{ $attach->mime_type }}",
-        lastModified: "{{ $attach->updated_at }}",
-        size: "{{ $attach->size }}" // Set file size in bytes
+    $("document").ready(() => {
+        var path = "{{ $path }}";
+        var fileSize = "{$fileSize}}";
+        var file = new File([path], "{{ $attach->name }}", {
+            type: "{{ $attach->mime_type }}",
+            lastModified: "{{ $attach->updated_at }}",
+            size: "{{ $attach->size }}" // Set file size in bytes
+        });
+        file['status'] = "added";
+        file['_removeLink'] = "a.dz-remove";
+        file['webkitRelativePath'] = "";
+        file['accepted'] = true;
+        file['dataURL'] = path;
+        file['upload'] = {
+            bytesSent: 0,
+            filename: "{{ $attach->name }}",
+            progress: 100,
+            total: "{{ $attach->size }}", // Set total file size in bytes
+            uuid: "{{ md5($attach->id) }}"
+        };
+        myDropzone.emit("addedfile", file, path);
+        myDropzone.files.push(file);
     });
-    file['status'] = "added";
-    file['_removeLink'] = "a.dz-remove";
-    file['webkitRelativePath'] = "";
-    file['accepted'] = true;
-    file['dataURL'] = path;
-    file['upload'] = {
-        bytesSent: 0,
-        filename: "{{ $attach->name }}",
-        progress: 100,
-        total: "{{ $attach->size }}", // Set total file size in bytes
-        uuid: "{{ md5($attach->id) }}"
-    };
-    myDropzone.emit("addedfile", file, path);
-    myDropzone.files.push(file);
-});
 </script>
 @endforeach
 @stop

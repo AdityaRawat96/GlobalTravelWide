@@ -20,6 +20,7 @@ class CreatePaymentsTable extends Migration
             $table->string('mode');
             $table->float('amount');
             $table->date('date');
+            $table->string('currency')->default('gbp');
             $table->timestamps();
         });
     }

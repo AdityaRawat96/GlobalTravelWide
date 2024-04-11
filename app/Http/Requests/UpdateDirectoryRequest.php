@@ -13,7 +13,8 @@ class UpdateDirectoryRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        // Only admin can update a directory
+        return $this->user()->role === 'admin';
     }
 
     /**
@@ -24,7 +25,8 @@ class UpdateDirectoryRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'parent_id' => 'nullable|exists:directories,id',
+            'name' => 'required|string|max:255',
         ];
     }
 }

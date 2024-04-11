@@ -10,7 +10,7 @@
             <!--begin::Page title-->
             <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                 <!--begin::Title-->
-                <h1 class="page-heading d-flex fw-bold fs-3 flex-column justify-content-center my-0">
+                <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">
                     {{ env('APP_SHORT') . str_pad($user->id, 5, '0', STR_PAD_LEFT) }}
                 </h1>
                 <!--end::Title-->
@@ -18,7 +18,7 @@
                 <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
                     <!--begin::Item-->
                     <li class="breadcrumb-item text-muted">
-                        <a href="/" class="text-primary text-hover-primary">Home</a>
+                        <a href="#" class="text-muted text-hover-primary">Home</a>
                     </li>
                     <!--end::Item-->
                     <!--begin::Item-->
@@ -45,148 +45,123 @@
     <div id="kt_app_content" class="app-content flex-column-fluid">
         <!--begin::Content container-->
         <div id="kt_app_content_container" class="app-container container-xxl">
-            <!--begin::Basic info-->
+            <!--begin::Navbar-->
             <div class="card mb-5 mb-xl-10">
-                <!--begin::Card header-->
-                <div class="card-header border-0">
-                    <!--begin::Card title-->
-                    <div class="card-title m-0">
-                        <h3 class="fw-bold m-0">Profile Details</h3>
+                <div class="card-body pt-9 pb-0">
+                    <!--begin::Details-->
+                    <div class="d-flex flex-wrap flex-sm-nowrap mb-3">
+                        <!--begin: Pic-->
+                        <div class="me-7 mb-4">
+                            <div class="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
+                                <img src="{{isset($user->avatar) ? asset('storage/'.$user->avatar) : asset('media/svg/avatars/blank.svg')}}"
+                                    alt="image" />
+                            </div>
+                        </div>
+                        <!--end::Pic-->
+                        <!--begin::Info-->
+                        <div class="flex-grow-1">
+                            <!--begin::Title-->
+                            <div class="d-flex justify-content-between align-items-start flex-wrap mb-2 mt-5">
+                                <!--begin::User-->
+                                <div class="d-flex flex-column">
+                                    <!--begin::Name-->
+                                    <div class="d-flex align-items-center mb-2">
+                                        <a href="#"
+                                            class="text-gray-900 text-hover-primary fs-2 fw-bold me-1">{{$user->first_name}}
+                                            {{$user->last_name}}</a>
+                                        @if($user->role == "admin")
+                                        <a href="#">
+                                            <!--begin::Svg Icon | path: icons/duotune/general/gen026.svg-->
+                                            <span class="svg-icon svg-icon-1 svg-icon-primary">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"
+                                                    viewBox="0 0 24 24">
+                                                    <path
+                                                        d="M10.0813 3.7242C10.8849 2.16438 13.1151 2.16438 13.9187 3.7242V3.7242C14.4016 4.66147 15.4909 5.1127 16.4951 4.79139V4.79139C18.1663 4.25668 19.7433 5.83365 19.2086 7.50485V7.50485C18.8873 8.50905 19.3385 9.59842 20.2758 10.0813V10.0813C21.8356 10.8849 21.8356 13.1151 20.2758 13.9187V13.9187C19.3385 14.4016 18.8873 15.491 19.2086 16.4951V16.4951C19.7433 18.1663 18.1663 19.7433 16.4951 19.2086V19.2086C15.491 18.8873 14.4016 19.3385 13.9187 20.2758V20.2758C13.1151 21.8356 10.8849 21.8356 10.0813 20.2758V20.2758C9.59842 19.3385 8.50905 18.8873 7.50485 19.2086V19.2086C5.83365 19.7433 4.25668 18.1663 4.79139 16.4951V16.4951C5.1127 15.491 4.66147 14.4016 3.7242 13.9187V13.9187C2.16438 13.1151 2.16438 10.8849 3.7242 10.0813V10.0813C4.66147 9.59842 5.1127 8.50905 4.79139 7.50485V7.50485C4.25668 5.83365 5.83365 4.25668 7.50485 4.79139V4.79139C8.50905 5.1127 9.59842 4.66147 10.0813 3.7242V3.7242Z"
+                                                        fill="currentColor" />
+                                                    <path
+                                                        d="M14.8563 9.1903C15.0606 8.94984 15.3771 8.9385 15.6175 9.14289C15.858 9.34728 15.8229 9.66433 15.6185 9.9048L11.863 14.6558C11.6554 14.9001 11.2876 14.9258 11.048 14.7128L8.47656 12.4271C8.24068 12.2174 8.21944 11.8563 8.42911 11.6204C8.63877 11.3845 8.99996 11.3633 9.23583 11.5729L11.3706 13.4705L14.8563 9.1903Z"
+                                                        fill="white" />
+                                                </svg>
+                                            </span>
+                                            <!--end::Svg Icon-->
+                                        </a>
+                                        @endif
+                                    </div>
+                                    <!--end::Name-->
+                                    <!--begin::Info-->
+                                    <div class="fw-semibold fs-6 mb-4 pe-2">
+                                        <a href="#"
+                                            class="d-flex align-items-center text-gray-400 text-hover-primary me-5 mb-2">
+                                            <!--begin::Svg Icon | path: icons/duotune/communication/com006.svg-->
+                                            <span class="svg-icon svg-icon-4 me-1">
+                                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path opacity="0.3"
+                                                        d="M16.5 9C16.5 13.125 13.125 16.5 9 16.5C4.875 16.5 1.5 13.125 1.5 9C1.5 4.875 4.875 1.5 9 1.5C13.125 1.5 16.5 4.875 16.5 9Z"
+                                                        fill="currentColor" />
+                                                    <path
+                                                        d="M9 16.5C10.95 16.5 12.75 15.75 14.025 14.55C13.425 12.675 11.4 11.25 9 11.25C6.6 11.25 4.57499 12.675 3.97499 14.55C5.24999 15.75 7.05 16.5 9 16.5Z"
+                                                        fill="currentColor" />
+                                                    <rect x="7" y="6" width="4" height="4" rx="2" fill="currentColor" />
+                                                </svg>
+                                            </span>
+                                            {{ucfirst($user->role)}}
+                                        </a>
+                                        <a href="#"
+                                            class="d-flex align-items-center text-gray-400 text-hover-primary mb-2">
+                                            <!--begin::Svg Icon | path: icons/duotune/communication/com011.svg-->
+                                            <span class="svg-icon svg-icon-4 me-1">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path opacity="0.3"
+                                                        d="M21 19H3C2.4 19 2 18.6 2 18V6C2 5.4 2.4 5 3 5H21C21.6 5 22 5.4 22 6V18C22 18.6 21.6 19 21 19Z"
+                                                        fill="currentColor" />
+                                                    <path
+                                                        d="M21 5H2.99999C2.69999 5 2.49999 5.10005 2.29999 5.30005L11.2 13.3C11.7 13.7 12.4 13.7 12.8 13.3L21.7 5.30005C21.5 5.10005 21.3 5 21 5Z"
+                                                        fill="currentColor" />
+                                                </svg>
+                                            </span>
+                                            <!--end::Svg Icon-->
+                                            {{$user->email}}
+                                        </a>
+                                    </div>
+                                    <!--end::Info-->
+                                </div>
+                                <!--end::User-->
+                            </div>
+                            <!--end::Title-->
+                        </div>
+                        <!--end::Info-->
                     </div>
-                    <!--end::Card title-->
+                    <!--end::Details-->
+                    <!--begin::Navs-->
+                    <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold">
+                        <!--begin::Nav item-->
+                        <li class="nav-item mt-2">
+                            <a class="nav-link nav-link-profile-tab text-active-primary ms-0 me-10 py-5 active" href=""
+                                data-target="#profile-tab-overview">Overview</a>
+                        </li>
+                        <!--end::Nav item-->
+                        <!--begin::Nav item-->
+                        <li class="nav-item mt-2">
+                            <a class="nav-link nav-link-profile-tab text-active-primary ms-0 me-10 py-5" href=""
+                                data-target="#profile-tab-attendance">Attendance</a>
+                        </li>
+                    </ul>
+                    <!--begin::Navs-->
                 </div>
-                <!--begin::Card header-->
-                <!--begin::Content-->
-                <div class="content">
-                    <!--begin::Card body-->
-                    <div class="card-body border-top p-9">
-                        <!--begin::Input group-->
-                        <div class="row mb-6 fv-row">
-                            <!--begin::Label-->
-                            <label class="col-lg-4 col-form-label fw-semibold fs-6">Avatar</label>
-                            <!--end::Label-->
-                            <!--begin::Col-->
-                            <div class="col-lg-8">
-                                <!--begin::Image input-->
-                                <div class="image-input image-input-outline" data-kt-image-input="false"
-                                    style="background-image: url({{asset('media/svg/avatars/blank.svg')}})">
-                                    <!--begin::Preview existing avatar-->
-                                    @if(isset($user->avatar))
-                                    <div class="image-input-wrapper w-125px h-125px"
-                                        style="background-image: url({{asset('storage/'.$user->avatar)}})">
-                                    </div>
-                                    @else
-                                    <div class="image-input-wrapper w-125px h-125px"
-                                        style="background-image: url({{asset('media/svg/avatars/blank.svg')}})">
-                                    </div>
-                                    @endif
-                                    <!--end::Preview existing avatar-->
-                                </div>
-                                <!--end::Image input-->
-                            </div>
-                            <!--end::Col-->
-                        </div>
-                        <!--end::Input group-->
-                        <!--begin::Input group-->
-                        <div class="row mb-6">
-                            <!--begin::Label-->
-                            <label class="col-lg-4 col-form-label fw-semibold fs-6">Role</label>
-                            <!--end::Label-->
-                            <!--begin::Col-->
-                            <div class="col-lg-8">
-                                <!--begin::Row-->
-                                <div class="row">
-                                    <!--begin::Col-->
-                                    <div class="col-lg-6 fv-row">
-                                        <input type="text" name="role"
-                                            class="form-control form-control-lg form-control-solid" placeholder="Role"
-                                            value="{{isset($user->role) ? ucfirst($user->role) : null}}" disabled />
-                                    </div>
-                                    <!--end::Col-->
-                                </div>
-                                <!--end::Row-->
-                            </div>
-                            <!--end::Col-->
-                        </div>
-                        <!--end::Input group-->
-                        <!--begin::Input group-->
-                        <div class="row mb-6">
-                            <!--begin::Label-->
-                            <label class="col-lg-4 col-form-label fw-semibold fs-6">Full Name</label>
-                            <!--end::Label-->
-                            <!--begin::Col-->
-                            <div class="col-lg-8">
-                                <!--begin::Row-->
-                                <div class="row">
-                                    <!--begin::Col-->
-                                    <div class="col-lg-6 fv-row">
-                                        <input type="text" name="first_name"
-                                            class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"
-                                            placeholder="First name"
-                                            value="{{isset($user->first_name) ? $user->first_name : null}}" disabled />
-
-                                    </div>
-                                    <!--end::Col-->
-                                    <!--begin::Col-->
-                                    <div class="col-lg-6 fv-row">
-                                        <input type="text" name="last_name"
-                                            class="form-control form-control-lg form-control-solid"
-                                            placeholder="Last name"
-                                            value="{{isset($user->last_name) ? $user->last_name : null}}" disabled />
-
-                                    </div>
-                                    <!--end::Col-->
-                                </div>
-                                <!--end::Row-->
-                            </div>
-                            <!--end::Col-->
-                        </div>
-                        <!--end::Input group-->
-                        <!--begin::Input group-->
-                        <div class="row mb-6">
-                            <!--begin::Label-->
-                            <label class="col-lg-4 col-form-label fw-semibold fs-6">
-                                <span>Phone</span>
-                            </label>
-                            <!--end::Label-->
-                            <!--begin::Col-->
-                            <div class="col-lg-8 fv-row">
-                                <input type="tel" name="phone" class="form-control form-control-lg form-control-solid"
-                                    placeholder="Phone number" value="{{isset($user->phone) ? $user->phone : null}}"
-                                    disabled />
-                            </div>
-                            <!--end::Col-->
-                        </div>
-                        <!--end::Input group-->
-                        <!--begin::Input group-->
-                        <div class="row mb-6">
-                            <!--begin::Label-->
-                            <label class="col-lg-4 col-form-label fw-semibold fs-6">
-                                Email
-                            </label>
-                            <!--end::Label-->
-                            <!--begin::Col-->
-                            <div class="col-lg-8 fv-row">
-                                <input type="email" name="email" class="form-control form-control-lg form-control-solid"
-                                    placeholder="Email address" value="{{isset($user->email) ? $user->email : null}}"
-                                    disabled />
-                            </div>
-                            <!--end::Col-->
-                        </div>
-                        <!--end::Input group-->
-                    </div>
-                    <!--end::Card body-->
-                    <!--begin::Actions-->
-                    <div class="card-footer d-flex justify-content-end py-6 px-9">
-                        <button type="reset" class="reset btn btn-light btn-active-light-primary me-2">Discard</button>
-                        <a href="{{route(Auth::user()->role . '.user.edit', $user->id)}}"
-                            class="btn btn-primary">Edit</a>
-                    </div>
-                    <!--end::Actions-->
-                </div>
-                <!--end::Content-->
             </div>
-            <!--end::Basic info-->
+            <!--end::Navbar-->
+
+            <div class="profile-sections-tabs">
+                <div class="profile-sections-tab-container active" id="profile-tab-overview">
+                    @include('user.tabs.overview')
+                </div>
+                <div class="profile-sections-tab-container" id="profile-tab-attendance">
+                    @include('user.tabs.attendance')
+                </div>
+            </div>
+
         </div>
         <!--end::Content container-->
     </div>
@@ -199,13 +174,31 @@
 @stop
 
 @section('pagespecificmodals')
+@include('user.modals.addEvents')
+@include('user.modals.viewEvents')
 @stop
 
 @section('pagespecificstyles')
+<style>
+.profile-sections-tab-container {
+    display: none;
+}
+
+.profile-sections-tab-container.active {
+    display: block;
+}
+</style>
+<link href="{{asset('plugins/custom/fullcalendar/fullcalendar.bundle.css')}}" rel="stylesheet" type="text/css" />
 @stop
 
 @section('pagespecificscripts')
+<script>
+let ATTENDANCE_DATA = @json($attendances);
+</script>
 <!--begin::Custom Javascript(used for this page only)-->
 <script src="{{asset('js/user/show.js')}}"></script>
+<script src="{{asset('js/user/attendance.js')}}"></script>
+<script src="{{asset('js/user/passwordUpdate.js')}}"></script>
+<script src="{{asset('plugins/custom/fullcalendar/fullcalendar.bundle.js')}}"></script>
 <!--end::Custom Javascript-->
 @stop

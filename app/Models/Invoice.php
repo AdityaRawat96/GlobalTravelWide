@@ -15,6 +15,16 @@ class Invoice extends Model
         return $this->belongsTo(Customer::class);
     }
 
+    public function affiliate()
+    {
+        return $this->belongsTo(Affiliate::class);
+    }
+
+    public function carrier()
+    {
+        return $this->belongsTo(Carrier::class);
+    }
+
     public function company()
     {
         return $this->belongsTo(Company::class);

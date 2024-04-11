@@ -27,6 +27,7 @@ var KTDatatablesServerSide = (function () {
                 { data: "user_id" },
                 { data: "customer_name" },
                 { data: "total" },
+                { data: "carrier_name" },
                 { data: "departure_date" },
                 { data: "invoice_date" },
                 { data: "status" },

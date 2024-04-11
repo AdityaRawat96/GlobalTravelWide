@@ -13,7 +13,8 @@ class StoreAttachmentRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        // Only admin can create an attachment
+        return $this->user()->role === 'admin';
     }
 
     /**
@@ -24,7 +25,8 @@ class StoreAttachmentRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'ref_id' => 'nullable',
+            'file' => 'required|file|max:10240',
         ];
     }
 }

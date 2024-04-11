@@ -7,8 +7,11 @@ use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Mail\WelcomeEmail;
+use App\Models\Attendance;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
@@ -168,8 +171,27 @@ class UserController extends Controller
     public function show(User $user)
     {
         $this->authorize('view', $user, User::class);
+
+        $attendances = Attendance::where('user_id', $user->id)
+            ->orderBy('date', 'desc')
+            ->get();
+
+        foreach ($attendances as $attendance) {
+            $attendance->title = 'Attendance record for ' . date('d-m-Y', strtotime($attendance->date));
+            $attendance->start = $attendance->date . 'T' . date('H:i:s', strtotime($attendance->in_time));
+            if ($attendance->out_time) {
+                $attendance->end = $attendance->date . 'T' . date('H:i:s', strtotime($attendance->out_time));
+                $attendance->description = 'Duration: ' . $attendance->duration . ' minutes';
+                $attendance->className = 'fc-event-success';
+            } else {
+                $attendance->description = 'Out time not marked yet';
+                $attendance->className = 'fc-event-danger fc-event-solid-warning';
+            }
+            $attendance->location = 'London/UK';
+        }
+
         // return the view for showing the user
-        return view('user.show', compact('user'));
+        return view('user.show', compact('user', 'attendances'));
     }
 
     /**
@@ -213,6 +235,26 @@ class UserController extends Controller
             DB::rollback();
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    public function updatePassword(Request $request, $user_id = null)
+    {
+        if ($user_id == null) {
+            $user_id = Auth::user()->id;
+        }
+        $user = User::where('id', $user_id)->first();
+        $user_updated = User::where('id', $user->id)->update([
+            'password' => Hash::make($request->all()["password"]),
+        ]);
+        if ($user_updated) {
+            $data["success"] = true;
+            $data["response"] = "Password updated successfully!";
+        } else {
+            $data["success"] = false;
+            $data["response"] = "There was an error in updating your profile. Please try again!";
+        }
+
+        return $data;
     }
 
     /**

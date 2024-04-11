@@ -18,7 +18,8 @@ class DirectoryPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        // Only admin and digital roles can view all directories
+        return in_array($user->role, ['admin', 'digital']);
     }
 
     /**
@@ -28,9 +29,10 @@ class DirectoryPolicy
      * @param  \App\Models\Directory  $directory
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Directory $directory)
+    public function view(User $user)
     {
-        //
+        // Only admin and digital roles can view all directories
+        return in_array($user->role, ['admin', 'digital']);
     }
 
     /**
@@ -41,7 +43,8 @@ class DirectoryPolicy
      */
     public function create(User $user)
     {
-        //
+        // Only admin can create a directory
+        return $user->role === 'admin';
     }
 
     /**
@@ -51,9 +54,10 @@ class DirectoryPolicy
      * @param  \App\Models\Directory  $directory
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Directory $directory)
+    public function update(User $user)
     {
-        //
+        // Only admin can update a directory
+        return $user->role === 'admin';
     }
 
     /**
@@ -63,9 +67,10 @@ class DirectoryPolicy
      * @param  \App\Models\Directory  $directory
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Directory $directory)
+    public function delete(User $user)
     {
-        //
+        // Only admin can update a directory
+        return $user->role === 'admin';
     }
 
     /**

@@ -6,32 +6,32 @@
 
     @if($view)
     <style>
-    @font-face {
-        font-family: "Poppins";
-        src: url("{{ asset('fonts/Poppins-Regular.ttf') }}") format("truetype");
-    }
+        @font-face {
+            font-family: "Poppins";
+            src: url("{{ asset('fonts/Poppins-Regular.ttf') }}") format("truetype");
+        }
 
-    .invoice-details {
-        line-height: 12px !important;
-    }
+        .invoice-details {
+            line-height: 12px !important;
+        }
     </style>
     @else
     <style>
-    @font-face {
-        font-family: "Poppins";
-        src: url("{{ storage_path('fonts/Poppins-Regular.ttf') }}") format("truetype");
-    }
+        @font-face {
+            font-family: "Poppins";
+            src: url("{{ storage_path('fonts/Poppins-Regular.ttf') }}") format("truetype");
+        }
     </style>
     @endif
 
     <style>
-    .content {
-        font-family: "Poppins", sans-serif !important;
-    }
+        .content {
+            font-family: "Poppins", sans-serif !important;
+        }
 
-    th {
-        background-color: #f9f9f9;
-    }
+        th {
+            background-color: #f9f9f9;
+        }
     </style>
 </head>
 
@@ -41,11 +41,9 @@
             <tr style="position: relative; width: 100%">
                 <td style="position: relative; width: 50%">
                     @if($view)
-                    <img src="{{ Storage::drive('public')->url($invoice->company->logo) }}" alt="Invoice logo"
-                        style="height: 50px; margin: 10px" />
+                    <img src="{{ Storage::drive('public')->url($invoice->company->logo) }}" alt="Invoice logo" style="height: 50px; margin: 10px" />
                     @else
-                    <img src="{{ storage_path('app/public/' . $invoice->company->logo) }}" alt="Invoice logo"
-                        style="height: 50px; margin: 10px" />
+                    <img src="{{ storage_path('app/public/' . $invoice->company->logo) }}" alt="Invoice logo" style="height: 50px; margin: 10px" />
                     @endif
                 </td>
                 <td style="position: relative; width: 50%; text-align: right">
@@ -141,7 +139,9 @@
                     <td>{{$product->quantity}}</td>
                     <td>{{$product->catalogue->name}}</td>
                     <td>{{$product->catalogue->description}}</td>
-                    <td style="text-align: right">£ {{ number_format($product->price, 2, '.', ',') }}</td>
+                    <td style="text-align: right">{{ $invoice->currencySymbol }}
+                        {{ number_format($product->price, 2, '.', ',') }}
+                    </td>
                 </tr>
                 @endforeach
             </tbody>
@@ -157,7 +157,9 @@
         ">
             <tr>
                 <th style="text-align: left">Total:</th>
-                <th style="text-align: right">£ {{number_format($invoice->total, 2, '.', ',')}}</th>
+                <td style="text-align: right">{{ $invoice->currencySymbol }}
+                    {{number_format($invoice->total, 2, '.', ',')}}
+                </td>
             </tr>
             <?php $amount_paid = 0; ?>
             @foreach($invoice_payments as $payment)
@@ -165,13 +167,17 @@
                 <td style="text-align: left">{{ucfirst($payment->mode)}} Payment on
                     {{date("d-m-Y", strtotime($payment->date))}}
                 </td>
-                <td style="text-align: right">£ {{ number_format($payment->amount, 2, '.', ',') }}</td>
+                <td style="text-align: right">{{ $invoice->currencySymbol }}
+                    {{ number_format($payment->amount, 2, '.', ',') }}
+                </td>
             </tr>
             <?php $amount_paid += $payment->amount; ?>
             @endforeach
             <tr>
                 <th style="text-align: left">Amount Due:</th>
-                <th style="text-align: right">£ {{number_format(($invoice->total - $amount_paid), 2, '.', ',')}}</th>
+                <td style="text-align: right">{{ $invoice->currencySymbol }}
+                    {{number_format(($invoice->total - $amount_paid), 2, '.', ',')}}
+                </td>
             </tr>
         </table>
         <br />
@@ -190,11 +196,13 @@
                 * Cancellations: Before departure and after departure ticket is non-refundable (Airline Rules &
                 Regulations may vary).<br>
                 *Admin Charges: Where a reservation is cancelled or modified after confirm ticket is issued; there is an
-                admin charge of £45 per ticket plus airline cancellation charges if ticket is refundable. Kindly note
+                admin charge of {{ $invoice->currencySymbol }}45 per ticket plus airline cancellation charges if ticket
+                is refundable. Kindly note
                 that where there has been a no-show for a flight, the ticket will be non-refundable. <br>
                 *Schedule Changes: Passenger will able to change the date in case of schedule change or flight
                 cancellation +- 3 days depending on flight availability. Please note if you wish to change out of these
-                days, you will be charged an admin fee of £45 plus if there is any fare difference.<br>
+                days, you will be charged an admin fee of {{ $invoice->currencySymbol }}45 plus if there is any fare
+                difference.<br>
                 * Hotel Bookings: All confirm hotel bookings are non-refundable & after booking confirmation changes not
                 permitted.<br>
                 * Special Requests: Special request can be sent to hotels & airlines but can't be guaranteed.<br>
@@ -223,11 +231,12 @@
                 * After ticket issuance, before and after departure changes not permitted (Airline Rules & Regulations
                 may vary).<br>
                 *Where a reservation is cancelled or modified after confirm ticket is issued; there is an admin charge
-                of £45 per ticket plus airline cancellation charges if ticket is refundable. Kindly note that where
+                of {{ $invoice->currencySymbol }}45 per ticket plus airline cancellation charges if ticket is
+                refundable. Kindly note that where
                 there has been a no-show for a flight, the ticket will be non-refundable. <br>
                 *Passenger will able to change the date in case of schedule change or flight cancellation +- 3 days
                 depending on flight availability. Please note if you wish to change out of these days, you will be
-                charged an admin fee of £45 plus if there is any fare difference.<br>
+                charged an admin fee of {{ $invoice->currencySymbol }}45 plus if there is any fare difference.<br>
                 * Once you applied for a visa and later if any circumstances you want to get the passport back visa fee
                 is non-refundable.<br>
                 * Please note, for international long-haul flights you need to be at the check-in counter at least 3hrs

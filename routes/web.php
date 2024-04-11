@@ -4,8 +4,13 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\AdminController as AdminController;
+use App\Http\Controllers\AttachmentController;
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\CatalogueController;
+use App\Http\Controllers\CarrierController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\AffiliateController;
+use App\Http\Controllers\DirectoryController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\NotificationController;
@@ -19,6 +24,7 @@ use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\RefundController;
 use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\SalesController;
+use App\Http\Controllers\CommissionsController;
 use Illuminate\Support\Facades\Artisan;
 
 /*
@@ -108,14 +114,21 @@ Route::group(['middleware' => ['auth', 'role:admin', 'verified'], 'prefix' => 'a
 
     Route::resource('user', UserController::class);
     Route::get('user/export/{type}', [UserController::class, 'export'])->name('user.export');
+    Route::post('user/updatePassword/{user_id}', [UserController::class, 'updatePassword'])->name('user.updatePassword');
+    Route::post('user/updateAttendance/{user_id}', [AttendanceController::class, 'updateAttendance'])->name('user.updateAttendance');
 
     Route::resource('customer', CustomerController::class);
     Route::get('customer/export/{type}', [CustomerController::class, 'export'])->name('customer.export');
 
+    Route::resource('affiliate', AffiliateController::class);
+    Route::get('affiliate/export/{type}', [AffiliateController::class, 'export'])->name('affiliate.export');
+
     Route::resource('catalogue', CatalogueController::class);
     Route::get('catalogue/export/{type}', [CatalogueController::class, 'export'])->name('catalogue.export');
 
-    Route::resource('product', ProductController::class);
+    Route::resource('carrier', CarrierController::class);
+    Route::get('carrier/export/{type}', [CarrierController::class, 'export'])->name('carrier.export');
+
     Route::resource('invoice', InvoiceController::class);
     Route::get('invoice/showPdf/{id}', [InvoiceController::class, 'showPdf'])->name('invoice.showPdf');
     Route::get('invoice/export/{type}', [InvoiceController::class, 'export'])->name('invoice.export');
@@ -133,6 +146,11 @@ Route::group(['middleware' => ['auth', 'role:admin', 'verified'], 'prefix' => 'a
     Route::get('sale/exportDetails/{type}', [SalesController::class, 'exportDetails'])->name('sale.exportDetails');
     Route::post('sale/{id}', [SalesController::class, 'show'])->name('sale.show');
 
+    Route::resource('commission', CommissionsController::class);
+    Route::get('commission/export/{type}', [CommissionsController::class, 'export'])->name('commission.export');
+    Route::get('commission/exportDetails/{type}', [CommissionsController::class, 'exportDetails'])->name('commission.exportDetails');
+    Route::post('commission/{id}', [CommissionsController::class, 'show'])->name('commission.show');
+
     Route::resource('expense', ExpenseController::class);
     Route::get('expense/export/{type}', [ExpenseController::class, 'export'])->name('expense.export');
 
@@ -147,6 +165,14 @@ Route::group(['middleware' => ['auth', 'role:admin', 'verified'], 'prefix' => 'a
 
     Route::resource('reminder', ReminderController::class);
     Route::get('reminder/export/{type}', [ReminderController::class, 'export'])->name('reminder.export');
+
+    Route::resource('product', ProductController::class);
+
+    Route::resource('directory', DirectoryController::class);
+
+    Route::resource('attendance', AttendanceController::class);
+
+    Route::resource('attachment', AttachmentController::class);
 });
 
 // Digital user role protected routes
@@ -166,8 +192,12 @@ Route::group(['middleware' => ['auth', 'role:digital', 'verified'], 'prefix' => 
     Route::get('user/export/{type}', [UserController::class, 'export'])->name('user.export');
     Route::resource('customer', CustomerController::class);
     Route::get('customer/export/{type}', [CustomerController::class, 'export'])->name('customer.export');
+    Route::resource('affiliate', AffiliateController::class);
+    Route::get('affiliate/export/{type}', [AffiliateController::class, 'export'])->name('affiliate.export');
     Route::resource('catalogue', CatalogueController::class);
     Route::get('catalogue/export/{type}', [CatalogueController::class, 'export'])->name('catalogue.export');
+    Route::resource('carrier', CarrierController::class);
+    Route::get('carrier/export/{type}', [CarrierController::class, 'export'])->name('carrier.export');
     Route::resource('product', ProductController::class);
     Route::resource('invoice', InvoiceController::class);
     Route::get('invoice/showPdf/{id}', [InvoiceController::class, 'showPdf'])->name('invoice.showPdf');

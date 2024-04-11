@@ -6,7 +6,9 @@ use App\Exports\InvoicesExport;
 use App\Models\Invoice;
 use App\Http\Requests\StoreInvoiceRequest;
 use App\Http\Requests\UpdateInvoiceRequest;
+use App\Models\Affiliate;
 use App\Models\Attachment;
+use App\Models\Carrier;
 use App\Models\Catalogue;
 use App\Models\Company;
 use App\Models\Customer;
@@ -42,6 +44,7 @@ class InvoiceController extends Controller
 
             // Build an eloquent query using these values
             $query = Invoice::join('customers', 'invoices.customer_id', '=', 'customers.id')
+                ->leftJoin('carriers', 'invoices.carrier_id', '=', 'carriers.id')
                 ->select(
                     'invoices.id',
                     'invoices.invoice_id',
@@ -50,6 +53,7 @@ class InvoiceController extends Controller
                     DB::raw("CONCAT('" . env('APP_SHORT', 'TW') . "', LPAD(invoices.user_id, 5, '0')) as user_id"),
                     DB::raw("CONCAT('C', LPAD(invoices.customer_id, 5, '0')) as customer_id"),
                     'customers.name as customer_name',
+                    'carriers.name as carrier_name',
                     DB::raw("DATE_FORMAT(invoices.departure_date, '%d-%m-%Y') as departure_date"),
                     DB::raw("DATE_FORMAT(invoices.invoice_date, '%d-%m-%Y') as invoice_date"),
                     'invoices.due_date',
@@ -76,10 +80,11 @@ class InvoiceController extends Controller
             // Add the search query trim the search value and check if it is not empty
             if (!empty($search['value'])) {
                 $query->where(function ($query) use ($columns, $search) {
-                    $query->where('customers.name', 'like', '%' . $search['value'] . '%');
+                    $query->where('customers.name', 'like', '%' . $search['value'] . '%')
+                        ->orWhere('carriers.name', 'like', '%' . $search['value'] . '%'); // Add carrier name search
                     foreach ($columns as $column) {
-                        if ($column['searchable'] == 'true' && $column['data'] != 'customer_name') {
-                            $query->orWhere($column['data'], 'like', '%' . $search['value'] . '%');
+                        if ($column['searchable'] == 'true' && $column['data'] != 'customer_name' && $column['data'] != 'carrier_name') {
+                            $query->orWhere("invoices." . $column['data'], 'like', '%' . $search['value'] . '%');
                         }
                     }
                 });
@@ -145,8 +150,10 @@ class InvoiceController extends Controller
         // return the view for creating a new invoice
         $companies = Company::select('id', 'name')->get();
         $customers = Customer::select('id', 'name')->get();
+        $affiliates = Affiliate::select('id', 'name')->get();
         $products = Catalogue::select('id', 'name')->where('status', 'active')->get();
-        return view('invoice.create')->with(['companies' => $companies, 'customers' => $customers, 'products' => $products]);
+        $carriers = Carrier::select('id', 'name')->get();
+        return view('invoice.create')->with(['companies' => $companies, 'customers' => $customers, 'products' => $products, 'affiliates' => $affiliates, 'carriers' => $carriers]);
     }
 
     /**
@@ -169,9 +176,13 @@ class InvoiceController extends Controller
         unset($validated['cost']);
         $price = $validated['price'];
         unset($validated['price']);
+        $cost_alt = $validated['cost_alt'];
+        unset($validated['cost_alt']);
+        $price_alt = $validated['price_alt'];
+        unset($validated['price_alt']);
 
         // Check if the products, quantity, cost and price are of the same length
-        if (count($products) != count($quantity) || count($products) != count($cost) || count($products) != count($price)) {
+        if (count($products) != count($quantity) || count($products) != count($cost) || count($products) != count($price) || count($products) != count($cost_alt) || count($products) != count($price_alt)) {
             return response()->json(['error' => 'The products, quantity, cost and price must be of the same length'], 400);
         }
 
@@ -182,9 +193,11 @@ class InvoiceController extends Controller
             unset($validated['payment_date']);
             $payment_amount = $validated['payment_amount'];
             unset($validated['payment_amount']);
+            $payment_amount_alt = $validated['payment_amount_alt'];
+            unset($validated['payment_amount_alt']);
 
             // Check if the payment_mode, payment_date and payment_amount are of the same length
-            if (count($payment_mode) != count($payment_date) || count($payment_mode) != count($payment_amount)) {
+            if (count($payment_mode) != count($payment_date) || count($payment_mode) != count($payment_amount) || count($payment_mode) != count($payment_amount_alt)) {
                 return response()->json(['error' => 'The payment mode, payment date and payment amount must be of the same length'], 400);
             }
         }
@@ -217,6 +230,23 @@ class InvoiceController extends Controller
                 Product::create($product);
             }
 
+            // Store invoice alternate products
+            if ($invoice->currency == 'pkr') {
+                foreach ($products as $key => $product) {
+                    $product = [
+                        'type' => 'invoice',
+                        'ref_id' => $invoice->id,
+                        'catalogue_id' => $product,
+                        'quantity' => $quantity[$key],
+                        'cost' => $cost_alt[$key],
+                        'price' => $price_alt[$key],
+                        'revenue' => $price_alt[$key] - $cost_alt[$key],
+                        'currency' => 'pkr'
+                    ];
+                    Product::create($product);
+                }
+            }
+
             if (isset($payment_mode)) {
                 // Store invoice payments
                 foreach ($payment_mode as $key => $mode) {
@@ -228,6 +258,21 @@ class InvoiceController extends Controller
                         'amount' => $payment_amount[$key]
                     ];
                     Payment::create($payment);
+                }
+
+                // Store invoice alternate payments
+                if ($invoice->currency == 'pkr') {
+                    foreach ($payment_amount_alt as $key => $amount) {
+                        $payment = [
+                            'type' => 'invoice',
+                            'ref_id' => $invoice->id,
+                            'mode' => 'cash',
+                            'date' => $payment_date[$key],
+                            'amount' => $amount,
+                            'currency' => 'pkr'
+                        ];
+                        Payment::create($payment);
+                    }
                 }
             }
 
@@ -264,13 +309,24 @@ class InvoiceController extends Controller
      * @param  \App\Models\Invoice  $invoice
      * @return \Illuminate\Http\Response
      */
-    public function show(Invoice $invoice)
+    public function show(Request $request, Invoice $invoice)
     {
         $this->authorize('view', $invoice, Invoice::class);
-        // return the view for showing the invoice
-        $invoice_products = Product::where('type', 'invoice')->where('ref_id', $invoice->id)->get();
-        $invoice_payments = Payment::where('type', 'invoice')->where('ref_id', $invoice->id)->get();
+        if ($request->currency == 'pkr') {
+            $invoice_products = Product::where('type', 'invoice')->where('ref_id', $invoice->id)->where('currency', 'pkr')->get();
+            $invoice_payments = Payment::where('type', 'invoice')->where('ref_id', $invoice->id)->where('currency', 'pkr')->get();
+            $invoice->total = $invoice_products->sum('price');
+            $invoice->revenue = $invoice_products->sum('price') - $invoice_products->sum('cost');
+            $invoice->currencySymbol = '₨';
+            $invoice->type = "Customer Invoice";
+        } else {
+            $invoice_products = Product::where('type', 'invoice')->where('ref_id', $invoice->id)->where('currency', 'gbp')->get();
+            $invoice_payments = Payment::where('type', 'invoice')->where('ref_id', $invoice->id)->where('currency', 'gbp')->get();
+            $invoice->currencySymbol = '£';
+            $invoice->type = "Office Invoice";
+        }
         $invoice_attachments = Attachment::where('type', 'invoice')->where('ref_id', $invoice->id)->get();
+        // return the view for showing the invoice
         return view('invoice.show')->with(['invoice' => $invoice, 'invoice_products' => $invoice_products, 'invoice_payments' => $invoice_payments, 'invoice_attachments' => $invoice_attachments]);
     }
 
@@ -279,9 +335,20 @@ class InvoiceController extends Controller
     {
         $invoice = Invoice::where('id', $id)->first();
         $this->authorize('view', $invoice, Invoice::class);
+        if ($request->currency == 'pkr') {
+            $invoice_products = Product::where('type', 'invoice')->where('ref_id', $invoice->id)->where('currency', 'pkr')->get();
+            $invoice_payments = Payment::where('type', 'invoice')->where('ref_id', $invoice->id)->where('currency', 'pkr')->get();
+            $invoice->total = $invoice_products->sum('price');
+            $invoice->revenue = $invoice_products->sum('price') - $invoice_products->sum('cost');
+            $invoice->currencySymbol = '₨';
+            $invoice->type = "Customer Invoice";
+        } else {
+            $invoice_products = Product::where('type', 'invoice')->where('ref_id', $invoice->id)->where('currency', 'gbp')->get();
+            $invoice_payments = Payment::where('type', 'invoice')->where('ref_id', $invoice->id)->where('currency', 'gbp')->get();
+            $invoice->currencySymbol = '£';
+            $invoice->type = "Office Invoice";
+        }
         // return the view for showing the invoice
-        $invoice_products = Product::where('type', 'invoice')->where('ref_id', $invoice->id)->get();
-        $invoice_payments = Payment::where('type', 'invoice')->where('ref_id', $invoice->id)->get();
         $pdf = Pdf::loadView('pdf.invoice', ['invoice' => $invoice, 'invoice_products' => $invoice_products, 'invoice_payments' => $invoice_payments, 'view' => false]);
         return $pdf->download('invoice.pdf');
     }
@@ -298,15 +365,34 @@ class InvoiceController extends Controller
         // return the view for editing the invoice
         $companies = Company::select('id', 'name')->get();
         $customers = Customer::select('id', 'name')->get();
+        $affiliates = Affiliate::select('id', 'name')->get();
         $products = Catalogue::select('id', 'name')->where('status', 'active')->get();
-        $invoice_products = Product::where('type', 'invoice')->where('ref_id', $invoice->id)->get();
-        $invoice_payments = Payment::where('type', 'invoice')->where('ref_id', $invoice->id)->get();
+        $carriers = Carrier::select('id', 'name')->get();
+        $invoice_products = Product::where('type', 'invoice')->where('ref_id', $invoice->id)->where('currency', 'gbp')->get();
+        $invoice_payments = Payment::where('type', 'invoice')->where('ref_id', $invoice->id)->where('currency', 'gbp')->get();
         $invoice_attachments = Attachment::where('type', 'invoice')->where('ref_id', $invoice->id)->get();
+
+        if ($invoice->currency == 'pkr') {
+            $invoice_products_alt = Product::where('type', 'invoice')->where('ref_id', $invoice->id)->where('currency', 'pkr')->get();
+            $invoice_payments_alt = Payment::where('type', 'invoice')->where('ref_id', $invoice->id)->where('currency', 'pkr')->get();
+
+            foreach ($invoice_products as $key => $product) {
+                $invoice_products[$key]->cost_alt = $invoice_products_alt[$key]->cost;
+                $invoice_products[$key]->price_alt = $invoice_products_alt[$key]->price;
+            }
+
+            foreach ($invoice_payments as $key => $payment) {
+                $invoice_payments[$key]->amount_alt = $invoice_payments_alt[$key]->amount;
+            }
+        }
+
         return view('invoice.create')->with(
             [
                 'companies' => $companies,
                 'customers' => $customers,
                 'products' => $products,
+                'affiliates' => $affiliates,
+                'carriers' => $carriers,
                 'invoice' => $invoice,
                 'invoice_products' => $invoice_products,
                 'invoice_payments' => $invoice_payments,

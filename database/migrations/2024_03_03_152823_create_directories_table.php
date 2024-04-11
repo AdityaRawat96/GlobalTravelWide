@@ -15,9 +15,10 @@ class CreateDirectoriesTable extends Migration
     {
         Schema::create('directories', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('parent_id')->nullable()->constrained('directories')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users');
             $table->string('name');
-            $table->boolean('private')->default(1);
+            $table->boolean('private')->default(0);
             $table->timestamps();
         });
     }

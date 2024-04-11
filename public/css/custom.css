@@ -40,6 +40,35 @@ table .btn-sm {
     color: #5e6278 !important;
 }
 
+.directory_container_page
+    .attachments-create
+    .dropzone.dropzone-queue
+    .dropzone-item
+    .dropzone-file
+    .dropzone-filename {
+    max-width: unset;
+}
+
+.directory_container_page .dropzone-start,
+.directory_container_page .dropzone-progress {
+    display: inline-flex !important;
+}
+
+.fc-event-danger {
+    background-color: #f44336 !important;
+    border-color: #f44336 !important;
+    color: white !important;
+}
+.fc-event-success {
+    background-color: #4caf50 !important;
+    border-color: #4caf50 !important;
+    color: white !important;
+}
+
+.fc-daygrid-event-dot {
+    border-color: #ffffff !important;
+}
+
 @media screen and (max-width: 1400px) {
     .card-sticky {
         position: relative;
@@ -54,6 +83,15 @@ table .btn-sm {
         .dropzone-file
         .dropzone-filename {
         max-width: none;
+    }
+
+    .directory_container_page
+        .attachments-create
+        .dropzone.dropzone-queue
+        .dropzone-item
+        .dropzone-file
+        .dropzone-filename {
+        max-width: unset;
     }
 }
 

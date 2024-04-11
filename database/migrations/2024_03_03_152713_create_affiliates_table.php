@@ -18,7 +18,7 @@ class CreateAffiliatesTable extends Migration
             $table->string('name');
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
-            $table->integer('bonus');
+            $table->integer('commission');
             $table->foreignId('added_by')->constrained('users');
             $table->timestamps();
         });

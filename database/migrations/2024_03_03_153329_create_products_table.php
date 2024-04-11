@@ -22,6 +22,7 @@ class CreateProductsTable extends Migration
             $table->float('cost');
             $table->float('price');
             $table->float('revenue');
+            $table->string('currency')->default('gbp');
             $table->timestamps();
         });
     }

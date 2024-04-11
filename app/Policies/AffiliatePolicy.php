@@ -18,7 +18,8 @@ class AffiliatePolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasRole('admin');
+        // only allow the user to view the list of affiliates if they have role of admin
+        return $user->role === 'admin';
     }
 
     /**
@@ -30,7 +31,8 @@ class AffiliatePolicy
      */
     public function view(User $user, Affiliate $affiliate)
     {
-        return $user->hasRole('admin') || $user->id === $affiliate->user_id;
+        // only allow the affiliate to view the list of affiliates if they have role of admin or if affiliate foreign key added_by is the same as the authenticated user
+        return $user->role === 'admin' || $user->id === $affiliate->added_by;
     }
 
     /**
@@ -41,7 +43,8 @@ class AffiliatePolicy
      */
     public function create(User $user)
     {
-        //
+        // only allow the user to store a new affiliate if they have role of admin or digital
+        return $user->role === 'admin' || $user->role === 'digital';
     }
 
     /**
@@ -53,7 +56,8 @@ class AffiliatePolicy
      */
     public function update(User $user, Affiliate $affiliate)
     {
-        //
+        // only allow the affiliate to view the list of affiliates if they have role of admin or if affiliate foreign key added_by is the same as the authenticated user
+        return $user->role === 'admin' || $user->id === $affiliate->added_by;
     }
 
     /**
@@ -65,7 +69,8 @@ class AffiliatePolicy
      */
     public function delete(User $user, Affiliate $affiliate)
     {
-        //
+        // only allow the affiliate to view the list of affiliates if they have role of admin or if affiliate foreign key added_by is the same as the authenticated user
+        return $user->role === 'admin' || $user->id === $affiliate->added_by;
     }
 
     /**

@@ -3,17 +3,19 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateAffiliateRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Determine if the affiliate is authorized to make this request.
      *
      * @return bool
      */
     public function authorize()
     {
-        return false;
+        // only allow the affiliate to update a affiliate if they have role of admin or the affiliate is the same as the authenticated affiliate
+        return $this->user()->role === 'admin' || $this->user()->id === $this->route('affiliate')->added_by;
     }
 
     /**
@@ -24,7 +26,10 @@ class UpdateAffiliateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('affiliates')->ignore($this->affiliate->id)],
+            'phone' => ['required', 'string', 'max:255'],
+            'commission' => ['required', 'string', 'max:255'],
         ];
     }
 }

@@ -7,13 +7,14 @@ use Illuminate\Foundation\Http\FormRequest;
 class StoreAffiliateRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Determine if the affiliate is authorized to make this request.
      *
      * @return bool
      */
     public function authorize()
     {
-        return false;
+        // only allow the affiliate to store a new affiliate if they have role of admin or digital
+        return $this->user()->role === 'admin' || $this->user()->role === 'digital';
     }
 
     /**
@@ -24,7 +25,10 @@ class StoreAffiliateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:affiliates'],
+            'phone' => ['required', 'string', 'max:255'],
+            'commission' => ['required', 'string', 'max:255'],
         ];
     }
 }

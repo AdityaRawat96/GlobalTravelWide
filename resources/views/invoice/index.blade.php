@@ -230,7 +230,8 @@
                                 <th class="min-w-125px">Reference #</th>
                                 <th class="min-w-125px">Employee ID</th>
                                 <th class="min-w-125px">Customer Name</th>
-                                <th class="min-w-125px">Amount(£)</th>
+                                <th class="min-w-85px">Amount(£)</th>
+                                <th class="min-w-125px">Carrier</th>
                                 <th class="min-w-125px">Departure Date</th>
                                 <th class="min-w-125px">Invoice Date</th>
                                 <th class="min-w-125px">Status</th>

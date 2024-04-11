@@ -18,7 +18,8 @@ class AttendancePolicy
      */
     public function viewAny(User $user)
     {
-        //
+        // Only admin can view all attendance records
+        return $user->role === 'admin';
     }
 
     /**
@@ -30,7 +31,8 @@ class AttendancePolicy
      */
     public function view(User $user, Attendance $attendance)
     {
-        //
+        // Only admin or the user who created the attendance record can view it
+        return $user->role === 'admin' || $user->id === $attendance->user_id;
     }
 
     /**
@@ -39,9 +41,10 @@ class AttendancePolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create()
     {
-        //
+        // Everyone can create attendance records
+        return true;
     }
 
     /**
@@ -53,7 +56,14 @@ class AttendancePolicy
      */
     public function update(User $user, Attendance $attendance)
     {
-        //
+        // Only admin or the user who created the attendance record can update it
+        return $user->role === 'admin' || $user->id === $attendance->user_id;
+    }
+
+    public function updateAttendance(User $user)
+    {
+        // Everyone can create attendance records
+        return true;
     }
 
     /**
@@ -65,7 +75,8 @@ class AttendancePolicy
      */
     public function delete(User $user, Attendance $attendance)
     {
-        //
+        // Only admin or the user who created the attendance record can delete it
+        return $user->role === 'admin' || $user->id === $attendance->user_id;
     }
 
     /**

@@ -19,6 +19,7 @@ class CreateRefundsTable extends Migration
             $table->string('ref_number')->nullable();
             $table->integer('company_id');
             $table->integer('customer_id');
+            $table->integer('affiliate_id')->nullable();
             $table->foreignId('user_id')->constrained('users');
             $table->date('refund_date');
             $table->date('due_date');
