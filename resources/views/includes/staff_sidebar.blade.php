@@ -108,7 +108,7 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link" href="{{ route('admin.sale.index') }}">
+                            <a class="menu-link" href="{{ '/staff/sale/' . Auth::user()->id }}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -120,7 +120,7 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link" href="{{ route('admin.commission.index') }}">
+                            <a class="menu-link" href="{{ '/staff/commission/' . Auth::user()->id }}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -162,7 +162,7 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link" href="{{ route('admin.catalogue.index') }}">
+                            <a class="menu-link" href="{{ route('staff.catalogue.index') }}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -174,23 +174,11 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link" href="{{ route('admin.carrier.index') }}">
+                            <a class="menu-link" href="{{ route('staff.carrier.index') }}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
                                 <span class="menu-title">Carriers</span>
-                            </a>
-                            <!--end:Menu link-->
-                        </div>
-                        <!--end:Menu item-->
-                        <!--begin:Menu item-->
-                        <div class="menu-item">
-                            <!--begin:Menu link-->
-                            <a class="menu-link" href="{{ route('admin.expense.index') }}">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">Expenses</span>
                             </a>
                             <!--end:Menu link-->
                         </div>
@@ -229,7 +217,7 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link" href="{{ route('admin.customer.index') }}">
+                            <a class="menu-link" href="{{ route('staff.customer.index') }}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -241,7 +229,7 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link" href="{{ route('admin.affiliate.index') }}">
+                            <a class="menu-link" href="{{ route('staff.affiliate.index') }}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -257,7 +245,7 @@
                 <!--begin:Menu item-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
-                    <a class="menu-link" href="{{ route('admin.invoice.index') }}">
+                    <a class="menu-link" href="{{ route('staff.invoice.index') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/metronic/docs/core/html/src/media/icons/duotune/files/fil008.svg-->
                             <span class="svg-icon svg-icon-2"><svg width="24" height="24" viewBox="0 0 24 24"
@@ -281,7 +269,7 @@
                 <!--begin:Menu item-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
-                    <a class="menu-link" href="{{ route('admin.refund.index') }}">
+                    <a class="menu-link" href="{{ route('staff.refund.index') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/metronic/docs/core/html/src/media/icons/duotune/files/fil008.svg-->
                             <span class="svg-icon svg-icon-2"><svg width="24" height="24" viewBox="0 0 24 24"
@@ -305,7 +293,7 @@
                 <!--begin:Menu item-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
-                    <a class="menu-link" href="{{ route('admin.quotation.index') }}">
+                    <a class="menu-link" href="{{ route('staff.quotation.index') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/metronic/docs/core/html/src/media/icons/duotune/files/fil008.svg-->
                             <span class="svg-icon svg-icon-2"><svg width="24" height="24" viewBox="0 0 24 24"
@@ -326,36 +314,10 @@
                     <!--end:Menu link-->
                 </div>
                 <!--end:Menu item-->
-
                 <!--begin:Menu item-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
-                    <a class="menu-link" href="{{ route('admin.user.index') }}">
-                        <span class="menu-icon">
-                            <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/kt-products/docs/metronic/html/releases/2023-03-24-172858/core/html/src/media/icons/duotune/communication/com014.svg-->
-                            <span class="svg-icon svg-icon-2"><svg width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M16.0173 9H15.3945C14.2833 9 13.263 9.61425 12.7431 10.5963L12.154 11.7091C12.0645 11.8781 12.1072 12.0868 12.2559 12.2071L12.6402 12.5183C13.2631 13.0225 13.7556 13.6691 14.0764 14.4035L14.2321 14.7601C14.2957 14.9058 14.4396 15 14.5987 15H18.6747C19.7297 15 20.4057 13.8774 19.912 12.945L18.6686 10.5963C18.1487 9.61425 17.1285 9 16.0173 9Z"
-                                        fill="currentColor" />
-                                    <rect opacity="0.3" x="14" y="4" width="4" height="4" rx="2" fill="currentColor" />
-                                    <path
-                                        d="M4.65486 14.8559C5.40389 13.1224 7.11161 12 9 12C10.8884 12 12.5961 13.1224 13.3451 14.8559L14.793 18.2067C15.3636 19.5271 14.3955 21 12.9571 21H5.04292C3.60453 21 2.63644 19.5271 3.20698 18.2067L4.65486 14.8559Z"
-                                        fill="currentColor" />
-                                    <rect opacity="0.3" x="6" y="5" width="6" height="6" rx="3" fill="currentColor" />
-                                </svg>
-                            </span>
-                            <!--end::Svg Icon-->
-                        </span>
-                        <span class="menu-title">Employees</span>
-                    </a>
-                    <!--end:Menu link-->
-                </div>
-                <!--end:Menu item-->
-                <!--begin:Menu item-->
-                <div class="menu-item">
-                    <!--begin:Menu link-->
-                    <a class="menu-link" href="{{ route('admin.notification.index') }}">
+                    <a class="menu-link" href="{{ route('staff.notification.index') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/metronic/docs/core/html/src/media/icons/duotune/general/gen007.svg-->
                             <span class="svg-icon svg-icon-2"><svg width="24" height="24" viewBox="0 0 24 24"
@@ -378,7 +340,7 @@
                 <!--begin:Menu item-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
-                    <a class="menu-link" href="{{ route('admin.pnr.index') }}">
+                    <a class="menu-link" href="{{ route('staff.pnr.index') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/metronic/docs/core/html/src/media/icons/duotune/general/gen016.svg-->
                             <span class="svg-icon svg-icon-2"><svg width="24" height="24" viewBox="0 0 24 24"
@@ -401,7 +363,7 @@
                 <!--begin:Menu item-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
-                    <a class="menu-link" href="{{ route('admin.query.index') }}">
+                    <a class="menu-link" href="{{ route('staff.query.index') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/metronic/docs/core/html/src/media/icons/duotune/communication/com012.svg-->
                             <span class="svg-icon svg-icon-2"><svg width="24" height="24" viewBox="0 0 24 24"
@@ -423,7 +385,7 @@
                 <!--begin:Menu item-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
-                    <a class="menu-link" href="{{ route('admin.reminder.index') }}">
+                    <a class="menu-link" href="{{ route('staff.reminder.index') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/metronic/docs/core/html/src/media/icons/duotune/general/gen013.svg-->
                             <span class="svg-icon svg-icon-2"><svg width="24" height="24" viewBox="0 0 24 24"
@@ -446,7 +408,7 @@
                 <!--begin:Menu item-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
-                    <a class="menu-link" href="{{ route('admin.directory.index') }}">
+                    <a class="menu-link" href="{{ route('staff.directory.index') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/general/gen019.svg-->
                             <span class="svg-icon svg-icon-2">
@@ -470,7 +432,7 @@
                 <!--begin:Menu item-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
-                    <a class="menu-link" href="{{ route('admin.attendance.index') }}">
+                    <a class="menu-link" href="{{ route('staff.attendance.index') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/general/gen014.svg-->
                             <span class="svg-icon svg-icon-2">

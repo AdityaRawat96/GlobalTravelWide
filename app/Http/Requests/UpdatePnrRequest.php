@@ -13,8 +13,8 @@ class UpdatePnrRequest extends FormRequest
      */
     public function authorize()
     {
-        // only allow the user to update a new pnr if they have role of admin or digital
-        return $this->user()->role === 'admin' || $this->user()->role === 'digital';
+        // only allow the user to update a new pnr if they have role of admin or staff
+        return $this->user()->role === 'admin' || $this->user()->role === 'staff';
     }
 
     /**

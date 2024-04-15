@@ -166,9 +166,10 @@ var KTDatatablesServerSide = (function () {
                                 });
                             },
                             error: function (err) {
+                                console.log(err);
                                 // Do something with the error
                                 Swal.fire({
-                                    text: err.responseJSON.message,
+                                    text: err.responseJSON.error,
                                     icon: "error",
                                     buttonsStyling: !1,
                                     confirmButtonText: "Ok, got it!",

@@ -6,8 +6,10 @@ use App\Exports\DetailedCommissionsExport;
 use App\Exports\CommissionsExport;
 use App\Models\Invoice;
 use App\Models\Refund;
+use App\Models\User;
 use App\Models\Affiliate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
@@ -20,7 +22,7 @@ class CommissionsController extends Controller
      */
     public function index(Request $request)
     {
-        $this->authorize('viewAny', Affiliate::class);
+        // $this->authorize('viewAny', Auth::user());
 
         if ($request->ajax()) {
             // Get the values from the request object
@@ -88,7 +90,7 @@ class CommissionsController extends Controller
     public function show(Request $request, $id)
     {
         $affiliate = Affiliate::find($id);
-        $this->authorize('view', $affiliate, Affiliate::class);
+        // $this->authorize('view', Auth::user(), $affiliate);
 
         if ($request->ajax()) {
             $commission_calculation = $request->filter['commission_calculation'];

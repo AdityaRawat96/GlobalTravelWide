@@ -150,6 +150,7 @@
                                 <!--end::Svg Icon-->
                             </a>
                             <!--end::Back to folders-->
+                            @if(Auth::user()->can('create', App\Models\Directory::class))
                             <!--begin::Export-->
                             <button type="button" class="btn btn-light-primary me-3" id="kt_file_manager_new_folder">
                                 <!--begin::Svg Icon | path: icons/duotune/files/fil013.svg-->
@@ -189,9 +190,11 @@
                                 <!--end::Svg Icon-->Upload Files
                             </button>
                             <!--end::Add customer-->
+                            @endif
                         </div>
                         <!--end::Toolbar-->
                         <!--begin::Group actions-->
+                        @if(Auth::user()->can('delete', App\Models\Directory::class))
                         <div class="d-flex justify-content-end align-items-center d-none"
                             data-kt-filemanager-table-toolbar="selected">
                             <div class="fw-bold me-5">
@@ -201,6 +204,7 @@
                                 data-kt-filemanager-table-select="delete_selected">Delete Selected</button>
                         </div>
                         <!--end::Group actions-->
+                        @endif
                     </div>
                     <!--end::Card toolbar-->
                 </div>
@@ -404,6 +408,7 @@
                                 <a href="#" class="menu-link px-3 download-action-button">Download File</a>
                             </div>
                             <!--end::Menu item-->
+                            @if(Auth::user()->can('delete', App\Models\Directory::class))
                             <!--begin::Menu item-->
                             <div class="menu-item px-3">
                                 <a href="#" class="menu-link px-3 rename-action-button"
@@ -416,6 +421,7 @@
                                     data-kt-filemanager-table-filter="delete_row">Delete</a>
                             </div>
                             <!--end::Menu item-->
+                            @endif
                         </div>
                         <!--end::Menu-->
                     </div>

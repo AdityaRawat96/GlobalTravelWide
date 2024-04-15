@@ -18,8 +18,8 @@ class QueryPolicy
      */
     public function viewAny(User $user)
     {
-        // only allow the user to view the list of queries if they have role of admin or digital
-        return $user->role === 'admin' || $user->role === 'digital';
+        // only allow the user to view the list of queries if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**
@@ -31,8 +31,8 @@ class QueryPolicy
      */
     public function view(User $user, Query $query)
     {
-        // only allow the query to view the list of queries if they have role of admin or digital
-        return $user->role === 'admin' || $user->role === 'digital';
+        // only allow the query to view the list of queries if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**
@@ -43,8 +43,8 @@ class QueryPolicy
      */
     public function create(User $user)
     {
-        // only allow the user to store a new query if they have role of admin or digital
-        return $user->role === 'admin' || $user->role === 'digital';
+        // only allow the user to store a new query if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**
@@ -56,8 +56,8 @@ class QueryPolicy
      */
     public function update(User $user, Query $query)
     {
-        // only allow the query to view the list of queries if they have role of admin or digital
-        return $user->role === 'admin' || $user->role === 'digital';
+        // only allow the query to view the list of queries if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**
@@ -69,8 +69,8 @@ class QueryPolicy
      */
     public function delete(User $user, Query $query)
     {
-        // only allow the query to view the list of queries if they have role of admin or digital
-        return $user->role === 'admin' || $user->role === 'digital';
+        // only allow the query to view the list of queries if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**

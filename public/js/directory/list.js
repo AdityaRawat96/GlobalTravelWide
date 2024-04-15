@@ -172,53 +172,59 @@ var KTFileManagerList = (function () {
                         }, 50);
                 });
             }),
-                n.addEventListener("click", function () {
-                    Swal.fire({
-                        text: "Are you sure you want to delete selected files or folders?",
-                        icon: "warning",
-                        showCancelButton: !0,
-                        buttonsStyling: !1,
-                        confirmButtonText: "Yes, delete!",
-                        cancelButtonText: "No, cancel",
-                        customClass: {
-                            confirmButton: "btn fw-bold btn-danger",
-                            cancelButton:
-                                "btn fw-bold btn-active-light-primary",
-                        },
-                    }).then(function (n) {
-                        n.value
-                            ? Swal.fire({
-                                  text: "You have deleted all selected  files or folders!.",
-                                  icon: "success",
-                                  buttonsStyling: !1,
-                                  confirmButtonText: "Ok, got it!",
-                                  customClass: {
-                                      confirmButton: "btn fw-bold btn-primary",
-                                  },
-                              }).then(function () {
-                                  o.forEach((t) => {
-                                      t.checked &&
-                                          e
-                                              .row($(t.closest("tbody tr")))
-                                              .remove()
-                                              .draw();
-                                  });
-                                  t.querySelectorAll(
-                                      '[type="checkbox"]'
-                                  )[0].checked = !1;
-                              })
-                            : "cancel" === n.dismiss &&
-                              Swal.fire({
-                                  text: "Selected  files or folders was not deleted.",
-                                  icon: "error",
-                                  buttonsStyling: !1,
-                                  confirmButtonText: "Ok, got it!",
-                                  customClass: {
-                                      confirmButton: "btn fw-bold btn-primary",
-                                  },
-                              });
-                    });
-                });
+                n
+                    ? n.addEventListener("click", function () {
+                          Swal.fire({
+                              text: "Are you sure you want to delete selected files or folders?",
+                              icon: "warning",
+                              showCancelButton: !0,
+                              buttonsStyling: !1,
+                              confirmButtonText: "Yes, delete!",
+                              cancelButtonText: "No, cancel",
+                              customClass: {
+                                  confirmButton: "btn fw-bold btn-danger",
+                                  cancelButton:
+                                      "btn fw-bold btn-active-light-primary",
+                              },
+                          }).then(function (n) {
+                              n.value
+                                  ? Swal.fire({
+                                        text: "You have deleted all selected  files or folders!.",
+                                        icon: "success",
+                                        buttonsStyling: !1,
+                                        confirmButtonText: "Ok, got it!",
+                                        customClass: {
+                                            confirmButton:
+                                                "btn fw-bold btn-primary",
+                                        },
+                                    }).then(function () {
+                                        o.forEach((t) => {
+                                            t.checked &&
+                                                e
+                                                    .row(
+                                                        $(t.closest("tbody tr"))
+                                                    )
+                                                    .remove()
+                                                    .draw();
+                                        });
+                                        t.querySelectorAll(
+                                            '[type="checkbox"]'
+                                        )[0].checked = !1;
+                                    })
+                                  : "cancel" === n.dismiss &&
+                                    Swal.fire({
+                                        text: "Selected  files or folders was not deleted.",
+                                        icon: "error",
+                                        buttonsStyling: !1,
+                                        confirmButtonText: "Ok, got it!",
+                                        customClass: {
+                                            confirmButton:
+                                                "btn fw-bold btn-primary",
+                                        },
+                                    });
+                          });
+                      })
+                    : null;
         },
         s = () => {
             const e = document.querySelector(
@@ -240,7 +246,8 @@ var KTFileManagerList = (function () {
                     ? ((n.innerHTML = l),
                       e.classList.add("d-none"),
                       o.classList.remove("d-none"))
-                    : (e.classList.remove("d-none"), o.classList.add("d-none"));
+                    : (e.classList.remove("d-none"),
+                      o ? o.classList.add("d-none") : null);
         },
         c = () => {
             const e = t.querySelector("#kt_file_manager_new_folder_row");
@@ -538,147 +545,175 @@ var KTFileManagerList = (function () {
                         e.search(t.target.value).draw();
                     }),
                 l(),
-                document
-                    .getElementById("kt_file_manager_new_folder")
-                    .addEventListener("click", (n) => {
-                        if (
-                            (n.preventDefault(),
-                            t.querySelector("#kt_file_manager_new_folder_row"))
-                        )
-                            return;
-                        const l = t.querySelector("tbody"),
-                            i = o.cloneNode(!0);
-                        l.prepend(i);
-                        const s = i.querySelector(
-                                "#kt_file_manager_add_folder_form"
-                            ),
-                            d = i.querySelector("#kt_file_manager_add_folder"),
-                            u = i.querySelector(
-                                "#kt_file_manager_cancel_folder"
-                            ),
-                            m = i.querySelector(".svg-icon-2x"),
-                            f = i.querySelector('[name="new_folder_name"]');
-                        var g = FormValidation.formValidation(s, {
-                            fields: {
-                                new_folder_name: {
-                                    validators: {
-                                        notEmpty: {
-                                            message: "Folder name is required",
-                                        },
-                                    },
-                                },
-                            },
-                            plugins: {
-                                trigger: new FormValidation.plugins.Trigger(),
-                                bootstrap:
-                                    new FormValidation.plugins.Bootstrap5({
-                                        rowSelector: ".fv-row",
-                                        eleInvalidClass: "",
-                                        eleValidClass: "",
-                                    }),
-                            },
-                        });
-                        d.addEventListener("click", (t) => {
-                            t.preventDefault(),
-                                d.setAttribute("data-kt-indicator", "on"),
-                                g &&
-                                    g.validate().then(function (t) {
-                                        console.log("validated!"),
-                                            "Valid" == t
-                                                ? // Ajax to create new folder
-                                                  $.ajax({
-                                                      url: `/${siteUserRole}/directory`,
-                                                      type: "POST",
-                                                      // add crsf token
-                                                      headers: {
-                                                          "X-CSRF-TOKEN": $(
-                                                              'meta[name="csrf-token"]'
-                                                          ).attr("content"),
-                                                      },
-                                                      data: {
-                                                          name: f.value,
-                                                          parent_id:
-                                                              DIRECTORY_MAP[
-                                                                  DIRECTORY_MAP.length -
-                                                                      1
-                                                              ].id,
-                                                      },
-                                                      success: function (res) {
-                                                          Swal.fire({
-                                                              text: `Folder - ${res.directory.name} was created successfully!`,
-                                                              icon: "success",
-                                                              buttonsStyling:
-                                                                  !1,
-                                                              confirmButtonText:
-                                                                  "Ok, got it!",
-                                                              customClass: {
-                                                                  confirmButton:
-                                                                      "btn fw-bold btn-primary",
-                                                              },
-                                                          }).then(function () {
-                                                              KTFileManagerList.loadDirectoryContents(
-                                                                  DIRECTORY_MAP[
-                                                                      DIRECTORY_MAP.length -
-                                                                          1
-                                                                  ].id
-                                                              );
-                                                          });
-                                                      },
-                                                      error: function (t) {
-                                                          d.removeAttribute(
-                                                              "data-kt-indicator"
-                                                          ),
-                                                              Swal.fire({
-                                                                  text:
-                                                                      "Error: " +
-                                                                      t,
-                                                                  icon: "error",
-                                                                  buttonsStyling:
-                                                                      !1,
-                                                                  confirmButtonText:
-                                                                      "Ok, got it!",
-                                                                  customClass: {
-                                                                      confirmButton:
-                                                                          "btn btn-primary",
-                                                                  },
-                                                              });
-                                                      },
-                                                  })
-                                                : // End of Ajax
-                                                  d.removeAttribute(
-                                                      "data-kt-indicator"
-                                                  );
-                                    });
-                        }),
-                            u.addEventListener("click", (e) => {
-                                e.preventDefault(),
-                                    u.setAttribute("data-kt-indicator", "on"),
-                                    setTimeout(function () {
-                                        u.removeAttribute("data-kt-indicator"),
-                                            (toastr.options = {
-                                                closeButton: !0,
-                                                debug: !1,
-                                                newestOnTop: !1,
-                                                progressBar: !1,
-                                                positionClass:
-                                                    "toastr-top-right",
-                                                preventDuplicates: !1,
-                                                showDuration: "300",
-                                                hideDuration: "1000",
-                                                timeOut: "5000",
-                                                extendedTimeOut: "1000",
-                                                showEasing: "swing",
-                                                hideEasing: "linear",
-                                                showMethod: "fadeIn",
-                                                hideMethod: "fadeOut",
-                                            }),
-                                            toastr.error(
-                                                "Cancelled new folder creation"
-                                            ),
-                                            c();
-                                    }, 1e3);
-                            });
-                    }),
+                document.getElementById("kt_file_manager_new_folder")
+                    ? document
+                          .getElementById("kt_file_manager_new_folder")
+                          .addEventListener("click", (n) => {
+                              if (
+                                  (n.preventDefault(),
+                                  t.querySelector(
+                                      "#kt_file_manager_new_folder_row"
+                                  ))
+                              )
+                                  return;
+                              const l = t.querySelector("tbody"),
+                                  i = o.cloneNode(!0);
+                              l.prepend(i);
+                              const s = i.querySelector(
+                                      "#kt_file_manager_add_folder_form"
+                                  ),
+                                  d = i.querySelector(
+                                      "#kt_file_manager_add_folder"
+                                  ),
+                                  u = i.querySelector(
+                                      "#kt_file_manager_cancel_folder"
+                                  ),
+                                  m = i.querySelector(".svg-icon-2x"),
+                                  f = i.querySelector(
+                                      '[name="new_folder_name"]'
+                                  );
+                              var g = FormValidation.formValidation(s, {
+                                  fields: {
+                                      new_folder_name: {
+                                          validators: {
+                                              notEmpty: {
+                                                  message:
+                                                      "Folder name is required",
+                                              },
+                                          },
+                                      },
+                                  },
+                                  plugins: {
+                                      trigger:
+                                          new FormValidation.plugins.Trigger(),
+                                      bootstrap:
+                                          new FormValidation.plugins.Bootstrap5(
+                                              {
+                                                  rowSelector: ".fv-row",
+                                                  eleInvalidClass: "",
+                                                  eleValidClass: "",
+                                              }
+                                          ),
+                                  },
+                              });
+                              d.addEventListener("click", (t) => {
+                                  t.preventDefault(),
+                                      d.setAttribute("data-kt-indicator", "on"),
+                                      g &&
+                                          g.validate().then(function (t) {
+                                              console.log("validated!"),
+                                                  "Valid" == t
+                                                      ? // Ajax to create new folder
+                                                        $.ajax({
+                                                            url: `/${siteUserRole}/directory`,
+                                                            type: "POST",
+                                                            // add crsf token
+                                                            headers: {
+                                                                "X-CSRF-TOKEN":
+                                                                    $(
+                                                                        'meta[name="csrf-token"]'
+                                                                    ).attr(
+                                                                        "content"
+                                                                    ),
+                                                            },
+                                                            data: {
+                                                                name: f.value,
+                                                                parent_id:
+                                                                    DIRECTORY_MAP[
+                                                                        DIRECTORY_MAP.length -
+                                                                            1
+                                                                    ].id,
+                                                            },
+                                                            success: function (
+                                                                res
+                                                            ) {
+                                                                Swal.fire({
+                                                                    text: `Folder - ${res.directory.name} was created successfully!`,
+                                                                    icon: "success",
+                                                                    buttonsStyling:
+                                                                        !1,
+                                                                    confirmButtonText:
+                                                                        "Ok, got it!",
+                                                                    customClass:
+                                                                        {
+                                                                            confirmButton:
+                                                                                "btn fw-bold btn-primary",
+                                                                        },
+                                                                }).then(
+                                                                    function () {
+                                                                        KTFileManagerList.loadDirectoryContents(
+                                                                            DIRECTORY_MAP[
+                                                                                DIRECTORY_MAP.length -
+                                                                                    1
+                                                                            ].id
+                                                                        );
+                                                                    }
+                                                                );
+                                                            },
+                                                            error: function (
+                                                                t
+                                                            ) {
+                                                                d.removeAttribute(
+                                                                    "data-kt-indicator"
+                                                                ),
+                                                                    Swal.fire({
+                                                                        text:
+                                                                            "Error: " +
+                                                                            t,
+                                                                        icon: "error",
+                                                                        buttonsStyling:
+                                                                            !1,
+                                                                        confirmButtonText:
+                                                                            "Ok, got it!",
+                                                                        customClass:
+                                                                            {
+                                                                                confirmButton:
+                                                                                    "btn btn-primary",
+                                                                            },
+                                                                    });
+                                                            },
+                                                        })
+                                                      : // End of Ajax
+                                                        d.removeAttribute(
+                                                            "data-kt-indicator"
+                                                        );
+                                          });
+                              }),
+                                  u.addEventListener("click", (e) => {
+                                      e.preventDefault(),
+                                          u.setAttribute(
+                                              "data-kt-indicator",
+                                              "on"
+                                          ),
+                                          setTimeout(function () {
+                                              u.removeAttribute(
+                                                  "data-kt-indicator"
+                                              ),
+                                                  (toastr.options = {
+                                                      closeButton: !0,
+                                                      debug: !1,
+                                                      newestOnTop: !1,
+                                                      progressBar: !1,
+                                                      positionClass:
+                                                          "toastr-top-right",
+                                                      preventDuplicates: !1,
+                                                      showDuration: "300",
+                                                      hideDuration: "1000",
+                                                      timeOut: "5000",
+                                                      extendedTimeOut: "1000",
+                                                      showEasing: "swing",
+                                                      hideEasing: "linear",
+                                                      showMethod: "fadeIn",
+                                                      hideMethod: "fadeOut",
+                                                  }),
+                                                  toastr.error(
+                                                      "Cancelled new folder creation"
+                                                  ),
+                                                  c();
+                                          }, 1e3);
+                                  });
+                          })
+                    : null,
                 m(),
                 d(),
                 f(),

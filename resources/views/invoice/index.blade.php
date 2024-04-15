@@ -80,8 +80,8 @@
                             <!--begin::Filter menu-->
                             <div class="m-0">
                                 <!--begin::Menu toggle-->
-                                <a href="#" class="btn btn-light-primary btn-flex fw-bold" data-kt-menu-trigger="click"
-                                    data-kt-menu-placement="bottom-end">
+                                <a id="filterTriggerButton" href="#" class="btn btn-light-primary btn-flex fw-bold"
+                                    data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                                     <!--begin::Svg Icon | path: icons/duotune/general/gen031.svg-->
                                     <span class="svg-icon svg-icon-6 svg-icon-muted me-1">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -134,14 +134,16 @@
                                             <!--end::Label-->
                                             <!--begin::Input-->
                                             <div>
-                                                <select class="form-select form-select-solid filter-option"
+                                                <!-- <select class="form-select form-select-solid filter-option"
                                                     data-kt-select2="true" data-placeholder="Select option"
                                                     data-filter-target="invoice_date" data-filter-type="date"
                                                     data-dropdown-parent="#table_filter" data-allow-clear="true">
                                                     <option></option>
                                                     <option value="<=,{{date('Y-m-d')}}">Past Invoices</option>
                                                     <option value=">,{{date('Y-m-d')}}">Future Invoices</option>
-                                                </select>
+                                                </select> -->
+                                                <input class="form-control form-control-solid datetimepicker-input"
+                                                    placeholder="Pick date range" />
                                             </div>
                                             <!--end::Input-->
                                         </div>

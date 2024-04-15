@@ -18,8 +18,8 @@ class CarrierPolicy
      */
     public function viewAny(User $user)
     {
-        // only allow the user to view the carriers if they have role of admin
-        return $user->role === 'admin';
+        // only allow the user to view the carriers if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**
@@ -31,8 +31,8 @@ class CarrierPolicy
      */
     public function view(User $user, Carrier $carrier)
     {
-        // only allow the user to view the carrier if they have role of admin
-        return $user->role === 'admin';
+        // only allow the user to view the carrier if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**
@@ -43,8 +43,8 @@ class CarrierPolicy
      */
     public function create(User $user)
     {
-        // only allow the user to create a carrier if they have role of admin
-        return $user->role === 'admin';
+        // only allow the user to create a carrier if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**
@@ -56,8 +56,8 @@ class CarrierPolicy
      */
     public function update(User $user, Carrier $carrier)
     {
-        // only allow the user to update the carrier if they have role of admin
-        return $user->role === 'admin';
+        // only allow the user to update the carrier if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**
@@ -69,8 +69,8 @@ class CarrierPolicy
      */
     public function delete(User $user, Carrier $carrier)
     {
-        // only allow the user to delete the carrier if they have role of admin
-        return $user->role === 'admin';
+        // only allow the user to delete the carrier if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**

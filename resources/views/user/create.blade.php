@@ -141,12 +141,12 @@
                                                 <option value="admin"
                                                     {{isset($user->role) && $user->role == 'admin' ? 'selected' : null}}>
                                                     Admin</option>
-                                                <option value="digital"
-                                                    {{isset($user->role) && $user->role == 'digital' ? 'selected' : null}}>
-                                                    Digital</option>
-                                                <option value="marketing"
-                                                    {{isset($user->role) && $user->role == 'marketing' ? 'selected' : null}}>
-                                                    Marketing</option>
+                                                <option value="staff"
+                                                    {{isset($user->role) && $user->role == 'staff' ? 'selected' : null}}>
+                                                    Staff</option>
+                                                <option value="other"
+                                                    {{isset($user->role) && $user->role == 'other' ? 'selected' : null}}>
+                                                    Other</option>
                                             </select>
                                             <div class="fv-plugins-message-container invalid-feedback"></div>
                                         </div>

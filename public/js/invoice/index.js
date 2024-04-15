@@ -113,6 +113,55 @@ var KTDatatablesServerSide = (function () {
         });
     };
 
+    var initDateRangeFilter = () => {
+        var startDate = "01/01/2015";
+        var endDate = moment().endOf("month").format("DD/MM/YYYY");
+        $(".datetimepicker-input").daterangepicker({
+            timePicker: false,
+            startDate: startDate,
+            endDate: endDate,
+            locale: {
+                format: "DD/MM/YYYY",
+            },
+            ranges: {
+                Today: [moment(), moment()],
+                Yesterday: [
+                    moment().subtract(1, "days"),
+                    moment().subtract(1, "days"),
+                ],
+                "Last 7 Days": [moment().subtract(6, "days"), moment()],
+                "Last 30 Days": [moment().subtract(29, "days"), moment()],
+                "This Month": [
+                    moment().startOf("month"),
+                    moment().endOf("month"),
+                ],
+                "Last Month": [
+                    moment().subtract(1, "month").startOf("month"),
+                    moment().subtract(1, "month").endOf("month"),
+                ],
+            },
+        });
+
+        $(".datetimepicker-input").change(
+            "apply.daterangepicker",
+            function (ev, picker) {
+                // Get filter values
+                var date_range = $(".datetimepicker-input").val().split(" - ");
+                filter = {
+                    start_date: moment(date_range[0], "DD/MM/YYYY").format(
+                        "YYYY-MM-DD"
+                    ),
+                    end_date: moment(date_range[1], "DD/MM/YYYY").format(
+                        "YYYY-MM-DD"
+                    ),
+                };
+                setTimeout(() => {
+                    $("#filterTriggerButton")[0].click();
+                }, 50);
+            }
+        );
+    };
+
     // Filter Datatable
     var handleFilterDatatable = () => {
         // Select filter options
@@ -134,6 +183,29 @@ var KTDatatablesServerSide = (function () {
                     });
                 }
             });
+
+            var date_range = $(".datetimepicker-input").val().split(" - ");
+            var rangeFilter = {
+                start_date: moment(date_range[0], "DD/MM/YYYY").format(
+                    "YYYY-MM-DD"
+                ),
+                end_date: moment(date_range[1], "DD/MM/YYYY").format(
+                    "YYYY-MM-DD"
+                ),
+            };
+            filter.push({
+                name: "invoice_date",
+                type: "date",
+                comparator: ">=",
+                value: rangeFilter.start_date,
+            });
+            filter.push({
+                name: "invoice_date",
+                type: "date",
+                comparator: "<=",
+                value: rangeFilter.end_date,
+            });
+
             dt.ajax.reload();
         });
 
@@ -233,6 +305,7 @@ var KTDatatablesServerSide = (function () {
     return {
         init: function () {
             initDatatable();
+            initDateRangeFilter();
             handleSearchDatatable();
             handleDeleteRows();
             handleFilterDatatable();

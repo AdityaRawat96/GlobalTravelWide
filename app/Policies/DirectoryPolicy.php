@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Directory;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Auth;
 
 class DirectoryPolicy
 {
@@ -18,8 +19,8 @@ class DirectoryPolicy
      */
     public function viewAny(User $user)
     {
-        // Only admin and digital roles can view all directories
-        return in_array($user->role, ['admin', 'digital']);
+        // Only admin and staff roles can view all directories
+        return Auth::user()->role === 'admin' || Auth::user()->role === 'staff';
     }
 
     /**
@@ -31,8 +32,8 @@ class DirectoryPolicy
      */
     public function view(User $user)
     {
-        // Only admin and digital roles can view all directories
-        return in_array($user->role, ['admin', 'digital']);
+        // Only admin and staff roles can view all directories
+        return in_array($user->role, ['admin', 'staff']);
     }
 
     /**

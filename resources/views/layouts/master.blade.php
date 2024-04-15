@@ -67,8 +67,10 @@
                 <!-- start sidebar -->
                 @if(Auth::user()->role === "admin")
                 @include('includes.admin_sidebar')
-                @else
-                @include('includes.user_sidebar')
+                @elseif(Auth::user()->role === "staff")
+                @include('includes.staff_sidebar')
+                @elseif(Auth::user()->role === "other")
+                @include('includes.other_sidebar')
                 @endif
                 <!-- end sidebar -->
 
@@ -94,6 +96,43 @@
     <!--begin::Javascript-->
     <script>
     var hostUrl = "";
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Set sidebar active item on page load using vanilla javascript
+        var url = window.location.href;
+        var path = url.split("/").pop();
+        // If path is a number, then it is an id, so we need to get the previous path
+        if (!isNaN(path)) {
+            path = url.split("/").reverse()[1];
+        }
+        var elements = document.querySelectorAll('.app-sidebar .menu-link');
+        var element = null;
+        elements.forEach(function(el) {
+            if (el.getAttribute('href') && el.getAttribute('href').includes(path)) {
+                element = el;
+            }
+        });
+
+        if (element) {
+            element.classList.add('active');
+            element.closest('.menu-item').classList.add('menu-item-active');
+
+            if (element.closest('.menu-accordion')) {
+                var accordion = element.closest('.menu-accordion');
+                accordion.classList.add('show');
+                accordion.closest('.menu-item').classList.add('menu-item-active');
+            }
+
+            if (element.closest('.menu-item').closest('.menu-sub')) {
+                try {
+                    element.closest('.menu-item').closest('.menu-sub').classList.add(
+                        'menu-sub-accordion menu-sub-open');
+                } catch (e) {
+                    // console.log(e);
+                }
+            }
+        }
+    });
     </script>
     <!--begin::Global Javascript Bundle(mandatory for all pages)-->
     <script src="{{asset('plugins/global/plugins.bundle.js')}}"></script>

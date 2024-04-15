@@ -23,7 +23,7 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'role' => 'digital', // 'admin', 'digital', 'marketing'
+            'role' => 'staff', // 'admin', 'staff', 'other'
             'status' => 'active', // 'active', 'inactive', 'suspended', 'banned
             'first_name' => $this->faker->firstName(),
             'last_name' => $this->faker->lastName(),

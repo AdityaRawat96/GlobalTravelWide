@@ -13,8 +13,8 @@ class StoreAffiliateRequest extends FormRequest
      */
     public function authorize()
     {
-        // only allow the affiliate to store a new affiliate if they have role of admin or digital
-        return $this->user()->role === 'admin' || $this->user()->role === 'digital';
+        // only allow the affiliate to store a new affiliate if they have role of admin or staff
+        return $this->user()->role === 'admin' || $this->user()->role === 'staff';
     }
 
     /**

@@ -13,8 +13,8 @@ class StoreReminderRequest extends FormRequest
      */
     public function authorize()
     {
-        // only allow the user to store a new reminder if they have role of admin or digital
-        return $this->user()->role === 'admin' || $this->user()->role === 'digital';
+        // only allow the user to store a new reminder if they have role of admin or staff
+        return $this->user()->role === 'admin' || $this->user()->role === 'staff';
     }
 
     /**

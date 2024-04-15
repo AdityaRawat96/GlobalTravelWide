@@ -14,7 +14,7 @@ class UpdateProductRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->role === 'admin' || $this->user()->role === 'digital';
+        return $this->user()->role === 'admin' || $this->user()->role === 'staff';
     }
 
     /**

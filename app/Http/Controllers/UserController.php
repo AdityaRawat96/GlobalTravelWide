@@ -273,6 +273,10 @@ class UserController extends Controller
             return response()->json(['message' => 'User - ' . env('APP_SHORT') . str_pad($user->id, 5, '0', STR_PAD_LEFT) . ' deleted successfully!'], 200);
         } catch (\Exception $e) {
             DB::rollback();
+            // Check if the error is due to foreign key constraint
+            if (strpos($e->getMessage(), 'foreign key constraint fails')) {
+                return response()->json(['error' => 'This user cannot be deleted because it is associated with other records.'], 500);
+            }
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }

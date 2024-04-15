@@ -43,8 +43,8 @@ class AffiliatePolicy
      */
     public function create(User $user)
     {
-        // only allow the user to store a new affiliate if they have role of admin or digital
-        return $user->role === 'admin' || $user->role === 'digital';
+        // only allow the user to store a new affiliate if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**

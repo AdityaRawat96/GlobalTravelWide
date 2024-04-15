@@ -19,11 +19,11 @@ class RoleSeeder extends Seeder
             'guard_name' => 'web'
         ]);
         $role = Role::create([
-            'name' => 'digital',
+            'name' => 'staff',
             'guard_name' => 'web'
         ]);
         $role = Role::create([
-            'name' => 'marketing',
+            'name' => 'other',
             'guard_name' => 'web'
         ]);
     }

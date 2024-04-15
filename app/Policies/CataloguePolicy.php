@@ -18,8 +18,8 @@ class CataloguePolicy
      */
     public function viewAny(User $user)
     {
-        // only allow the user to view the catalogues if they have role of admin
-        return $user->role === 'admin';
+        // only allow the user to view the catalogues if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**
@@ -31,8 +31,8 @@ class CataloguePolicy
      */
     public function view(User $user, Catalogue $catalogue)
     {
-        // only allow the user to view the catalogue if they have role of admin
-        return $user->role === 'admin';
+        // only allow the user to view the catalogue if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**
@@ -43,8 +43,8 @@ class CataloguePolicy
      */
     public function create(User $user)
     {
-        // only allow the user to create a catalogue if they have role of admin
-        return $user->role === 'admin';
+        // only allow the user to create a catalogue if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**
@@ -56,8 +56,8 @@ class CataloguePolicy
      */
     public function update(User $user, Catalogue $catalogue)
     {
-        // only allow the user to update the catalogue if they have role of admin
-        return $user->role === 'admin';
+        // only allow the user to update the catalogue if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**
@@ -69,8 +69,8 @@ class CataloguePolicy
      */
     public function delete(User $user, Catalogue $catalogue)
     {
-        // only allow the user to delete the catalogue if they have role of admin
-        return $user->role === 'admin';
+        // only allow the user to delete the catalogue if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**

@@ -13,8 +13,8 @@ class StoreCustomerRequest extends FormRequest
      */
     public function authorize()
     {
-        // only allow the customer to store a new customer if they have role of admin or digital
-        return $this->user()->role === 'admin' || $this->user()->role === 'digital';
+        // only allow the customer to store a new customer if they have role of admin or staff
+        return $this->user()->role === 'admin' || $this->user()->role === 'staff';
     }
 
     /**

@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateDirectoryRequest;
 use App\Models\Attachment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class DirectoryController extends Controller

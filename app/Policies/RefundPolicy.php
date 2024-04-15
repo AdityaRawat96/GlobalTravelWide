@@ -18,8 +18,8 @@ class RefundPolicy
      */
     public function viewAny(User $user)
     {
-        // only allow the user to view the list of refunds if they have role of admin or digital
-        return $user->role === 'admin' || $user->role === 'digital';
+        // only allow the user to view the list of refunds if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**
@@ -43,8 +43,8 @@ class RefundPolicy
      */
     public function create(User $user)
     {
-        // only allow the user to store a new refund if they have role of admin or digital
-        return $user->role === 'admin' || $user->role === 'digital';
+        // only allow the user to store a new refund if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**

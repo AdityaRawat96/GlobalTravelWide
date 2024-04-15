@@ -18,8 +18,8 @@ class QuotationPolicy
      */
     public function viewAny(User $user)
     {
-        // only allow the user to view the list of quotations if they have role of admin or digital
-        return $user->role === 'admin' || $user->role === 'digital';
+        // only allow the user to view the list of quotations if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**
@@ -43,8 +43,8 @@ class QuotationPolicy
      */
     public function create(User $user)
     {
-        // only allow the user to store a new quotation if they have role of admin or digital
-        return $user->role === 'admin' || $user->role === 'digital';
+        // only allow the user to store a new quotation if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**

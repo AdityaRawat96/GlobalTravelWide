@@ -18,8 +18,8 @@ class PnrPolicy
      */
     public function viewAny(User $user)
     {
-        // only allow the user to view the list of pnrs if they have role of admin or digital
-        return $user->role === 'admin' || $user->role === 'digital';
+        // only allow the user to view the list of pnrs if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**
@@ -31,8 +31,8 @@ class PnrPolicy
      */
     public function view(User $user, Pnr $pnr)
     {
-        // only allow the pnr to view the list of pnrs if they have role of admin or digital
-        return $user->role === 'admin' || $user->role === 'digital';
+        // only allow the pnr to view the list of pnrs if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**
@@ -43,8 +43,8 @@ class PnrPolicy
      */
     public function create(User $user)
     {
-        // only allow the user to store a new pnr if they have role of admin or digital
-        return $user->role === 'admin' || $user->role === 'digital';
+        // only allow the user to store a new pnr if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**
@@ -56,8 +56,8 @@ class PnrPolicy
      */
     public function update(User $user, Pnr $pnr)
     {
-        // only allow the pnr to view the list of pnrs if they have role of admin or digital
-        return $user->role === 'admin' || $user->role === 'digital';
+        // only allow the pnr to view the list of pnrs if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**
@@ -69,8 +69,8 @@ class PnrPolicy
      */
     public function delete(User $user, Pnr $pnr)
     {
-        // only allow the pnr to view the list of pnrs if they have role of admin or digital
-        return $user->role === 'admin' || $user->role === 'digital';
+        // only allow the pnr to view the list of pnrs if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**

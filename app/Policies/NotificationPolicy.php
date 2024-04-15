@@ -18,8 +18,8 @@ class NotificationPolicy
      */
     public function viewAny(User $user)
     {
-        // only allow the user to view the list of notifications if they have role of admin or digital
-        return $user->role === 'admin' || $user->role === 'digital';
+        // only allow the user to view the list of notifications if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**
@@ -31,8 +31,8 @@ class NotificationPolicy
      */
     public function view(User $user, Notification $notification)
     {
-        // only allow the notification to view the list of notifications if they have role of admin or digital
-        return $user->role === 'admin' || $user->role === 'digital';
+        // only allow the notification to view the list of notifications if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**
