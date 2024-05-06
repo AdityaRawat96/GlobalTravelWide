@@ -52,7 +52,7 @@ var KTAffiliateSettings = (function () {
                         n.resetForm();
                         window.history.length > 2
                             ? window.history.back()
-                            : (window.location.href = `/${siteUserRole}/affiliate`);
+                            : (window.location.href = `${siteURL}/${siteUserRole}/affiliate`);
                     }),
                         $("#kt_create_form").on("submit", function (e) {
                             e.preventDefault();

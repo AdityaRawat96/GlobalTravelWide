@@ -57,7 +57,7 @@ var KTNotificationSettings = (function () {
                     $(".reset").on("click", function (e) {
                         window.history.length > 2
                             ? window.history.back()
-                            : (window.location.href = `/${siteUserRole}/notification`);
+                            : (window.location.href = `${siteURL}/${siteUserRole}/notification`);
                     }),
                         $("#kt_create_form").on("submit", function (e) {
                             e.preventDefault();
@@ -192,7 +192,7 @@ var KTNotificationSettings = (function () {
 
             myDropzone = new Dropzone(id, {
                 // Make the whole body a dropzone
-                url: `/${siteUserRole}/notification/upload`,
+                url: `${siteURL}/${siteUserRole}/notification/upload`,
                 parallelUploads: 20,
                 autoProcessQueue: false,
                 paramName: "file",

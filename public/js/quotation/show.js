@@ -7,7 +7,7 @@ var KTQuotationSettings = (function () {
                 $(".reset").on("click", function (e) {
                     window.history.length > 2
                         ? window.history.back()
-                        : (window.location.href = `/${siteUserRole}/quotation`);
+                        : (window.location.href = `${siteURL}/${siteUserRole}/quotation`);
                 });
             });
         },
@@ -51,7 +51,7 @@ var KTQuotationSettings = (function () {
                                         confirmButton: "btn btn-primary",
                                     },
                                 }).then(function (e) {
-                                    window.location.href = `/${siteUserRole}/quotation`;
+                                    window.location.href = `${siteURL}/${siteUserRole}/quotation`;
                                 });
                             },
                             error: function (err) {
@@ -94,7 +94,7 @@ var KTQuotationSettings = (function () {
 
             myDropzone = new Dropzone(id, {
                 // Make the whole body a dropzone
-                url: `/${siteUserRole}/quotation/upload`,
+                url: `${siteURL}/${siteUserRole}/quotation/upload`,
                 parallelUploads: 20,
                 autoProcessQueue: false,
                 paramName: "file",

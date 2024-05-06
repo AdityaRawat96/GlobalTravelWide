@@ -81,8 +81,8 @@ var KTFileManagerList = (function () {
                         : null;
 
                     let delete_url = directory_id
-                        ? `/${siteUserRole}/directory/${directory_id}`
-                        : `/${siteUserRole}/attachment/${attachment_id}`;
+                        ? `${siteURL}/${siteUserRole}/directory/${directory_id}`
+                        : `${siteURL}/${siteUserRole}/attachment/${attachment_id}`;
                     const o = t.target.closest("tr"),
                         n = o.querySelectorAll("td")[1].innerText;
                     Swal.fire({
@@ -330,7 +330,7 @@ var KTFileManagerList = (function () {
                                         }).then(function (t) {
                                             t.value
                                                 ? $.ajax({
-                                                      url: `/${siteUserRole}/directory/${directory_id}`,
+                                                      url: `${siteURL}/${siteUserRole}/directory/${directory_id}`,
                                                       type: "PUT",
                                                       // add crsf token
                                                       headers: {
@@ -498,7 +498,7 @@ var KTFileManagerList = (function () {
                                 { data: "action" },
                             ],
                             language: {
-                                emptyTable: `<div class="d-flex flex-column flex-center"><img src="/media/illustrations/sketchy-1/5.png" class="mw-400px" /><div class="fs-1 fw-bolder text-dark">No items found.</div><div class="fs-6">Start creating new folders or uploading a new file!</div></div>`,
+                                emptyTable: `<div class="d-flex flex-column flex-center"><img src="${siteURL}/media/illustrations/sketchy-1/5.png" class="mw-400px" /><div class="fs-1 fw-bolder text-dark">No items found.</div><div class="fs-6">Start creating new folders or uploading a new file!</div></div>`,
                             },
                         },
                         n = {
@@ -515,7 +515,7 @@ var KTFileManagerList = (function () {
                                 { data: "action" },
                             ],
                             language: {
-                                emptyTable: `<div class="d-flex flex-column flex-center"><img src="/media/illustrations/sketchy-1/5.png" class="mw-400px" /><div class="fs-1 fw-bolder text-dark mb-4">No items found.</div><div class="fs-6">Start creating new folders or uploading a new file!</div></div>`,
+                                emptyTable: `<div class="d-flex flex-column flex-center"><img src="${siteURL}/media/illustrations/sketchy-1/5.png" class="mw-400px" /><div class="fs-1 fw-bolder text-dark mb-4">No items found.</div><div class="fs-6">Start creating new folders or uploading a new file!</div></div>`,
                             },
                             conditionalPaging: !0,
                         };
@@ -605,7 +605,7 @@ var KTFileManagerList = (function () {
                                                   "Valid" == t
                                                       ? // Ajax to create new folder
                                                         $.ajax({
-                                                            url: `/${siteUserRole}/directory`,
+                                                            url: `${siteURL}/${siteUserRole}/directory`,
                                                             type: "POST",
                                                             // add crsf token
                                                             headers: {
@@ -721,7 +721,7 @@ var KTFileManagerList = (function () {
         },
         loadDirectoryContents: function (directoryId) {
             $.ajax({
-                url: `/${siteUserRole}/directory`,
+                url: `${siteURL}/${siteUserRole}/directory`,
                 type: "GET",
                 data: {
                     directory_id: directoryId,
@@ -875,7 +875,7 @@ var KTFileManagerList = (function () {
             o.id = "";
             var n = document.getElementById("dropzone_template").innerHTML;
             dropzoneInstance = new Dropzone(e, {
-                url: `/${siteUserRole}/attachment`,
+                url: `${siteURL}/${siteUserRole}/attachment`,
                 headers: {
                     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
                         "content"

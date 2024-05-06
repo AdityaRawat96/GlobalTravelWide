@@ -50,7 +50,7 @@ var KTQueriesettings = (function () {
                         var e = $(this).val();
                         $(".customer_details").addClass("d-none"),
                             $.ajax({
-                                url: `/${siteUserRole}/customer/` + e,
+                                url: `${siteURL}/${siteUserRole}/customer/` + e,
                                 type: "GET",
                                 success: function (e) {
                                     $("#customer_email").val(e.email);
@@ -70,7 +70,7 @@ var KTQueriesettings = (function () {
                         n.resetForm();
                         window.history.length > 2
                             ? window.history.back()
-                            : (window.location.href = `/${siteUserRole}/query`);
+                            : (window.location.href = `${siteURL}/${siteUserRole}/query`);
                     }),
                         $("#kt_create_form").on("submit", function (e) {
                             e.preventDefault();

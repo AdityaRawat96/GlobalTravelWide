@@ -20,7 +20,7 @@ var KTDatatablesServerSide = (function () {
             order: [[0, "asc"]],
             stateSave: false,
             ajax: {
-                url: `/${siteUserRole}/commission`,
+                url: `${siteURL}/${siteUserRole}/commission`,
                 data: function (d) {
                     d.filter = filter;
                 },

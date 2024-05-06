@@ -54,7 +54,7 @@ var KTPnrSettings = (function () {
                         n.resetForm();
                         window.history.length > 2
                             ? window.history.back()
-                            : (window.location.href = `/${siteUserRole}/pnr`);
+                            : (window.location.href = `${siteURL}/${siteUserRole}/pnr`);
                     }),
                         $("#kt_create_form").on("submit", function (e) {
                             e.preventDefault();

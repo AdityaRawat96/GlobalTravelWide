@@ -6,7 +6,7 @@ var KTPnrSettings = (function () {
                 $(".reset").on("click", function (e) {
                     window.history.length > 2
                         ? window.history.back()
-                        : (window.location.href = `/${siteUserRole}/pnr`);
+                        : (window.location.href = `${siteURL}/${siteUserRole}/pnr`);
                 });
             });
         },

@@ -6,7 +6,7 @@ var KTCustomerSettings = (function () {
                 $(".reset").on("click", function (e) {
                     window.history.length > 2
                         ? window.history.back()
-                        : (window.location.href = `/${siteUserRole}/customer`);
+                        : (window.location.href = `${siteURL}/${siteUserRole}/customer`);
                 });
             });
         },

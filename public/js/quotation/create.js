@@ -169,7 +169,7 @@ var KTAppQuotationsCreate = (function () {
                                         confirmButton: "btn btn-primary",
                                     },
                                 }).then(function (e) {
-                                    window.location.href = `/${siteUserRole}/quotation`;
+                                    window.location.href = `${siteURL}/${siteUserRole}/quotation`;
                                 });
                             },
                             error: function (err) {
@@ -204,7 +204,7 @@ var KTAppQuotationsCreate = (function () {
                 var e = $(this).val();
                 $(".customer_details").addClass("d-none"),
                     $.ajax({
-                        url: `/${siteUserRole}/customer/` + e,
+                        url: `${siteURL}/${siteUserRole}/customer/` + e,
                         type: "GET",
                         success: function (e) {
                             $("#customer_email").val(e.email);
@@ -369,7 +369,7 @@ var FormSubmission = (function () {
                     $(".reset").on("click", function (e) {
                         window.history.length > 2
                             ? window.history.back()
-                            : (window.location.href = `/${siteUserRole}/quotation`);
+                            : (window.location.href = `${siteURL}/${siteUserRole}/quotation`);
                     }),
                         $("#kt_create_form").on("submit", function (e) {
                             e.preventDefault();
@@ -589,7 +589,7 @@ var FormSubmission = (function () {
 
             myDropzone = new Dropzone(id, {
                 // Make the whole body a dropzone
-                url: `/${siteUserRole}/quotation/upload`,
+                url: `${siteURL}/${siteUserRole}/quotation/upload`,
                 parallelUploads: 20,
                 autoProcessQueue: false,
                 paramName: "file",

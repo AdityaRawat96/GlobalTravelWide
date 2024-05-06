@@ -220,7 +220,7 @@ var KTAppRefundsCreate = (function () {
                                         confirmButton: "btn btn-primary",
                                     },
                                 }).then(function (e) {
-                                    window.location.href = `/${siteUserRole}/refund`;
+                                    window.location.href = `${siteURL}/${siteUserRole}/refund`;
                                 });
                             },
                             error: function (err) {
@@ -255,7 +255,7 @@ var KTAppRefundsCreate = (function () {
                 var e = $(this).val();
                 $(".customer_details").addClass("d-none"),
                     $.ajax({
-                        url: `/${siteUserRole}/customer/` + e,
+                        url: `${siteURL}/${siteUserRole}/customer/` + e,
                         type: "GET",
                         success: function (e) {
                             $("#customer_email").val(e.email);
@@ -271,7 +271,7 @@ var KTAppRefundsCreate = (function () {
                 function (event) {
                     var e = event.target.value;
                     $.ajax({
-                        url: `/${siteUserRole}/catalogue/` + e,
+                        url: `${siteURL}/${siteUserRole}/catalogue/` + e,
                         type: "GET",
                         success: function (response) {
                             // set closest .details element
@@ -385,7 +385,7 @@ var FormSubmission = (function () {
                     $(".reset").on("click", function (e) {
                         window.history.length > 2
                             ? window.history.back()
-                            : (window.location.href = `/${siteUserRole}/refund`);
+                            : (window.location.href = `${siteURL}/${siteUserRole}/refund`);
                     }),
                         $("#kt_create_form").on("submit", function (e) {
                             e.preventDefault();
@@ -602,7 +602,7 @@ var FormSubmission = (function () {
 
             myDropzone = new Dropzone(id, {
                 // Make the whole body a dropzone
-                url: `/${siteUserRole}/refund/upload`,
+                url: `${siteURL}/${siteUserRole}/refund/upload`,
                 parallelUploads: 20,
                 autoProcessQueue: false,
                 paramName: "file",

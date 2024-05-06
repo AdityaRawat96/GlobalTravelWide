@@ -7,7 +7,7 @@ var KTInvoiceSettings = (function () {
                 $(".reset").on("click", function (e) {
                     window.history.length > 2
                         ? window.history.back()
-                        : (window.location.href = `/${siteUserRole}/invoice`);
+                        : (window.location.href = `${siteURL}/${siteUserRole}/invoice`);
                 });
             });
         },
@@ -51,7 +51,7 @@ var KTInvoiceSettings = (function () {
                                         confirmButton: "btn btn-primary",
                                     },
                                 }).then(function (e) {
-                                    window.location.href = `/${siteUserRole}/invoice`;
+                                    window.location.href = `${siteURL}/${siteUserRole}/invoice`;
                                 });
                             },
                             error: function (err) {
@@ -94,7 +94,7 @@ var KTInvoiceSettings = (function () {
 
             myDropzone = new Dropzone(id, {
                 // Make the whole body a dropzone
-                url: `/${siteUserRole}/invoice/upload`,
+                url: `${siteURL}/${siteUserRole}/invoice/upload`,
                 parallelUploads: 20,
                 autoProcessQueue: false,
                 paramName: "file",

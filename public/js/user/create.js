@@ -51,7 +51,7 @@ var KTUserSettings = (function () {
                         n.resetForm();
                         window.history.length > 2
                             ? window.history.back()
-                            : (window.location.href = `/${siteUserRole}/user`);
+                            : (window.location.href = `${siteURL}/${siteUserRole}/user`);
                     }),
                         $("#kt_create_form").on("submit", function (e) {
                             e.preventDefault();

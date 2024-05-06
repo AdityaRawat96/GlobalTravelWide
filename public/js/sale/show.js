@@ -26,7 +26,7 @@ var KTDatatablesServerSide = (function () {
             order: [[0, "asc"]],
             stateSave: false,
             ajax: {
-                url: `/${siteUserRole}/sale/${saleUserId}`,
+                url: `${siteURL}/${siteUserRole}/sale/${saleUserId}`,
                 data: function (d) {
                     d.filter = filter;
                 },
@@ -70,7 +70,7 @@ var KTDatatablesServerSide = (function () {
                     className: "text-end",
                     render: function (data) {
                         return `
-                            <a href="/${siteUserRole}/${data.type.toLowerCase()}/${
+                            <a href="${siteURL}/${siteUserRole}/${data.type.toLowerCase()}/${
                             data.id
                         }" class="btn btn-light btn-active-light-primary btn-sm d-flex gap-2" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-flip="top-end">
                                 View

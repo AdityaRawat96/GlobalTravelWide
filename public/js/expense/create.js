@@ -61,7 +61,7 @@ var KTExpenseSettings = (function () {
                     $(".reset").on("click", function (e) {
                         window.history.length > 2
                             ? window.history.back()
-                            : (window.location.href = `/${siteUserRole}/expense`);
+                            : (window.location.href = `${siteURL}/${siteUserRole}/expense`);
                     }),
                         $("#kt_create_form").on("submit", function (e) {
                             e.preventDefault();
@@ -202,7 +202,7 @@ var KTExpenseSettings = (function () {
 
             myDropzone = new Dropzone(id, {
                 // Make the whole body a dropzone
-                url: `/${siteUserRole}/expense/upload`,
+                url: `${siteURL}/${siteUserRole}/expense/upload`,
                 parallelUploads: 20,
                 autoProcessQueue: false,
                 paramName: "file",

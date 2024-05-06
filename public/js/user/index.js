@@ -20,7 +20,7 @@ var KTDatatablesServerSide = (function () {
                 className: "row-selected",
             },
             ajax: {
-                url: `/${siteUserRole}/user`,
+                url: `${siteURL}/${siteUserRole}/user`,
             },
             columns: [
                 { data: "id" },
@@ -55,7 +55,7 @@ var KTDatatablesServerSide = (function () {
                             <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
-                                    <a href="/${siteUserRole}/user/${parseInt(
+                                    <a href="${siteURL}/${siteUserRole}/user/${parseInt(
                             data.id.substring(2),
                             10
                         )}" class="menu-link px-3" data-kt-docs-table-filter="view_row">
@@ -65,7 +65,7 @@ var KTDatatablesServerSide = (function () {
                                 <!--end::Menu item-->
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
-                                    <a href="/${siteUserRole}/user/${parseInt(
+                                    <a href="${siteURL}/${siteUserRole}/user/${parseInt(
                             data.id.substring(2),
                             10
                         )}/edit" class="menu-link px-3" data-kt-docs-table-filter="edit_row">
@@ -75,7 +75,7 @@ var KTDatatablesServerSide = (function () {
                                 <!--end::Menu item-->
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
-                                    <a href="/${siteUserRole}/user/${parseInt(
+                                    <a href="${siteURL}/${siteUserRole}/user/${parseInt(
                             data.id.substring(2),
                             10
                         )}" class="menu-link px-3 text-danger" data-kt-docs-table-filter="delete_row">

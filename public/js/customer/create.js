@@ -41,7 +41,7 @@ var KTCustomerSettings = (function () {
                         n.resetForm();
                         window.history.length > 2
                             ? window.history.back()
-                            : (window.location.href = `/${siteUserRole}/customer`);
+                            : (window.location.href = `${siteURL}/${siteUserRole}/customer`);
                     }),
                         $("#kt_create_form").on("submit", function (e) {
                             e.preventDefault();

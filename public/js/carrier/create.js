@@ -37,7 +37,7 @@ var KTCarrierSettings = (function () {
                         n.resetForm();
                         window.history.length > 2
                             ? window.history.back()
-                            : (window.location.href = `/${siteUserRole}/carrier`);
+                            : (window.location.href = `${siteURL}/${siteUserRole}/carrier`);
                     }),
                         $("#kt_create_form").on("submit", function (e) {
                             e.preventDefault();

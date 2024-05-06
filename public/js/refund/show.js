@@ -7,7 +7,7 @@ var KTRefundSettings = (function () {
                 $(".reset").on("click", function (e) {
                     window.history.length > 2
                         ? window.history.back()
-                        : (window.location.href = `/${siteUserRole}/refund`);
+                        : (window.location.href = `${siteURL}/${siteUserRole}/refund`);
                 });
             });
         },
@@ -51,7 +51,7 @@ var KTRefundSettings = (function () {
                                         confirmButton: "btn btn-primary",
                                     },
                                 }).then(function (e) {
-                                    window.location.href = `/${siteUserRole}/refund`;
+                                    window.location.href = `${siteURL}/${siteUserRole}/refund`;
                                 });
                             },
                             error: function (err) {
@@ -94,7 +94,7 @@ var KTRefundSettings = (function () {
 
             myDropzone = new Dropzone(id, {
                 // Make the whole body a dropzone
-                url: `/${siteUserRole}/refund/upload`,
+                url: `${siteURL}/${siteUserRole}/refund/upload`,
                 parallelUploads: 20,
                 autoProcessQueue: false,
                 paramName: "file",
