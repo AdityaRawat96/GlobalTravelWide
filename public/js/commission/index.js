@@ -52,7 +52,7 @@ var KTDatatablesServerSide = (function () {
                     className: "text-end",
                     render: function (data) {
                         return `
-                            <a href="#" onclick="viewCommission('/${siteUserRole}/commission/${parseInt(
+                            <a href="#" onclick="viewCommission('${siteURL}/${siteUserRole}/commission/${parseInt(
                             data.id.substring(2),
                             10
                         )}')" class="btn btn-light btn-active-light-primary btn-sm d-flex gap-2" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-flip="top-end">

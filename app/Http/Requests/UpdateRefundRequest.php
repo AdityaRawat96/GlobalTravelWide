@@ -43,7 +43,7 @@ class UpdateRefundRequest extends FormRequest
             'payment_date.*' => ['date'],
             'payment_amount' => ['array'],
             'payment_amount.*' => ['numeric'],
-            'file' => ['array', 'max:5'],
+            'file' => ['array', 'max:10'],
             'file.*' => ['file', 'max:5120'],
         ];
     }

@@ -30,7 +30,7 @@ class StoreInvoiceRequest extends FormRequest
             'company_id' => 'required',
             'customer_id' => 'required',
             'affiliate_id' => 'nullable',
-            'carrier_id' => 'nullable',
+            'carrier_id' => 'required',
             'currency' => ['required', 'string', 'max:10'],
             'due_date' => ['required', 'date'],
             'departure_date' => ['required', 'date'],
@@ -56,7 +56,7 @@ class StoreInvoiceRequest extends FormRequest
             'payment_amount.*' => ['numeric'],
             'payment_amount_alt' => ['array'],
             'payment_amount_alt.*' => ['numeric'],
-            'file' => ['array', 'max:5'],
+            'file' => ['array', 'max:10'],
             'file.*' => ['file', 'max:5120'],
         ];
     }

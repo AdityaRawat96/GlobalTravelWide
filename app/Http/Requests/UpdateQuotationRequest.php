@@ -48,7 +48,7 @@ class UpdateQuotationRequest extends FormRequest
             'checkin_time.*' => ['datetime'],
             'checkout_time' => ['array'],
             'checkout_time.*' => ['datetime'],
-            'file' => ['array', 'max:5'],
+            'file' => ['array', 'max:10'],
             'file.*' => ['file', 'max:5120'],
         ];
     }

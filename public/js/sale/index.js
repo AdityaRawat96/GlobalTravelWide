@@ -51,7 +51,7 @@ var KTDatatablesServerSide = (function () {
                     className: "text-end",
                     render: function (data) {
                         return `
-                            <a href="#" onclick="viewSale('/${siteUserRole}/sale/${parseInt(
+                            <a href="#" onclick="viewSale('${siteURL}/${siteUserRole}/sale/${parseInt(
                             data.id.substring(2),
                             10
                         )}')" class="btn btn-light btn-active-light-primary btn-sm d-flex gap-2" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-flip="top-end">

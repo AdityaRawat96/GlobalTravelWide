@@ -238,8 +238,9 @@
                                                 <tr class="border-bottom fs-7 fw-bold text-gray-700 text-uppercase">
                                                     <th class="min-w-200px w-475px required">Item</th>
                                                     <th class="min-w-100px w-100px required">QTY</th>
-                                                    <th class="min-w-100px w-150px required">Cost</th>
-                                                    <th class="min-w-100px w-150px required">Price</th>
+                                                    <th class="min-w-100px w-150px required">Refund from supplier (£)
+                                                    </th>
+                                                    <th class="min-w-100px w-150px required">Refund to customer (£)</th>
                                                     <th class="text-end">Action</th>
                                                 </tr>
                                             </thead>

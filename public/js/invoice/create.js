@@ -408,6 +408,11 @@ var FormSubmission = (function () {
                                 notEmpty: { message: "This field is required" },
                             },
                         },
+                        carrier_id: {
+                            validators: {
+                                notEmpty: { message: "This field is required" },
+                            },
+                        },
                         departure_date: {
                             validators: {
                                 notEmpty: { message: "This field is required" },
@@ -683,7 +688,7 @@ var FormSubmission = (function () {
                 paramName: "file",
                 previewTemplate: previewTemplate,
                 maxFilesize: 5, // Max filesize in MB
-                maxFiles: 5,
+                maxFiles: 10,
                 autoQueue: false, // Make sure the files aren't queued until manually added
                 previewsContainer: id + " .dropzone-items", // Define the container to display the previews
                 clickable: id + " .dropzone-select", // Define the element that should be used as click trigger to select files.
