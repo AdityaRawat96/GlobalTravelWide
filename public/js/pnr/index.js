@@ -83,6 +83,31 @@ var KTDatatablesServerSide = (function () {
                     },
                 },
             ],
+            rowCallback: function (row, data) {
+                if (data.status_raw === "pending") {
+                    // Get the date value from data
+                    var dateValue = moment(
+                        data.date,
+                        "DD-MM-YYYY hh:mm A"
+                    ).valueOf();
+                    console.log(dateValue);
+                    // Get the current time
+                    var currentTime = new Date().getTime();
+                    // Calculate the time difference in milliseconds
+                    var timeDifference = dateValue - currentTime;
+                    // Convert milliseconds to hours
+                    var hoursDifference = timeDifference / (1000 * 60 * 60);
+                    console.log(hoursDifference);
+                    // Add classes based on time difference
+                    if (hoursDifference < 12) {
+                        $(row).addClass("bg-light-danger");
+                    } else if (hoursDifference < 24) {
+                        $(row).addClass("bg-light-warning");
+                    } else if (hoursDifference < 48) {
+                        $(row).addClass("bg-light-success");
+                    }
+                }
+            },
         });
 
         table = dt.$;

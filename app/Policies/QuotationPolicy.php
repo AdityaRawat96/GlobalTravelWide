@@ -31,8 +31,8 @@ class QuotationPolicy
      */
     public function view(User $user, Quotation $quotation)
     {
-        // only allow the user to view the list of quotations if they have role of admin or if quotation foreign key user_id is the same as the authenticated user
-        return $user->role === 'admin' || $user->id === $quotation->user_id;
+        // only allow the user to view the list of quotations if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**
@@ -56,8 +56,8 @@ class QuotationPolicy
      */
     public function update(User $user, Quotation $quotation)
     {
-        // only allow the user to update an quotation if they have role of admin or if quotation foreign key user_id is the same as the authenticated user
-        return $user->role === 'admin' || $user->id === $quotation->user_id;
+        // only allow the user to view the list of quotations if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**
@@ -69,8 +69,8 @@ class QuotationPolicy
      */
     public function delete(User $user, Quotation $quotation)
     {
-        // only allow the user to delete an quotation if they have role of admin or if quotation foreign key user_id is the same as the authenticated user
-        return $user->role === 'admin' || $user->id === $quotation->user_id;
+        // only allow the user to view the list of quotations if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**

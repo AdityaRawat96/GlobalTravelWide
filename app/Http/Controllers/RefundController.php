@@ -194,11 +194,12 @@ class RefundController extends Controller
             $validated['user_id'] = auth()->user()->id;
             $validated['total'] = array_sum($price);
             $validated['revenue'] = array_sum($price) - array_sum($cost);
-            if (isset($payment_amount) && array_sum($price) == array_sum($payment_amount)) {
-                $validated['status'] = 'paid';
-            } else {
-                $validated['status'] = 'pending';
-            }
+            // if (isset($payment_amount) && array_sum($price) == array_sum($payment_amount)) {
+            //     $validated['status'] = 'paid';
+            // } else {
+            //     $validated['status'] = 'pending';
+            // }
+
             // Store the refund in the database
             $refund = Refund::create($validated);
 
@@ -361,11 +362,12 @@ class RefundController extends Controller
 
             $validated['total'] = array_sum($price);
             $validated['revenue'] = array_sum($price) - array_sum($cost);
-            if (isset($payment_amount) && array_sum($price) == array_sum($payment_amount)) {
-                $validated['status'] = 'paid';
-            } else {
-                $validated['status'] = 'pending';
-            }
+            // if (isset($payment_amount) && array_sum($price) == array_sum($payment_amount)) {
+            //     $validated['status'] = 'paid';
+            // } else {
+            //     $validated['status'] = 'pending';
+            // }
+
             // Update the refund in the database
             $refund->update($validated);
 

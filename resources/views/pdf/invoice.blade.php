@@ -6,32 +6,32 @@
 
     @if($view)
     <style>
-        @font-face {
-            font-family: "Poppins";
-            src: url("{{ asset('fonts/Poppins-Regular.ttf') }}") format("truetype");
-        }
+    @font-face {
+        font-family: "Poppins";
+        src: url("{{ asset('fonts/Poppins-Regular.ttf') }}") format("truetype");
+    }
 
-        .invoice-details {
-            line-height: 12px !important;
-        }
+    .invoice-details {
+        line-height: 12px !important;
+    }
     </style>
     @else
     <style>
-        @font-face {
-            font-family: "Poppins";
-            src: url("{{ storage_path('fonts/Poppins-Regular.ttf') }}") format("truetype");
-        }
+    @font-face {
+        font-family: "Poppins";
+        src: url("{{ storage_path('fonts/Poppins-Regular.ttf') }}") format("truetype");
+    }
     </style>
     @endif
 
     <style>
-        .content {
-            font-family: "Poppins", sans-serif !important;
-        }
+    .content {
+        font-family: "Poppins", sans-serif !important;
+    }
 
-        th {
-            background-color: #f9f9f9;
-        }
+    th {
+        background-color: #f9f9f9;
+    }
     </style>
 </head>
 
@@ -41,9 +41,11 @@
             <tr style="position: relative; width: 100%">
                 <td style="position: relative; width: 50%">
                     @if($view)
-                    <img src="{{ Storage::drive('public')->url($invoice->company->logo) }}" alt="Invoice logo" style="height: 50px; margin: 10px" />
+                    <img src="{{ Storage::drive('public')->url($invoice->company->logo) }}" alt="Invoice logo"
+                        style="height: 50px; margin: 10px" />
                     @else
-                    <img src="{{ storage_path('app/public/' . $invoice->company->logo) }}" alt="Invoice logo" style="height: 50px; margin: 10px" />
+                    <img src="{{ storage_path('app/public/' . $invoice->company->logo) }}" alt="Invoice logo"
+                        style="height: 50px; margin: 10px" />
                     @endif
                 </td>
                 <td style="position: relative; width: 50%; text-align: right">
@@ -219,7 +221,7 @@
                 between your journeys.<br>
                 * For full terms and conditions please follow the link - https://globaltravelwide.com/termsandconditions
             </p>
-            @else
+            @elseif($invoice->company->id == 2)
             <p>
                 * All deposits are non-refundable<br>
                 * Special request can be sent to hotels & airlines but can't be guaranteed.<br>
@@ -254,6 +256,34 @@
                 * For full terms and conditions please follow the link -
                 https://www.ontimehajjumrah.com/termsandconditions
             </p>
+            @elseif($invoice->company->id == 3)
+            <p>
+                * Deposits: All deposits are non-refundable.<br>
+                * Changes: After ticket issuance, before and after departure changes not permitted (Airline Rules &
+                Regulations may apply)<br>
+                * Cancellations: Before departure and after departure ticket is non-refundable (Airline Rules &
+                Regulations may vary).<br>
+                *Admin Charges: Where a reservation is cancelled or modified after confirm ticket is issued; there is an
+                admin charge of PKR. 3000 per ticket plus airline cancellation charges if ticket is refundable. Kindly
+                note that where there has been a no-show for a flight, the ticket will be non-refundable.<br>
+                *Schedule Changes: Passenger will able to change the date in case of schedule change or flight
+                cancellation +- 3 days depending on flight availability. Please note if you wish to change out of these
+                days, you will be charged an admin fee of PKR. 3000 plus if there is any fare difference.<br>
+                * Hotel Bookings: All confirm hotel bookings are non-refundable & after booking confirmation changes not
+                permitted.<br>
+                * Special Requests: Special request can be sent to hotels & airlines but can't be guaranteed.<br>
+                * Additional charges: Some City Councils and Resorts charge additional fees which must be paid by guests
+                directly. These cannot be prepaid.<br>
+                * Check-in: Please note, for international long-haul flights you need to be at the check-in counter at
+                least 3hrs prior to departure, and for short haul flights the check-in time is 1hr 45min.<br>
+                * RE-CONFIRMATION- PLEASE RE-CONFIRM YOUR FLIGHTS WITH THE AIRLINE/TRAVEL CONSULTANT 72HRS PRIOR TO
+                DEPARTURE.<br>
+                * Documents: We do not accept any responsibility if your travel documents are not in order. Please check
+                validity of the passport, visa and any immigration requirements before undertaking your journey.<br>
+                * Insurance: We strongly advise you to take out travel insurance to cover any eventualities arising due
+                to delay/cancellation of flights, Loss/delay of luggage or any other medical conditions which may come
+                between your journeys.<br>
+            </p>
             @endif
             <br />
             <p>
@@ -273,7 +303,7 @@
         ">
             @if($invoice->company->id == 1)
             <span>Global Travelwide LTD, Registered in England & Wales number 13124484</span>
-            @else
+            @elseif($invoice->company->id == 2)
             <span>Ontime Hajj & Umrah T/A Global Travelwide LTD, Registered in England
                 & Wales number 13124484</span>
             @endif

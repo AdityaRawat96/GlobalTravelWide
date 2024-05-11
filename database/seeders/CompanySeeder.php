@@ -26,5 +26,11 @@ class CompanySeeder extends Seeder
             'logo' => 'companies/logo_2.png',
             'description' => 'OnTime',
         ]);
+
+        Company::create([
+            'name' => 'GlobalWide Flights',
+            'logo' => 'companies/logo_3.png',
+            'description' => 'GlobalWide Flights',
+        ]);
     }
 }

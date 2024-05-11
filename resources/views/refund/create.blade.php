@@ -184,6 +184,23 @@
                                         <!--end::Col-->
                                         <!--begin::Col-->
                                         <div class="col-lg-6">
+                                            <!--begin::Input group-->
+                                            <label
+                                                class="form-label fs-6 fw-bold text-gray-700 mb-3 required">Status</label>
+                                            <div class="mb-5 fv-row">
+                                                <select name="status"
+                                                    class="form-select form-select-lg form-select-solid"
+                                                    data-control="select2" data-placeholder="Select refund status">
+                                                    <option value="pending"
+                                                        {{isset($refund) && $refund->status == 'pending' ? "selected"  : ""}}>
+                                                        Pending</option>
+                                                    <option value="paid"
+                                                        {{isset($refund) && $refund->status == 'paid' ? "selected"  : ""}}>
+                                                        Paid</option>
+                                                </select>
+                                                <div class="fv-plugins-message-container invalid-feedback"></div>
+                                            </div>
+                                            <!--end::Input group-->
                                             <label
                                                 class="form-label fs-6 fw-bold text-gray-700 mb-3 required">Customer</label>
                                             <!--begin::Input group-->

@@ -61,7 +61,7 @@
                     <!--begin::Form-->
                     <form class="form"
                         action="{{isset($user) ? route(Auth::user()->role . '.user.update', $user->id) : route(Auth::user()->role . '.user.store')}}"
-                        id="kt_create_form" method="{{isset($user) ? 'PUT' : 'POST'}}">
+                        id="kt_create_form" method="{{isset($user) ? 'PUT' : 'POST'}}" enctype="multipart/form-data">
                         @csrf
                         <!--begin::Card body-->
                         <div class="card-body border-top p-9">
@@ -226,6 +226,91 @@
                                 <!--end::Col-->
                             </div>
                             <!--end::Input group-->
+                            <!--begin::Input group-->
+                            <div class="row mb-6">
+                                <!--begin::Label-->
+                                <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                                    <span>Notes</span>
+                                </label>
+                                <!--end::Label-->
+                                <!--begin::Col-->
+                                <div class="col-lg-8 fv-row">
+                                    <textarea name="notes" class="form-control form-control-lg form-control-solid"
+                                        rows="3"
+                                        placeholder="notes">{{isset($user->notes) ? $user->notes : null}}</textarea>
+                                </div>
+                                <!--end::Col-->
+                            </div>
+                            <!--end::Input group-->
+                            <!--begin::Input group-->
+                            <div class="row mb-6">
+                                <!--begin::Label-->
+                                <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                                    Attachments
+                                </label>
+                                <!--end::Label-->
+                                <!--begin::Col-->
+                                <div class="col-lg-6 fv-row">
+                                    <!--begin::Dropzone-->
+                                    <div class="dropzone dropzone-queue mb-2" id="kt_dropzonejs">
+                                        <!--begin::Controls-->
+                                        <div class="dropzone-panel mb-lg-0 mb-2">
+                                            <a class="dropzone-select btn btn-sm btn-primary me-2">Attach files</a>
+                                            <a class="dropzone-remove-all btn btn-sm btn-light-primary">Remove
+                                                All</a>
+                                        </div>
+                                        <!--end::Controls-->
+
+                                        <!--begin::Items-->
+                                        <div class="dropzone-items wm-200px">
+                                            <div class="dropzone-item" style="display:none">
+                                                <!--begin::File-->
+                                                <div class="dropzone-file">
+                                                    <a href="#" class="dropzone-filename d-block"
+                                                        title="some_image_file_name.jpg">
+                                                        <span data-dz-name>some_image_file_name.jpg</span>
+                                                        <strong>(<span data-dz-size>340kb</span>)</strong>
+                                                    </a>
+                                                    <div class="dropzone-error" data-dz-errormessage></div>
+                                                </div>
+                                                <!--end::File-->
+
+                                                <!--begin::Progress-->
+                                                <div class="dropzone-progress">
+                                                    <div class="progress">
+                                                        <div class="progress-bar bg-primary" role="progressbar"
+                                                            aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
+                                                            data-dz-uploadprogress>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--end::Progress-->
+
+                                                <!--begin::Toolbar-->
+                                                <div class="dropzone-toolbar">
+                                                    <span class="dropzone-start"><i
+                                                            class="bi bi-play-fill fs-3"></i></span>
+                                                    <span class="dropzone-cancel" data-dz-remove
+                                                        style="display: none;"><i class="bi bi-x fs-3"></i></span>
+                                                    <span class="dropzone-delete" data-dz-remove><i
+                                                            class="bi bi-x fs-1"></i></span>
+                                                </div>
+                                                <!--end::Toolbar-->
+                                            </div>
+                                        </div>
+                                        <!--end::Items-->
+                                    </div>
+                                    <!--end::Dropzone-->
+
+                                    <!--begin::Hint-->
+                                    <span class="form-text text-muted">Max file size is 5MB and max number of
+                                        files
+                                        is 5.</span>
+                                    <!--end::Hint-->
+                                </div>
+                                <!--end::Col-->
+                            </div>
+                            <!--end::Input group-->
                         </div>
                         <!--end::Card body-->
                         <!--begin::Actions-->
@@ -268,4 +353,38 @@
 <!--begin::Custom Javascript(used for this page only)-->
 <script src="{{asset('js/user/create.js')}}"></script>
 <!--end::Custom Javascript-->
+
+@if(isset($user))
+@foreach ($user_attachments as $attach)
+<?php
+$path = Storage::url($attach->path) . $attach->url;
+?>
+
+<script>
+$("document").ready(() => {
+    var path = "{{ $path }}";
+    var fileSize = "{$fileSize}}";
+    var file = new File([path], "{{ $attach->name }}", {
+        type: "{{ $attach->mime_type }}",
+        lastModified: "{{ $attach->updated_at }}",
+        size: "{{ $attach->size }}" // Set file size in bytes
+    });
+    file['status'] = "added";
+    file['_removeLink'] = "a.dz-remove";
+    file['webkitRelativePath'] = "";
+    file['accepted'] = true;
+    file['dataURL'] = path;
+    file['upload'] = {
+        bytesSent: 0,
+        filename: "{{ $attach->name }}",
+        progress: 100,
+        total: "{{ $attach->size }}", // Set total file size in bytes
+        uuid: "{{ md5($attach->id) }}"
+    };
+    myDropzone.emit("addedfile", file, path);
+    myDropzone.files.push(file);
+});
+</script>
+@endforeach
+@endif
 @stop

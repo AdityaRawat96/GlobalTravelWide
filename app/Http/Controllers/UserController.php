@@ -7,8 +7,10 @@ use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Mail\WelcomeEmail;
+use App\Models\Attachment;
 use App\Models\Attendance;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -147,6 +149,21 @@ class UserController extends Controller
             $user->save();
             $user->rawPassword = $password;
 
+            // Store user attacahments
+            if ($request->hasFile('file')) {
+                $files = $request->file('file');
+                foreach ($files as $file) {
+                    $attachment['type'] = 'user';
+                    $attachment['ref_id'] = $user->id;
+                    $attachment['name'] = $file->getClientOriginalName();
+                    $attachment['extension'] = $file->getClientOriginalExtension();
+                    $attachment['mime_type'] = $file->getClientMimeType();
+                    $attachment['size'] = $file->getSize();
+                    $attachment['url'] = $file->store('users', 'public');
+                    Attachment::create($attachment);
+                }
+            }
+
             // Send the user a welcome email
             Mail::to($user->email)->send(new WelcomeEmail($user));
             DB::commit();
@@ -189,9 +206,9 @@ class UserController extends Controller
             }
             $attendance->location = 'London/UK';
         }
-
+        $user_attachments = Attachment::where('type', 'user')->where('ref_id', $user->id)->get();
         // return the view for showing the user
-        return view('user.show', compact('user', 'attendances'));
+        return view('user.show', compact('user', 'attendances', 'user_attachments'));
     }
 
     /**
@@ -204,7 +221,9 @@ class UserController extends Controller
     {
         $this->authorize('view', $user, User::class);
         // return the view for editing the user
-        return view('user.create', compact('user'));
+        $user_attachments = Attachment::where('type', 'user')->where('ref_id', $user->id)->get();
+        // return the view for editing the user
+        return view('user.create', compact('user', 'user_attachments'));
     }
 
     /**
@@ -229,6 +248,48 @@ class UserController extends Controller
 
             // Update the user in the database
             $user->update($validated);
+
+            $existing_files = Attachment::where('type', 'user')->where('ref_id', $user->id)->get();
+
+            // Store user attacahments
+            if ($request->hasFile('file')) {
+                $files = $request->file('file');
+                // check file by name. if file exists, do not reupload and create an attachment, if the file is not in the request but in db delete the file and attachment
+                foreach ($files as $file) {
+                    $existing_file = $existing_files->where('name', $file->getClientOriginalName())->first();
+                    if (!$existing_file) {
+                        $attachment['type'] = 'user';
+                        $attachment['ref_id'] = $user->id;
+                        $attachment['name'] = $file->getClientOriginalName();
+                        $attachment['extension'] = $file->getClientOriginalExtension();
+                        $attachment['mime_type'] = $file->getClientMimeType();
+                        $attachment['size'] = $file->getSize();
+                        $attachment['url'] = $file->store('users', 'public');
+                        Attachment::create($attachment);
+                    }
+                }
+
+                // Delete the files that are not in the request
+                foreach ($existing_files as $existing_file) {
+                    $file_exists = false;
+                    foreach ($files as $file) {
+                        if ($existing_file->name == $file->getClientOriginalName()) {
+                            $file_exists = true;
+                            break;
+                        }
+                    }
+                    if (!$file_exists) {
+                        Storage::disk('public')->delete($existing_file->url);
+                        $existing_file->delete();
+                    }
+                }
+            } else {
+                // Delete all the files if no file is in the request
+                foreach ($existing_files as $existing_file) {
+                    Storage::disk('public')->delete($existing_file->url);
+                    $existing_file->delete();
+                }
+            }
             DB::commit();
             return response()->json(['message' => 'User - ' . env('APP_SHORT') . str_pad($user->id, 5, '0', STR_PAD_LEFT) . ' updated successfully!'], 200);
         } catch (\Exception $e) {
@@ -268,6 +329,12 @@ class UserController extends Controller
         $this->authorize('delete', User::class);
         try {
             DB::beginTransaction();
+            // Delete the user attachments
+            $attachments = Attachment::where('type', 'user')->where('ref_id', $user->id)->get();
+            foreach ($attachments as $attachment) {
+                Storage::disk('public')->delete($attachment->url);
+                $attachment->delete();
+            }
             $user->delete();
             DB::commit();
             return response()->json(['message' => 'User - ' . env('APP_SHORT') . str_pad($user->id, 5, '0', STR_PAD_LEFT) . ' deleted successfully!'], 200);

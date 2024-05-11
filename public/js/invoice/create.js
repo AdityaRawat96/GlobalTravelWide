@@ -427,7 +427,7 @@ var FormSubmission = (function () {
                         file: {
                             validators: {
                                 file: {
-                                    maxSize: "1MB",
+                                    maxSize: "5MB",
                                     message: "The selected file is not valid",
                                 },
                             },

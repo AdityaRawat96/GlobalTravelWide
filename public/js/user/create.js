@@ -1,4 +1,5 @@
 "use strict";
+var myDropzone;
 var KTUserSettings = (function () {
     var t, n, r;
     return {
@@ -36,6 +37,15 @@ var KTUserSettings = (function () {
                                 notEmpty: { message: "This field is required" },
                             },
                         },
+                        // Add file size and number of files validation
+                        file: {
+                            validators: {
+                                file: {
+                                    maxSize: "5MB",
+                                    message: "The selected file is not valid",
+                                },
+                            },
+                        },
                     },
                     plugins: {
                         trigger: new FormValidation.plugins.Trigger(),
@@ -48,10 +58,9 @@ var KTUserSettings = (function () {
                 })),
                 $(document).ready(function (e) {
                     $(".reset").on("click", function (e) {
-                        n.resetForm();
                         window.history.length > 2
                             ? window.history.back()
-                            : (window.location.href = `${siteURL}/${siteUserRole}/user`);
+                            : (window.location.href = `${siteURL}/${siteUserRole}/expense`);
                     }),
                         $("#kt_create_form").on("submit", function (e) {
                             e.preventDefault();
@@ -61,6 +70,14 @@ var KTUserSettings = (function () {
                             if ($("#kt_create_form").attr("method") == "PUT") {
                                 formData.append("_method", "PUT");
                             }
+
+                            // Append dropzone files to formData
+                            if (myDropzone) {
+                                myDropzone.files.forEach(function (file) {
+                                    formData.append("file[]", file);
+                                });
+                            }
+
                             $.ajax({
                                 url: $("#kt_create_form").attr("action"),
                                 type:
@@ -158,8 +175,125 @@ var KTUserSettings = (function () {
                               });
                 });
         },
+        initializeDropZone: function () {
+            // set the dropzone container id
+            const id = "#kt_dropzonejs";
+            const dropzone = document.querySelector(id);
+
+            // set the preview element template
+            var previewNode = dropzone.querySelector(".dropzone-item");
+            previewNode.id = "";
+            var previewTemplate = previewNode.parentNode.innerHTML;
+            previewNode.parentNode.removeChild(previewNode);
+
+            myDropzone = new Dropzone(id, {
+                // Make the whole body a dropzone
+                url: `${siteURL}/${siteUserRole}/user/upload`,
+                parallelUploads: 20,
+                autoProcessQueue: false,
+                paramName: "file",
+                previewTemplate: previewTemplate,
+                maxFilesize: 5, // Max filesize in MB
+                maxFiles: 10,
+                autoQueue: false, // Make sure the files aren't queued until manually added
+                previewsContainer: id + " .dropzone-items", // Define the container to display the previews
+                clickable: id + " .dropzone-select", // Define the element that should be used as click trigger to select files.
+            });
+
+            myDropzone.on("addedfile", function (file) {
+                // Hookup the start button
+                file.previewElement.querySelector(
+                    id + " .dropzone-start"
+                ).onclick = function () {
+                    myDropzone.enqueueFile(file);
+                };
+                if (file.upload.progress == 100) {
+                    file.previewElement.querySelector(
+                        id + " .dropzone-filename"
+                    ).href = file.dataURL;
+                    file.previewElement.querySelector(
+                        id + " .dropzone-filename"
+                    ).target = "_blank";
+                    file.previewElement.querySelector(
+                        id + " .dropzone-filename strong"
+                    ).innerHTML =
+                        "(" +
+                        (file.upload.total / Math.pow(1024, 2)).toFixed(2) +
+                        " MB)";
+                } else {
+                    file.previewElement
+                        .querySelector(id + " .dropzone-filename")
+                        .classList.add("dropzone-local-file");
+                }
+                const dropzoneItems =
+                    dropzone.querySelectorAll(".dropzone-item");
+                dropzoneItems.forEach((dropzoneItem) => {
+                    dropzoneItem.style.display = "";
+                });
+                dropzone.querySelector(".dropzone-remove-all").style.display =
+                    "inline-block";
+            });
+
+            // Update the total progress bar
+            myDropzone.on("totaluploadprogress", function (progress) {
+                const progressBars = dropzone.querySelectorAll(".progress-bar");
+                progressBars.forEach((progressBar) => {
+                    progressBar.style.width = progress + "%";
+                });
+            });
+
+            myDropzone.on("sending", function (file) {
+                // Show the total progress bar when upload starts
+                const progressBars = dropzone.querySelectorAll(".progress-bar");
+                progressBars.forEach((progressBar) => {
+                    progressBar.style.opacity = "1";
+                });
+                // And disable the start button
+                file.previewElement
+                    .querySelector(id + " .dropzone-start")
+                    .setAttribute("disabled", "disabled");
+            });
+
+            // Hide the total progress bar when nothing's uploading anymore
+            myDropzone.on("complete", function (progress) {
+                const progressBars = dropzone.querySelectorAll(".dz-complete");
+
+                setTimeout(function () {
+                    progressBars.forEach((progressBar) => {
+                        progressBar.querySelector(
+                            ".progress-bar"
+                        ).style.opacity = "0";
+                        progressBar.querySelector(".progress").style.opacity =
+                            "0";
+                        progressBar.querySelector(
+                            ".dropzone-start"
+                        ).style.opacity = "0";
+                    });
+                }, 300);
+            });
+
+            // Setup the button for remove all files
+            dropzone
+                .querySelector(".dropzone-remove-all")
+                .addEventListener("click", function () {
+                    dropzone.querySelector(
+                        ".dropzone-remove-all"
+                    ).style.display = "none";
+                    myDropzone.removeAllFiles(true);
+                });
+
+            // On all files removed
+            myDropzone.on("removedfile", function (file) {
+                if (myDropzone.files.length < 1) {
+                    dropzone.querySelector(
+                        ".dropzone-remove-all"
+                    ).style.display = "none";
+                }
+            });
+        },
     };
 })();
 KTUtil.onDOMContentLoaded(function () {
     KTUserSettings.init();
+    KTUserSettings.initializeDropZone();
 });

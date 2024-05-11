@@ -220,7 +220,7 @@
         ">
             @if($quotation->company->id == 1)
             <span>Global Travelwide LTD, Registered in England & Wales number 13124484</span>
-            @else
+            @elseif($quotation->company->id == 2)
             <span>Ontime Hajj & Umrah T/A Global Travelwide LTD, Registered in England
                 & Wales number 13124484</span>
             @endif

@@ -51,6 +51,64 @@
             <!--end::Col-->
         </div>
         <!--end::Input group-->
+        <!--begin::Input group-->
+        <div class="row mb-7">
+            <!--begin::Label-->
+            <label class="col-lg-4 fw-semibold text-muted">Notes</label>
+            <!--end::Label-->
+            <!--begin::Col-->
+            <div class="col-lg-8">
+                <span class="fw-bold fs-6 text-gray-800">{{$user->notes}}</span>
+            </div>
+            <!--end::Col-->
+        </div>
+        <!--end::Input group-->
+        <!--begin::Input group-->
+        <div class="row mb-7">
+            <!--begin::Label-->
+            <label class="col-lg-4 fw-semibold text-muted">Attachments</label>
+            <!--end::Label-->
+            <!--begin::Col-->
+            <div class="col-lg-4">
+                <!--begin::Dropzone-->
+                <div class="dropzone dropzone-queue mb-2" id="kt_dropzonejs">
+                    <!--begin::Controls-->
+                    <div class="dropzone-panel mb-lg-0 mb-2 d-none">
+                        <a class="dropzone-select btn btn-sm btn-primary me-2">Attach files</a>
+                        <a class="dropzone-remove-all btn btn-sm btn-light-primary">Remove
+                            All</a>
+                    </div>
+                    <!--end::Controls-->
+
+                    <!--begin::Items-->
+                    <div class="dropzone-items wm-200px">
+                        <div class="dropzone-item" style="display:none">
+                            <!--begin::File-->
+                            <div class="dropzone-file">
+                                <a href="#" class="dropzone-filename d-block" title="some_image_file_name.jpg">
+                                    <span data-dz-name>some_image_file_name.jpg</span>
+                                    <strong>(<span data-dz-size>340kb</span>)</strong>
+                                </a>
+                                <div class="dropzone-error" data-dz-errormessage></div>
+                            </div>
+                            <!--end::File-->
+                        </div>
+                    </div>
+                    <!--end::Items-->
+                </div>
+                <!--end::Dropzone-->
+                @if(count($user_attachments) == 0)
+                <!--begin::Hint-->
+                <span class="form-text text-muted">
+                    No attachments found.
+                </span>
+                <!--end::Hint-->
+                @endif
+            </div>
+            <!--end::Col-->
+        </div>
+        <!--end::Input group-->
+
     </div>
     <!--end::Card body-->
 </div>

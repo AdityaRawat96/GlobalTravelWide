@@ -45,6 +45,7 @@ class UpdateRefundRequest extends FormRequest
             'payment_amount.*' => ['numeric'],
             'file' => ['array', 'max:10'],
             'file.*' => ['file', 'max:5120'],
+            'status' => ['required', 'string'],
         ];
     }
 }

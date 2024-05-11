@@ -201,4 +201,35 @@ let ATTENDANCE_DATA = @json($attendances);
 <script src="{{asset('js/user/passwordUpdate.js')}}"></script>
 <script src="{{asset('plugins/custom/fullcalendar/fullcalendar.bundle.js')}}"></script>
 <!--end::Custom Javascript-->
+@foreach ($user_attachments as $attach)
+<?php
+$path = Storage::url($attach->path) . $attach->url;
+?>
+
+<script>
+$("document").ready(() => {
+    var path = "{{ $path }}";
+    var fileSize = "{$fileSize}}";
+    var file = new File([path], "{{ $attach->name }}", {
+        type: "{{ $attach->mime_type }}",
+        lastModified: "{{ $attach->updated_at }}",
+        size: "{{ $attach->size }}" // Set file size in bytes
+    });
+    file['status'] = "added";
+    file['_removeLink'] = "a.dz-remove";
+    file['webkitRelativePath'] = "";
+    file['accepted'] = true;
+    file['dataURL'] = path;
+    file['upload'] = {
+        bytesSent: 0,
+        filename: "{{ $attach->name }}",
+        progress: 100,
+        total: "{{ $attach->size }}", // Set total file size in bytes
+        uuid: "{{ md5($attach->id) }}"
+    };
+    myDropzone.emit("addedfile", file, path);
+    myDropzone.files.push(file);
+});
+</script>
+@endforeach
 @stop

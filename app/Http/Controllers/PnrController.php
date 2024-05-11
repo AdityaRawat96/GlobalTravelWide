@@ -102,6 +102,10 @@ class PnrController extends Controller
                     }
                 })
                 ->rawColumns(['status'])
+                // add column for raw value of status
+                ->addColumn('status_raw', function ($data) {
+                    return $data->status;
+                })
                 ->make(true);
             return $datatable;
         }

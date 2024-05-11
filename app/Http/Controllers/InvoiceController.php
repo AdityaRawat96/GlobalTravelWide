@@ -423,10 +423,21 @@ class InvoiceController extends Controller
         unset($validated['cost']);
         $price = $validated['price'];
         unset($validated['price']);
+        if ($validated['currency'] == 'pkr') {
+            $cost_alt = $validated['cost_alt'];
+            unset($validated['cost_alt']);
+            $price_alt = $validated['price_alt'];
+            unset($validated['price_alt']);
+        }
 
         // Check if the products, quantity, cost and price are of the same length
         if (count($products) != count($quantity) || count($products) != count($cost) || count($products) != count($price)) {
             return response()->json(['error' => 'The products, quantity, cost and price must be of the same length'], 400);
+        }
+        if ($validated['currency'] == 'pkr') {
+            if (count($products) != count($cost_alt) || count($products) != count($price_alt)) {
+                return response()->json(['error' => 'The products, quantity, cost and price must be of the same length'], 400);
+            }
         }
 
         if (isset($validated['payment_mode'])) {
@@ -436,10 +447,19 @@ class InvoiceController extends Controller
             unset($validated['payment_date']);
             $payment_amount = $validated['payment_amount'];
             unset($validated['payment_amount']);
-
+            if ($validated['currency'] == 'pkr') {
+                $payment_amount_alt = $validated['payment_amount_alt'];
+                unset($validated['payment_amount_alt']);
+            }
             // Check if the payment_mode, payment_date and payment_amount are of the same length
             if (count($payment_mode) != count($payment_date) || count($payment_mode) != count($payment_amount)) {
                 return response()->json(['error' => 'The payment mode, payment date and payment amount must be of the same length'], 400);
+            }
+            if ($validated['currency'] == 'pkr') {
+                // Check if the payment_mode, payment_date and payment_amount are of the same length
+                if (count($payment_mode) != count($payment_amount_alt)) {
+                    return response()->json(['error' => 'The payment mode, payment date and payment amount must be of the same length'], 400);
+                }
             }
         }
 
@@ -471,6 +491,23 @@ class InvoiceController extends Controller
                 Product::create($product);
             }
 
+            // Store invoice alternate products
+            if ($invoice->currency == 'pkr') {
+                foreach ($products as $key => $product) {
+                    $product = [
+                        'type' => 'invoice',
+                        'ref_id' => $invoice->id,
+                        'catalogue_id' => $product,
+                        'quantity' => $quantity[$key],
+                        'cost' => $cost_alt[$key],
+                        'price' => $price_alt[$key],
+                        'revenue' => $price_alt[$key] - $cost_alt[$key],
+                        'currency' => 'pkr'
+                    ];
+                    Product::create($product);
+                }
+            }
+
             // Update invoice payments
             Payment::where('type', 'invoice')->where('ref_id', $invoice->id)->delete();
 
@@ -484,6 +521,21 @@ class InvoiceController extends Controller
                         'amount' => $payment_amount[$key]
                     ];
                     Payment::create($payment);
+                }
+
+                // Store invoice alternate payments
+                if ($invoice->currency == 'pkr') {
+                    foreach ($payment_amount_alt as $key => $amount) {
+                        $payment = [
+                            'type' => 'invoice',
+                            'ref_id' => $invoice->id,
+                            'mode' => 'cash',
+                            'date' => $payment_date[$key],
+                            'amount' => $amount,
+                            'currency' => 'pkr'
+                        ];
+                        Payment::create($payment);
+                    }
                 }
             }
 
