@@ -28,7 +28,7 @@ class UpdateNotificationRequest extends FormRequest
             'date' => ['required', 'date'],
             'title' => ['required', 'string'],
             'description' => ['required', 'string', 'max:2000'],
-            'file' => ['array', 'max:10'],
+            'file' => ['array', 'max:10', 'required'],
             'file.*' => ['file', 'max:5120'],
         ];
     }
