@@ -9,22 +9,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 🚚 Get latest code
-        uses: actions/checkout@v2
-
-      - name: Copy .env
-        run: php -r "file_exists('.env') || copy('.env.production', '.env');"
+        uses: actions/checkout@v4
 
       - name: Install Dependencies
-        run: composer update --ignore-platform-reqs
+        run: npm install
 
-      - name: Generate key
-        run: php artisan key:generate
+      - name: Cache node modules
+        uses: actions/cache@v4
+        with:
+          # See here for caching with `yarn` https://github.com/actions/cache/blob/main/examples.md#node---yarn or you can leverage caching with actions/setup-node https://github.com/actions/setup-node
+          path: |
+            ~/.npm
+            ${{ github.workspace }}/.next/cache
+          # Generate a new cache whenever packages or source files change.
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+          # If source files changed but packages didn't, rebuild from a prior cache.
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
 
-      - name: Directory Permissions
-        run: chmod -R 775 storage
+      - name: 🔨 Build Project
+        run: npm run build
 
       - name: 📂 Sync files
-        uses: SamKirkland/FTP-Deploy-Action@4.2.0
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ftp.clarteresearch.com
           username: ${{ secrets.FTP_USERNAME }}
@@ -35,5 +42,6 @@ jobs:
           exclude: |
             **/.git*
             **/.git*/**
+            **/.gitignore
             **/node_modules/**
             vendor/
