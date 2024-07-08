@@ -55,9 +55,9 @@ class QuotationController extends Controller
                 );
 
             // Check if the user is not an admin
-            if (auth()->user()->role != 'admin') {
-                $query->where('quotations.user_id', auth()->user()->id);
-            }
+            // if (auth()->user()->role != 'admin') {
+            //     $query->where('quotations.user_id', auth()->user()->id);
+            // }
 
             // only if the filter is not empty and exists filter the records
             if (!empty($request->filter) && isset($request->filter)) {

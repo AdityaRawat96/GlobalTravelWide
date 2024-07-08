@@ -164,7 +164,6 @@ class DashboardController extends Controller
             'invoiceTotalSum' => $invoiceTotalSum,
             'invoiceMaxTotal' => $invoiceMaxTotal,
         ];
-        dd($INVOICE_DATA, $REVENUE_DATA, $SALES_DATA, $totalRevenue);
 
         return view('dashboard.index')->with([
             'totalRevenue' => $totalRevenue,

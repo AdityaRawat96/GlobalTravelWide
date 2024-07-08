@@ -37,8 +37,7 @@
             <!--begin::Actions-->
             <div class="d-flex align-items-center gap-2 gap-lg-3">
                 <!--begin::Secondary button-->
-                <a href="{{'/' . Auth::user()->role . '/invoice/' . $invoice->id}}"
-                    class="btn btn-sm fw-bold btn-danger" id="delete-invoice">Delete</a>
+                <a href="{{'/' . Auth::user()->role . '/invoice/' . $invoice->id}}" class="btn btn-sm fw-bold btn-danger" id="delete-invoice">Delete</a>
                 <!--end::Secondary button-->
             </div>
             <!--end::Actions-->
@@ -60,35 +59,26 @@
                         <!--begin::Card body-->
                         <div class="card-body p-12">
                             <!--begin::Form-->
-                            <form class="form"
-                                action="{{isset($invoice) ? route(Auth::user()->role . '.invoice.update', $invoice->id) : route(Auth::user()->role . '.invoice.store')}}"
-                                id="kt_create_form" method="{{isset($invoice) ? 'PUT' : 'POST'}}"
-                                enctype="multipart/form-data">
+                            <form class="form" action="{{isset($invoice) ? route(Auth::user()->role . '.invoice.update', $invoice->id) : route(Auth::user()->role . '.invoice.store')}}" id="kt_create_form" method="{{isset($invoice) ? 'PUT' : 'POST'}}" enctype="multipart/form-data">
                                 @csrf
                                 <!--begin::Wrapper-->
                                 <div class="d-flex flex-column align-items-start flex-xxl-row">
                                     <!--begin::Input group-->
                                     <div class="fv-row fw-row me-4 order-2">
-                                        <div class="d-flex align-items-center flex-equal " data-bs-toggle="tooltip"
-                                            data-bs-trigger="hover" title="Specify invoice date">
+                                        <div class="d-flex align-items-center flex-equal " data-bs-toggle="tooltip" data-bs-trigger="hover" title="Specify invoice date">
                                             <!--begin::Date-->
                                             <div class="fs-6 fw-bold text-gray-700 text-nowrap required">Date:</div>
                                             <!--end::Date-->
                                             <!--begin::Input-->
                                             <div class="position-relative d-flex align-items-center w-150px">
                                                 <!--begin::Datepicker-->
-                                                <input class="form-control form-control-transparent fw-bold pe-5"
-                                                    placeholder="Select date" name="invoice_date"
-                                                    value="{{isset($invoice) ? (new DateTime($invoice->invoice_date))->format('d-M-Y') : date('d-M-Y')}}" />
+                                                <input class="form-control form-control-transparent fw-bold pe-5" placeholder="Select date" name="invoice_date" value="{{isset($invoice) ? (new DateTime($invoice->invoice_date))->format('d-M-Y') : date('d-M-Y')}}" />
                                                 <!--end::Datepicker-->
                                                 <!--begin::Icon-->
                                                 <!--begin::Svg Icon | path: icons/duotune/arrows/arr072.svg-->
                                                 <span class="svg-icon svg-icon-2 position-absolute ms-4 end-0">
-                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M11.4343 12.7344L7.25 8.55005C6.83579 8.13583 6.16421 8.13584 5.75 8.55005C5.33579 8.96426 5.33579 9.63583 5.75 10.05L11.2929 15.5929C11.6834 15.9835 12.3166 15.9835 12.7071 15.5929L18.25 10.05C18.6642 9.63584 18.6642 8.96426 18.25 8.55005C17.8358 8.13584 17.1642 8.13584 16.75 8.55005L12.5657 12.7344C12.2533 13.0468 11.7467 13.0468 11.4343 12.7344Z"
-                                                            fill="currentColor" />
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M11.4343 12.7344L7.25 8.55005C6.83579 8.13583 6.16421 8.13584 5.75 8.55005C5.33579 8.96426 5.33579 9.63583 5.75 10.05L11.2929 15.5929C11.6834 15.9835 12.3166 15.9835 12.7071 15.5929L18.25 10.05C18.6642 9.63584 18.6642 8.96426 18.25 8.55005C17.8358 8.13584 17.1642 8.13584 16.75 8.55005L12.5657 12.7344C12.2533 13.0468 11.7467 13.0468 11.4343 12.7344Z" fill="currentColor" />
                                                     </svg>
                                                 </span>
                                                 <!--end::Svg Icon-->
@@ -100,37 +90,27 @@
                                     </div>
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
-                                    <div
-                                        class="d-flex flex-center flex-equal fw-row text-nowrap order-1 order-xxl-2 me-4">
+                                    <div class="d-flex flex-center flex-equal fw-row text-nowrap order-1 order-xxl-2 me-4">
                                         <span class="fs-4 fw-bold text-gray-800">Invoice #</span>
-                                        <input type="text" name="invoice_id" id="invoice_id"
-                                            class="form-control form-control-flush fw-bold text-muted fs-3 w-150px"
-                                            value="{{isset($invoice) ? $invoice->invoice_id : time() }}" disabled />
+                                        <input type="text" name="invoice_id" id="invoice_id" class="form-control form-control-flush fw-bold text-muted fs-3 w-150px" value="{{isset($invoice) ? $invoice->invoice_id : time() }}" disabled />
                                     </div>
                                     <!--end::Input group-->
                                     <!--begin::Input group-->
                                     <div class="fv-row order-3 fw-row">
-                                        <div class="d-flex align-items-center justify-content-end flex-equal"
-                                            data-bs-toggle="tooltip" data-bs-trigger="hover"
-                                            title="Specify invoice due date">
+                                        <div class="d-flex align-items-center justify-content-end flex-equal" data-bs-toggle="tooltip" data-bs-trigger="hover" title="Specify invoice due date">
                                             <!--begin::Date-->
                                             <div class="fs-6 fw-bold text-gray-700 text-nowrap required">Due Date:</div>
                                             <!--end::Date-->
                                             <!--begin::Input-->
                                             <div class="position-relative d-flex align-items-center w-150px">
                                                 <!--begin::Datepicker-->
-                                                <input class="form-control form-control-transparent fw-bold pe-5"
-                                                    placeholder="Select date" name="due_date"
-                                                    value="{{isset($invoice) ? (new DateTime($invoice->due_date))->format('d-M-Y') : null}}" />
+                                                <input class="form-control form-control-transparent fw-bold pe-5" placeholder="Select date" name="due_date" value="{{isset($invoice) ? (new DateTime($invoice->due_date))->format('d-M-Y') : null}}" />
                                                 <!--end::Datepicker-->
                                                 <!--begin::Icon-->
                                                 <!--begin::Svg Icon | path: icons/duotune/arrows/arr072.svg-->
                                                 <span class="svg-icon svg-icon-2 position-absolute end-0 ms-4">
-                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M11.4343 12.7344L7.25 8.55005C6.83579 8.13583 6.16421 8.13584 5.75 8.55005C5.33579 8.96426 5.33579 9.63583 5.75 10.05L11.2929 15.5929C11.6834 15.9835 12.3166 15.9835 12.7071 15.5929L18.25 10.05C18.6642 9.63584 18.6642 8.96426 18.25 8.55005C17.8358 8.13584 17.1642 8.13584 16.75 8.55005L12.5657 12.7344C12.2533 13.0468 11.7467 13.0468 11.4343 12.7344Z"
-                                                            fill="currentColor" />
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M11.4343 12.7344L7.25 8.55005C6.83579 8.13583 6.16421 8.13584 5.75 8.55005C5.33579 8.96426 5.33579 9.63583 5.75 10.05L11.2929 15.5929C11.6834 15.9835 12.3166 15.9835 12.7071 15.5929L18.25 10.05C18.6642 9.63584 18.6642 8.96426 18.25 8.55005C17.8358 8.13584 17.1642 8.13584 16.75 8.55005L12.5657 12.7344C12.2533 13.0468 11.7467 13.0468 11.4343 12.7344Z" fill="currentColor" />
                                                     </svg>
                                                 </span>
                                                 <!--end::Svg Icon-->
@@ -156,23 +136,16 @@
                                                 number</label>
                                             <!--begin::Input group-->
                                             <div class="mb-5 fv-row">
-                                                <input name="ref_number" type="text"
-                                                    class="form-control form-control-solid"
-                                                    placeholder="Enter a reference number"
-                                                    value="{{isset($invoice) ? $invoice->ref_number : null}}" />
+                                                <input name="ref_number" type="text" class="form-control form-control-solid" placeholder="Enter a reference number" value="{{isset($invoice) ? $invoice->ref_number : null}}" />
                                                 <div class="fv-plugins-message-container invalid-feedback"></div>
                                             </div>
                                             <!--end::Input group-->
-                                            <label
-                                                class="form-label fs-6 fw-bold text-gray-700 mb-3 required">Company</label>
+                                            <label class="form-label fs-6 fw-bold text-gray-700 mb-3 required">Company</label>
                                             <!--begin::Input group-->
                                             <div class="mb-5 fv-row">
-                                                <select name="company_id"
-                                                    class="form-select form-select-lg form-select-solid"
-                                                    data-control="select2" data-placeholder="Select a company">
+                                                <select name="company_id" class="form-select form-select-lg form-select-solid" data-control="select2" data-placeholder="Select a company">
                                                     @foreach($companies as $company)
-                                                    <option value="{{$company->id}}"
-                                                        {{isset($invoice) && $invoice->company_id == $company->id ? "selected"  : ""}}>
+                                                    <option value="{{$company->id}}" {{isset($invoice) && $invoice->company_id == $company->id ? "selected"  : ""}}>
                                                         {{$company->name}}
                                                     </option>
                                                     @endforeach
@@ -184,9 +157,7 @@
                                                 date</label>
                                             <!--begin::Input group-->
                                             <div class="mb-5 fv-row">
-                                                <input class="form-control form-control-solid" placeholder="Select date"
-                                                    name="departure_date"
-                                                    value="{{isset($invoice) ? (new DateTime($invoice->departure_date))->format('d-M-Y') : null}}" />
+                                                <input class="form-control form-control-solid" placeholder="Select date" name="departure_date" value="{{isset($invoice) ? (new DateTime($invoice->departure_date))->format('d-M-Y') : null}}" />
                                                 <div class="fv-plugins-message-container invalid-feedback"></div>
                                             </div>
                                             <!--end::Input group-->
@@ -194,14 +165,10 @@
                                                 currency</label>
                                             <!--begin::Input group-->
                                             <div class="mb-5 fv-row">
-                                                <select id="currency" name="currency"
-                                                    class="form-select form-select-lg form-select-solid"
-                                                    data-control="select2" data-placeholder="Select a currency">
-                                                    <option value="gbp"
-                                                        {{isset($invoice) && $invoice->currency == 'gbp' ? "selected"  : ""}}>
+                                                <select id="currency" name="currency" class="form-select form-select-lg form-select-solid" data-control="select2" data-placeholder="Select a currency">
+                                                    <option value="gbp" {{isset($invoice) && $invoice->currency == 'gbp' ? "selected"  : ""}}>
                                                         Great British Pound (£)</option>
-                                                    <option value="pkr"
-                                                        {{isset($invoice) && $invoice->currency == 'pkr' ? "selected"  : ""}}>
+                                                    <option value="pkr" {{isset($invoice) && $invoice->currency == 'pkr' ? "selected"  : ""}}>
                                                         Pakistani Rupee (₨)</option>
                                                 </select>
                                                 <div class="fv-plugins-message-container invalid-feedback"></div>
@@ -214,13 +181,10 @@
                                             <label class="form-label fs-6 fw-bold text-gray-700 mb-3">Affiliate</label>
                                             <!--begin::Input group-->
                                             <div class="mb-5 fv-row">
-                                                <select id="affiliate" name="affiliate_id"
-                                                    class="form-select form-select-lg form-select-solid"
-                                                    data-control="select2" data-placeholder="Select a affiliate">
+                                                <select id="affiliate" name="affiliate_id" class="form-select form-select-lg form-select-solid" data-control="select2" data-placeholder="Select a affiliate">
                                                     <option value="">Select a affiliate</option>
                                                     @foreach($affiliates as $affiliate)
-                                                    <option value="{{$affiliate->id}}"
-                                                        {{isset($invoice) && $invoice->affiliate->id == $affiliate->id ? "selected"  : ""}}>
+                                                    <option value="{{$affiliate->id}}" {{isset($invoice) && isset($invoice->affiliate) && $invoice->affiliate->id == $affiliate->id ? "selected"  : ""}}>
                                                         {{"C" . str_pad($affiliate->id, 5, '0', STR_PAD_LEFT) . " - " . $affiliate->name}}
                                                     </option>
                                                     @endforeach
@@ -228,17 +192,13 @@
                                                 <div class="fv-plugins-message-container invalid-feedback"></div>
                                             </div>
                                             <!--end::Input group-->
-                                            <label
-                                                class="form-label fs-6 fw-bold text-gray-700 mb-3 required">Carrier</label>
+                                            <label class="form-label fs-6 fw-bold text-gray-700 mb-3 required">Carrier</label>
                                             <!--begin::Input group-->
                                             <div class="mb-5 fv-row">
-                                                <select id="carrier" name="carrier_id"
-                                                    class="form-select form-select-lg form-select-solid"
-                                                    data-control="select2" data-placeholder="Select a carrier">
+                                                <select id="carrier" name="carrier_id" class="form-select form-select-lg form-select-solid" data-control="select2" data-placeholder="Select a carrier">
                                                     <option value="">Select a carrier</option>
                                                     @foreach($carriers as $carrier)
-                                                    <option value="{{$carrier->id}}"
-                                                        {{isset($invoice) && $invoice->carrier->id == $carrier->id ? "selected"  : ""}}>
+                                                    <option value="{{$carrier->id}}" {{isset($invoice) && $invoice->carrier->id == $carrier->id ? "selected"  : ""}}>
                                                         {{"C" . str_pad($carrier->id, 5, '0', STR_PAD_LEFT) . " - " . $carrier->name}}
                                                     </option>
                                                     @endforeach
@@ -246,17 +206,13 @@
                                                 <div class="fv-plugins-message-container invalid-feedback"></div>
                                             </div>
                                             <!--end::Input group-->
-                                            <label
-                                                class="form-label fs-6 fw-bold text-gray-700 mb-3 required">Customer</label>
+                                            <label class="form-label fs-6 fw-bold text-gray-700 mb-3 required">Customer</label>
                                             <!--begin::Input group-->
                                             <div class="mb-5 fv-row">
-                                                <select id="customer" name="customer_id"
-                                                    class="form-select form-select-lg form-select-solid"
-                                                    data-control="select2" data-placeholder="Select a customer">
+                                                <select id="customer" name="customer_id" class="form-select form-select-lg form-select-solid" data-control="select2" data-placeholder="Select a customer">
                                                     <option value="">Select a customer</option>
                                                     @foreach($customers as $customer)
-                                                    <option value="{{$customer->id}}"
-                                                        {{isset($invoice) && $invoice->customer->id == $customer->id ? "selected"  : ""}}>
+                                                    <option value="{{$customer->id}}" {{isset($invoice) && $invoice->customer->id == $customer->id ? "selected"  : ""}}>
                                                         {{"C" . str_pad($customer->id, 5, '0', STR_PAD_LEFT) . " - " . $customer->name}}
                                                     </option>
                                                     @endforeach
@@ -267,18 +223,12 @@
                                             <div class="customer_details {{isset($invoice) ? '' : 'd-none'}}">
                                                 <!--begin::Input group-->
                                                 <div class="mb-5">
-                                                    <input id="customer_email" type="text"
-                                                        class="form-control form-control-solid"
-                                                        value="{{isset($invoice) ? $invoice->customer->email : null}}"
-                                                        placeholder="Customer Email" disabled />
+                                                    <input id="customer_email" type="text" class="form-control form-control-solid" value="{{isset($invoice) ? $invoice->customer->email : null}}" placeholder="Customer Email" disabled />
                                                 </div>
                                                 <!--end::Input group-->
                                                 <!--begin::Input group-->
                                                 <div class="mb-5">
-                                                    <input id="customer_phone" type="text"
-                                                        class="form-control form-control-solid"
-                                                        value="{{isset($invoice) ? $invoice->customer->phone : null}}"
-                                                        placeholder="Customer Phone" disabled />
+                                                    <input id="customer_phone" type="text" class="form-control form-control-solid" value="{{isset($invoice) ? $invoice->customer->phone : null}}" placeholder="Customer Phone" disabled />
                                                 </div>
                                                 <!--end::Input group-->
                                             </div>
@@ -293,8 +243,7 @@
                                     <!--begin::Table Items-->
                                     <div class="table-responsive mb-10">
                                         <!--begin::Table-->
-                                        <table class="table g-5 gs-0 mb-0 fw-bold text-gray-700" data-kt-element="items"
-                                            id="product_table">
+                                        <table class="table g-5 gs-0 mb-0 fw-bold text-gray-700" data-kt-element="items" id="product_table">
                                             <!--begin::Table head-->
                                             <thead>
                                                 <tr class="border-bottom fs-7 fw-bold text-gray-700 text-uppercase">
@@ -314,14 +263,10 @@
                                                     <td class="pe-7">
                                                         <!--begin::Input group-->
                                                         <div class="mb-5 fv-row">
-                                                            <select name="product[{{ $index  }}]"
-                                                                class="form-select form-select-lg form-select-solid product_select"
-                                                                data-control="select2"
-                                                                data-placeholder="Select a product">
+                                                            <select name="product[{{ $index  }}]" class="form-select form-select-lg form-select-solid product_select" data-control="select2" data-placeholder="Select a product">
                                                                 <option value="">Select a product</option>
                                                                 @foreach($products as $product)
-                                                                <option value="{{$product->id}}"
-                                                                    {{$product->id == $invoice_product->catalogue_id ? 'selected' : ''}}>
+                                                                <option value="{{$product->id}}" {{$product->id == $invoice_product->catalogue_id ? 'selected' : ''}}>
                                                                     {{str_pad($product->id, 5, '0', STR_PAD_LEFT) . " - " . $product->name}}
                                                                 </option>
                                                                 @endforeach
@@ -330,17 +275,11 @@
                                                             </div>
                                                         </div>
                                                         <!--end::Input group-->
-                                                        <input type="text"
-                                                            class="form-control form-control-solid product_description"
-                                                            placeholder="Description"
-                                                            value="{{$invoice_product->catalogue->description}}" />
+                                                        <input type="text" class="form-control form-control-solid product_description" placeholder="Description" value="{{$invoice_product->catalogue->description}}" />
                                                     </td>
                                                     <td class="ps-0">
                                                         <div class="mb-5 fv-row">
-                                                            <input class="form-control form-control-solid" type="number"
-                                                                min="1" name="quantity[{{ $index  }}]" placeholder="1"
-                                                                value="{{$invoice_product->quantity}}"
-                                                                data-kt-element="quantity" />
+                                                            <input class="form-control form-control-solid" type="number" min="1" name="quantity[{{ $index  }}]" placeholder="1" value="{{$invoice_product->quantity}}" data-kt-element="quantity" />
                                                             <div class="fv-plugins-message-container invalid-feedback">
                                                             </div>
                                                         </div>
@@ -348,22 +287,14 @@
                                                     <td>
                                                         <div class="input-group input-group-solid mb-5 fv-row">
                                                             <span class="input-group-text elements_alt">£</span>
-                                                            <input type="text"
-                                                                class="form-control form-control-solid text-end"
-                                                                name="cost[{{ $index  }}]" placeholder="0.00"
-                                                                value="{{$invoice_product->cost}}"
-                                                                data-kt-element="cost" />
+                                                            <input type="text" class="form-control form-control-solid text-end" name="cost[{{ $index  }}]" placeholder="0.00" value="{{$invoice_product->cost}}" data-kt-element="cost" />
                                                             <div class="fv-plugins-message-container invalid-feedback">
                                                             </div>
                                                         </div>
                                                         @if($invoice->currency != 'gbp')
-                                                        <div
-                                                            class="input-group input-group-solid mb-5 fv-row elements_alt">
+                                                        <div class="input-group input-group-solid mb-5 fv-row elements_alt">
                                                             <span class="input-group-text elements_alt">₨</span>
-                                                            <input type="text" class="form-control text-end"
-                                                                name="cost_alt[{{ $index  }}]]" placeholder="0.00"
-                                                                value="{{$invoice_product->cost_alt}}"
-                                                                data-kt-element="cost_alt" />
+                                                            <input type="text" class="form-control text-end" name="cost_alt[{{ $index  }}]]" placeholder="0.00" value="{{$invoice_product->cost_alt}}" data-kt-element="cost_alt" />
                                                             <div class="fv-plugins-message-container invalid-feedback">
                                                             </div>
                                                         </div>
@@ -372,44 +303,27 @@
                                                     <td>
                                                         <div class="input-group input-group-solid mb-5 fv-row">
                                                             <span class="input-group-text elements_alt">£</span>
-                                                            <input type="text"
-                                                                class="form-control form-control-solid text-end"
-                                                                name="price[{{ $index  }}]" placeholder="0.00"
-                                                                value="{{$invoice_product->price}}"
-                                                                data-kt-element="price" />
+                                                            <input type="text" class="form-control form-control-solid text-end" name="price[{{ $index  }}]" placeholder="0.00" value="{{$invoice_product->price}}" data-kt-element="price" />
                                                             <div class="fv-plugins-message-container invalid-feedback">
                                                             </div>
                                                         </div>
                                                         @if($invoice->currency != 'gbp')
-                                                        <div
-                                                            class="input-group input-group-solid mb-5 fv-row elements_alt">
+                                                        <div class="input-group input-group-solid mb-5 fv-row elements_alt">
                                                             <span class="input-group-text elements_alt">₨</span>
-                                                            <input type="text" class="form-control text-end"
-                                                                name="price_alt[{{ $index  }}]]" placeholder="0.00"
-                                                                value="{{$invoice_product->price_alt}}"
-                                                                data-kt-element="price_alt" />
+                                                            <input type="text" class="form-control text-end" name="price_alt[{{ $index  }}]]" placeholder="0.00" value="{{$invoice_product->price_alt}}" data-kt-element="price_alt" />
                                                             <div class="fv-plugins-message-container invalid-feedback">
                                                             </div>
                                                         </div>
                                                         @endif
                                                     </td>
                                                     <td class="pt-5 text-end">
-                                                        <button type="button"
-                                                            class="btn btn-icon btn-active-color-primary"
-                                                            data-kt-element="remove-item">
+                                                        <button type="button" class="btn btn-icon btn-active-color-primary" data-kt-element="remove-item">
                                                             <!--begin::Svg Icon | path: icons/duotune/general/gen027.svg-->
                                                             <span class="svg-icon svg-icon-3">
-                                                                <svg width="24" height="24" viewBox="0 0 24 24"
-                                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path
-                                                                        d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z"
-                                                                        fill="currentColor" />
-                                                                    <path opacity="0.5"
-                                                                        d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z"
-                                                                        fill="currentColor" />
-                                                                    <path opacity="0.5"
-                                                                        d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z"
-                                                                        fill="currentColor" />
+                                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="currentColor" />
+                                                                    <path opacity="0.5" d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z" fill="currentColor" />
+                                                                    <path opacity="0.5" d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z" fill="currentColor" />
                                                                 </svg>
                                                             </span>
                                                             <!--end::Svg Icon-->
@@ -422,10 +336,7 @@
                                                     <td class="pe-7">
                                                         <!--begin::Input group-->
                                                         <div class="mb-5 fv-row">
-                                                            <select name="product[]"
-                                                                class="form-select form-select-lg form-select-solid product_select"
-                                                                data-control="select2"
-                                                                data-placeholder="Select a product">
+                                                            <select name="product[]" class="form-select form-select-lg form-select-solid product_select" data-control="select2" data-placeholder="Select a product">
                                                                 <option value="">Select a product</option>
                                                                 @foreach($products as $product)
                                                                 <option value="{{$product->id}}">
@@ -437,15 +348,11 @@
                                                             </div>
                                                         </div>
                                                         <!--end::Input group-->
-                                                        <input type="text"
-                                                            class="form-control form-control-solid product_description"
-                                                            placeholder="Description" />
+                                                        <input type="text" class="form-control form-control-solid product_description" placeholder="Description" />
                                                     </td>
                                                     <td class="ps-0">
                                                         <div class="mb-5 fv-row">
-                                                            <input class="form-control form-control-solid" type="number"
-                                                                min="1" name="quantity[]" placeholder="1" value="1"
-                                                                data-kt-element="quantity" />
+                                                            <input class="form-control form-control-solid" type="number" min="1" name="quantity[]" placeholder="1" value="1" data-kt-element="quantity" />
                                                             <div class="fv-plugins-message-container invalid-feedback">
                                                             </div>
                                                         </div>
@@ -453,19 +360,13 @@
                                                     <td>
                                                         <div class="input-group input-group-solid mb-5 fv-row">
                                                             <span class="input-group-text elements_alt">£</span>
-                                                            <input type="text"
-                                                                class="form-control form-control-solid text-end"
-                                                                name="cost[]" placeholder="0.00" value="0.00"
-                                                                data-kt-element="cost" />
+                                                            <input type="text" class="form-control form-control-solid text-end" name="cost[]" placeholder="0.00" value="0.00" data-kt-element="cost" />
                                                             <div class="fv-plugins-message-container invalid-feedback">
                                                             </div>
                                                         </div>
-                                                        <div
-                                                            class="input-group input-group-solid mb-5 fv-row elements_alt">
+                                                        <div class="input-group input-group-solid mb-5 fv-row elements_alt">
                                                             <span class="input-group-text elements_alt">₨</span>
-                                                            <input type="text" class="form-control text-end"
-                                                                name="cost_alt[]" placeholder="0.00" value="0.00"
-                                                                data-kt-element="cost_alt" />
+                                                            <input type="text" class="form-control text-end" name="cost_alt[]" placeholder="0.00" value="0.00" data-kt-element="cost_alt" />
                                                             <div class="fv-plugins-message-container invalid-feedback">
                                                             </div>
                                                         </div>
@@ -473,40 +374,25 @@
                                                     <td>
                                                         <div class="input-group input-group-solid mb-5 fv-row">
                                                             <span class="input-group-text elements_alt">£</span>
-                                                            <input type="text"
-                                                                class="form-control form-control-solid text-end"
-                                                                name="price[]" placeholder="0.00" value="0.00"
-                                                                data-kt-element="price" />
+                                                            <input type="text" class="form-control form-control-solid text-end" name="price[]" placeholder="0.00" value="0.00" data-kt-element="price" />
                                                             <div class="fv-plugins-message-container invalid-feedback">
                                                             </div>
                                                         </div>
-                                                        <div
-                                                            class="input-group input-group-solid mb-5 fv-row elements_alt">
+                                                        <div class="input-group input-group-solid mb-5 fv-row elements_alt">
                                                             <span class="input-group-text elements_alt">₨</span>
-                                                            <input type="text" class="form-control text-end"
-                                                                name="price_alt[]" placeholder="0.00" value="0.00"
-                                                                data-kt-element="price_alt" />
+                                                            <input type="text" class="form-control text-end" name="price_alt[]" placeholder="0.00" value="0.00" data-kt-element="price_alt" />
                                                             <div class="fv-plugins-message-container invalid-feedback">
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td class="pt-5 text-end">
-                                                        <button type="button"
-                                                            class="btn btn-icon btn-active-color-primary"
-                                                            data-kt-element="remove-item">
+                                                        <button type="button" class="btn btn-icon btn-active-color-primary" data-kt-element="remove-item">
                                                             <!--begin::Svg Icon | path: icons/duotune/general/gen027.svg-->
                                                             <span class="svg-icon svg-icon-3">
-                                                                <svg width="24" height="24" viewBox="0 0 24 24"
-                                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path
-                                                                        d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z"
-                                                                        fill="currentColor" />
-                                                                    <path opacity="0.5"
-                                                                        d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z"
-                                                                        fill="currentColor" />
-                                                                    <path opacity="0.5"
-                                                                        d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z"
-                                                                        fill="currentColor" />
+                                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="currentColor" />
+                                                                    <path opacity="0.5" d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z" fill="currentColor" />
+                                                                    <path opacity="0.5" d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z" fill="currentColor" />
                                                                 </svg>
                                                             </span>
                                                             <!--end::Svg Icon-->
@@ -519,11 +405,9 @@
                                             <!--end::Table body-->
                                             <!--begin::Table foot-->
                                             <tfoot>
-                                                <tr
-                                                    class="border-top border-top-dashed align-top fs-6 fw-bold text-gray-700">
+                                                <tr class="border-top border-top-dashed align-top fs-6 fw-bold text-gray-700">
                                                     <th class="text-primary" colspan="2">
-                                                        <button class="btn btn-link py-1 text-primary"
-                                                            data-kt-element="add-item">Add
+                                                        <button class="btn btn-link py-1 text-primary" data-kt-element="add-item">Add
                                                             item</button>
                                                     </th>
                                                     <th colspan="1" class="border-bottom border-bottom-dashed ps-0">
@@ -536,8 +420,7 @@
                                                         <span data-kt-element="sub-total">0.00</span>
                                                     </th>
                                                 </tr>
-                                                <tr
-                                                    class="border-top border-top-dashed align-top fs-6 fw-bold text-gray-700 elements_alt">
+                                                <tr class="border-top border-top-dashed align-top fs-6 fw-bold text-gray-700 elements_alt">
                                                     <th class="text-primary" colspan="2">
                                                     </th>
                                                     <th colspan="1" class="border-bottom border-bottom-dashed ps-0">
@@ -560,8 +443,7 @@
                                     <!--begin::Table Payments-->
                                     <div class="table-responsive mb-10">
                                         <!--begin::Table-->
-                                        <table class="table g-5 gs-0 mb-0 fw-bold text-gray-700"
-                                            data-kt-element="payments" id="payment_table">
+                                        <table class="table g-5 gs-0 mb-0 fw-bold text-gray-700" data-kt-element="payments" id="payment_table">
                                             <!--begin::Table head-->
                                             <thead>
                                                 <tr class="border-bottom fs-7 fw-bold text-gray-700 text-uppercase">
@@ -576,24 +458,17 @@
                                             <tbody>
                                                 @if(isset($invoice))
                                                 @foreach($invoice_payments as $index => $invoice_payment)
-                                                <tr class="border-bottom border-bottom-dashed"
-                                                    data-kt-element="payment">
+                                                <tr class="border-bottom border-bottom-dashed" data-kt-element="payment">
                                                     <td class="pe-7">
                                                         <!--begin::Input group-->
                                                         <div class="mb-5 fv-row">
-                                                            <select name="payment_mode[{{ $index  }}]"
-                                                                class="form-select form-select-lg form-select-solid"
-                                                                data-control="select2"
-                                                                data-placeholder="Select a payment mode">
+                                                            <select name="payment_mode[{{ $index  }}]" class="form-select form-select-lg form-select-solid" data-control="select2" data-placeholder="Select a payment mode">
                                                                 <option value="">Select a payment mode</option>
-                                                                <option value="bank"
-                                                                    {{$invoice_payment->mode == 'bank' ? 'selected' : ''}}>
+                                                                <option value="bank" {{$invoice_payment->mode == 'bank' ? 'selected' : ''}}>
                                                                     Bank Payment</option>
-                                                                <option value="cash"
-                                                                    {{$invoice_payment->mode == 'cash' ? 'selected' : ''}}>
+                                                                <option value="cash" {{$invoice_payment->mode == 'cash' ? 'selected' : ''}}>
                                                                     Cash Payment</option>
-                                                                <option value="other"
-                                                                    {{$invoice_payment->mode == 'other' ? 'selected' : ''}}>
+                                                                <option value="other" {{$invoice_payment->mode == 'other' ? 'selected' : ''}}>
                                                                     Other</option>
                                                             </select>
                                                             <div class="fv-plugins-message-container invalid-feedback">
@@ -602,11 +477,7 @@
                                                     </td>
                                                     <td class="ps-0">
                                                         <div class="mb-5 fv-row">
-                                                            <input class="form-control form-control-solid"
-                                                                placeholder="Select payment date"
-                                                                name="payment_date[{{ $index  }}]"
-                                                                value="{{(new DateTime($invoice_payment->date))->format('d-M-Y')}}"
-                                                                data-kt-element="payment_date" />
+                                                            <input class="form-control form-control-solid" placeholder="Select payment date" name="payment_date[{{ $index  }}]" value="{{(new DateTime($invoice_payment->date))->format('d-M-Y')}}" data-kt-element="payment_date" />
                                                             <div class="fv-plugins-message-container invalid-feedback">
                                                             </div>
                                                         </div>
@@ -614,44 +485,27 @@
                                                     <td>
                                                         <div class="input-group input-group-solid mb-5 fv-row">
                                                             <span class="input-group-text elements_alt">£</span>
-                                                            <input type="text"
-                                                                class="form-control form-control-solid text-end"
-                                                                name="payment_amount[{{ $index  }}]]" placeholder="0.00"
-                                                                value="0.00" data-kt-element="payment_amount" />
+                                                            <input type="text" class="form-control form-control-solid text-end" name="payment_amount[{{ $index  }}]]" placeholder="0.00" value="0.00" data-kt-element="payment_amount" />
                                                             <div class="fv-plugins-message-container invalid-feedback">
                                                             </div>
                                                         </div>
                                                         @if($invoice->currency != 'gbp')
-                                                        <div
-                                                            class="input-group input-group-solid mb-5 fv-row elements_alt">
+                                                        <div class="input-group input-group-solid mb-5 fv-row elements_alt">
                                                             <span class="input-group-text elements_alt">₨</span>
-                                                            <input type="text" class="form-control text-end"
-                                                                name="payment_amount_alt[{{ $index  }}]]"
-                                                                placeholder="0.00"
-                                                                value="{{$invoice_payment->amount_alt}}"
-                                                                data-kt-element="payment_amount_alt" />
+                                                            <input type="text" class="form-control text-end" name="payment_amount_alt[{{ $index  }}]]" placeholder="0.00" value="{{$invoice_payment->amount_alt}}" data-kt-element="payment_amount_alt" />
                                                             <div class="fv-plugins-message-container invalid-feedback">
                                                             </div>
                                                         </div>
                                                         @endif
                                                     </td>
                                                     <td class="pt-5 text-end">
-                                                        <button type="button"
-                                                            class="btn btn-icon btn-active-color-primary"
-                                                            data-kt-element="remove-payment">
+                                                        <button type="button" class="btn btn-icon btn-active-color-primary" data-kt-element="remove-payment">
                                                             <!--begin::Svg Icon | path: icons/duotune/general/gen027.svg-->
                                                             <span class="svg-icon svg-icon-3">
-                                                                <svg width="24" height="24" viewBox="0 0 24 24"
-                                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path
-                                                                        d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z"
-                                                                        fill="currentColor" />
-                                                                    <path opacity="0.5"
-                                                                        d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z"
-                                                                        fill="currentColor" />
-                                                                    <path opacity="0.5"
-                                                                        d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z"
-                                                                        fill="currentColor" />
+                                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M5 9C5 8.44772 5.44772 8 6 8H18C18.5523 8 19 8.44772 19 9V18C19 19.6569 17.6569 21 16 21H8C6.34315 21 5 19.6569 5 18V9Z" fill="currentColor" />
+                                                                    <path opacity="0.5" d="M5 5C5 4.44772 5.44772 4 6 4H18C18.5523 4 19 4.44772 19 5V5C19 5.55228 18.5523 6 18 6H6C5.44772 6 5 5.55228 5 5V5Z" fill="currentColor" />
+                                                                    <path opacity="0.5" d="M9 4C9 3.44772 9.44772 3 10 3H14C14.5523 3 15 3.44772 15 4V4H9V4Z" fill="currentColor" />
                                                                 </svg>
                                                             </span>
                                                             <!--end::Svg Icon-->
@@ -670,11 +524,9 @@
                                             <!--end::Table body-->
                                             <!--begin::Table foot-->
                                             <tfoot>
-                                                <tr
-                                                    class="border-top border-top-dashed align-top fs-6 fw-bold text-gray-700">
+                                                <tr class="border-top border-top-dashed align-top fs-6 fw-bold text-gray-700">
                                                     <th class="text-primary" colspan="2">
-                                                        <button class="btn btn-link py-1 text-primary"
-                                                            data-kt-element="add-payment">
+                                                        <button class="btn btn-link py-1 text-primary" data-kt-element="add-payment">
                                                             Add payment
                                                         </button>
                                                     </th>
@@ -688,8 +540,7 @@
                                                         <span data-kt-element="paid-total">0.00</span>
                                                     </th>
                                                 </tr>
-                                                <tr
-                                                    class="border-top border-top-dashed align-top fs-6 fw-bold text-gray-700 elements_alt">
+                                                <tr class="border-top border-top-dashed align-top fs-6 fw-bold text-gray-700 elements_alt">
                                                     <th class="text-primary" colspan="2">
                                                     </th>
                                                     <th colspan="1" class="border-bottom border-bottom-dashed ps-0">
@@ -722,8 +573,7 @@
                                     <!--begin::Notes-->
                                     <div class="mb-0">
                                         <label class="form-label fs-6 fw-bold text-gray-700">Internal Notes</label>
-                                        <textarea name="notes" class="form-control form-control-solid" rows="3"
-                                            placeholder="Thanks for your business">{{isset($invoice) ? $invoice->notes : null}}</textarea>
+                                        <textarea name="notes" class="form-control form-control-solid" rows="3" placeholder="Thanks for your business">{{isset($invoice) ? $invoice->notes : null}}</textarea>
                                     </div>
                                     <!--end::Notes-->
                                 </div>
@@ -768,8 +618,7 @@
                                                 <div class="dropzone-item" style="display:none">
                                                     <!--begin::File-->
                                                     <div class="dropzone-file">
-                                                        <a href="#" class="dropzone-filename d-block"
-                                                            title="some_image_file_name.jpg">
+                                                        <a href="#" class="dropzone-filename d-block" title="some_image_file_name.jpg">
                                                             <span data-dz-name>some_image_file_name.jpg</span>
                                                             <strong>(<span data-dz-size>340kb</span>)</strong>
                                                         </a>
@@ -780,9 +629,7 @@
                                                     <!--begin::Progress-->
                                                     <div class="dropzone-progress">
                                                         <div class="progress">
-                                                            <div class="progress-bar bg-primary" role="progressbar"
-                                                                aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
-                                                                data-dz-uploadprogress>
+                                                            <div class="progress-bar bg-primary" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-dz-uploadprogress>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -790,12 +637,9 @@
 
                                                     <!--begin::Toolbar-->
                                                     <div class="dropzone-toolbar">
-                                                        <span class="dropzone-start"><i
-                                                                class="bi bi-play-fill fs-3"></i></span>
-                                                        <span class="dropzone-cancel" data-dz-remove
-                                                            style="display: none;"><i class="bi bi-x fs-3"></i></span>
-                                                        <span class="dropzone-delete" data-dz-remove><i
-                                                                class="bi bi-x fs-1"></i></span>
+                                                        <span class="dropzone-start"><i class="bi bi-play-fill fs-3"></i></span>
+                                                        <span class="dropzone-cancel" data-dz-remove style="display: none;"><i class="bi bi-x fs-3"></i></span>
+                                                        <span class="dropzone-delete" data-dz-remove><i class="bi bi-x fs-1"></i></span>
                                                     </div>
                                                     <!--end::Toolbar-->
                                                 </div>
@@ -825,15 +669,13 @@
                                 <div class="row mb-5">
                                     <!--begin::Col-->
                                     <div class="col">
-                                        <a href="#"
-                                            class="btn btn-light btn-active-light-primary w-100 reset">Dismiss</a>
+                                        <a href="#" class="btn btn-light btn-active-light-primary w-100 reset">Dismiss</a>
                                     </div>
                                     <!--end::Col-->
                                     @if(isset($invoice))
                                     <!--begin::Col-->
                                     <div class="col">
-                                        <a href="{{route(Auth::user()->role . '.invoice.showPdf', $invoice->id)}}"
-                                            class="btn btn-primary btn-active-light-primary w-100">Download</a>
+                                        <a href="{{route(Auth::user()->role . '.invoice.showPdf', $invoice->id)}}" class="btn btn-primary btn-active-light-primary w-100">Download</a>
                                     </div>
                                     <!--end::Col-->
                                     @endif
@@ -844,14 +686,9 @@
                                     <span class="indicator-label">
                                         <!--begin::Svg Icon | path: icons/duotune/general/gen016.svg-->
                                         <span class="svg-icon svg-icon-3">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M15.43 8.56949L10.744 15.1395C10.6422 15.282 10.5804 15.4492 10.5651 15.6236C10.5498 15.7981 10.5815 15.9734 10.657 16.1315L13.194 21.4425C13.2737 21.6097 13.3991 21.751 13.5557 21.8499C13.7123 21.9488 13.8938 22.0014 14.079 22.0015H14.117C14.3087 21.9941 14.4941 21.9307 14.6502 21.8191C14.8062 21.7075 14.9261 21.5526 14.995 21.3735L21.933 3.33649C22.0011 3.15918 22.0164 2.96594 21.977 2.78013C21.9376 2.59432 21.8452 2.4239 21.711 2.28949L15.43 8.56949Z"
-                                                    fill="currentColor" />
-                                                <path opacity="0.3"
-                                                    d="M20.664 2.06648L2.62602 9.00148C2.44768 9.07085 2.29348 9.19082 2.1824 9.34663C2.07131 9.50244 2.00818 9.68731 2.00074 9.87853C1.99331 10.0697 2.04189 10.259 2.14054 10.4229C2.23919 10.5869 2.38359 10.7185 2.55601 10.8015L7.86601 13.3365C8.02383 13.4126 8.19925 13.4448 8.37382 13.4297C8.54839 13.4145 8.71565 13.3526 8.85801 13.2505L15.43 8.56548L21.711 2.28448C21.5762 2.15096 21.4055 2.05932 21.2198 2.02064C21.034 1.98196 20.8409 1.99788 20.664 2.06648Z"
-                                                    fill="currentColor" />
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M15.43 8.56949L10.744 15.1395C10.6422 15.282 10.5804 15.4492 10.5651 15.6236C10.5498 15.7981 10.5815 15.9734 10.657 16.1315L13.194 21.4425C13.2737 21.6097 13.3991 21.751 13.5557 21.8499C13.7123 21.9488 13.8938 22.0014 14.079 22.0015H14.117C14.3087 21.9941 14.4941 21.9307 14.6502 21.8191C14.8062 21.7075 14.9261 21.5526 14.995 21.3735L21.933 3.33649C22.0011 3.15918 22.0164 2.96594 21.977 2.78013C21.9376 2.59432 21.8452 2.4239 21.711 2.28949L15.43 8.56949Z" fill="currentColor" />
+                                                <path opacity="0.3" d="M20.664 2.06648L2.62602 9.00148C2.44768 9.07085 2.29348 9.19082 2.1824 9.34663C2.07131 9.50244 2.00818 9.68731 2.00074 9.87853C1.99331 10.0697 2.04189 10.259 2.14054 10.4229C2.23919 10.5869 2.38359 10.7185 2.55601 10.8015L7.86601 13.3365C8.02383 13.4126 8.19925 13.4448 8.37382 13.4297C8.54839 13.4145 8.71565 13.3526 8.85801 13.2505L15.43 8.56548L21.711 2.28448C21.5762 2.15096 21.4055 2.05932 21.2198 2.02064C21.034 1.98196 20.8409 1.99788 20.664 2.06648Z" fill="currentColor" />
                                             </svg>
                                         </span>
                                         <!--end::Svg Icon-->
@@ -901,29 +738,29 @@ $path = Storage::url($attach->path) . $attach->url;
 ?>
 
 <script>
-$("document").ready(() => {
-    var path = "{{ $path }}";
-    var fileSize = "{$fileSize}}";
-    var file = new File([path], "{{ $attach->name }}", {
-        type: "{{ $attach->mime_type }}",
-        lastModified: "{{ $attach->updated_at }}",
-        size: "{{ $attach->size }}" // Set file size in bytes
+    $("document").ready(() => {
+        var path = "{{ $path }}";
+        var fileSize = "{$fileSize}}";
+        var file = new File([path], "{{ $attach->name }}", {
+            type: "{{ $attach->mime_type }}",
+            lastModified: "{{ $attach->updated_at }}",
+            size: "{{ $attach->size }}" // Set file size in bytes
+        });
+        file['status'] = "added";
+        file['_removeLink'] = "a.dz-remove";
+        file['webkitRelativePath'] = "";
+        file['accepted'] = true;
+        file['dataURL'] = path;
+        file['upload'] = {
+            bytesSent: 0,
+            filename: "{{ $attach->name }}",
+            progress: 100,
+            total: "{{ $attach->size }}", // Set total file size in bytes
+            uuid: "{{ md5($attach->id) }}"
+        };
+        myDropzone.emit("addedfile", file, path);
+        myDropzone.files.push(file);
     });
-    file['status'] = "added";
-    file['_removeLink'] = "a.dz-remove";
-    file['webkitRelativePath'] = "";
-    file['accepted'] = true;
-    file['dataURL'] = path;
-    file['upload'] = {
-        bytesSent: 0,
-        filename: "{{ $attach->name }}",
-        progress: 100,
-        total: "{{ $attach->size }}", // Set total file size in bytes
-        uuid: "{{ md5($attach->id) }}"
-    };
-    myDropzone.emit("addedfile", file, path);
-    myDropzone.files.push(file);
-});
 </script>
 @endforeach
 @endif

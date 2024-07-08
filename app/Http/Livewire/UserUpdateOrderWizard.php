@@ -559,7 +559,6 @@ class UserUpdateOrderWizard extends Component
                 unset($new_product['label_file']);
                 unset($old_product['label_file']);
                 if ($new_product != $old_product) {
-                    dd("Changed");
                     $is_changed = true;
                     break;
                 }
@@ -937,7 +936,6 @@ class UserUpdateOrderWizard extends Component
                     }
 
                     if (count($inventory_products) > 0) {
-                        dd($inventory_products);
                         foreach ($inventory_products as $index => $inventory_product) {
                             $inventory_products[$index]['ref_id'] = $this->order->id;
                             $inventory_products[$index]['created_at'] = $this->order->created_at;
