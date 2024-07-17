@@ -228,15 +228,15 @@
                     <table id="kt_datatable" class="table align-middle table-row-dashed fs-6 gy-5">
                         <thead>
                             <tr class="text-start text-gray-500 fw-bold fs-7 text-uppercase gs-0">
-                                <th class="min-w-125px">Invoice ID</th>
-                                <th class="min-w-125px">Reference #</th>
-                                <th class="min-w-125px">Employee ID</th>
-                                <th class="min-w-125px">Customer Name</th>
-                                <th class="min-w-85px">Amount(£)</th>
-                                <th class="min-w-125px">Carrier</th>
-                                <th class="min-w-125px">Departure Date</th>
-                                <th class="min-w-125px">Invoice Date</th>
-                                <th class="min-w-125px">Status</th>
+                                <th>Invoice ID</th>
+                                <th>Reference #</th>
+                                <th>Employee ID</th>
+                                <th>Customer Name</th>
+                                <th>Amount(£)</th>
+                                <th>Carrier</th>
+                                <th>Departure Date</th>
+                                <th>Invoice Date</th>
+                                <th>Status</th>
                                 <th class="text-end min-w-70px">Actions</th>
                             </tr>
                         </thead>

@@ -66,27 +66,12 @@
                             <!--begin::Input group-->
                             <div class="row mb-6">
                                 <!--begin::Label-->
-                                <label class="col-lg-4 col-form-label required fw-semibold fs-6 required">Customer</label>
+                                <label class="col-lg-4 col-form-label required fw-semibold fs-6 required">PNR
+                                    Number</label>
                                 <!--end::Label-->
-                                <!--begin::Col-->
-                                <div class="col-lg-8">
-                                    <!--begin::Input group-->
-                                    <div class="mb-5 fv-row">
-                                        <input id="customer_name" type="text" class="form-control form-control-solid" value="{{isset($pnr) ? $pnr->customer->name : null}}" placeholder="Customer Name" disabled />
-                                    </div>
-                                    <!--end::Input group-->
-                                    <div class="customer_details {{isset($pnr) ? '' : 'd-none'}}">
-                                        <!--begin::Input group-->
-                                        <div class="mb-5">
-                                            <input id="customer_email" type="text" class="form-control form-control-solid" value="{{isset($pnr) ? $pnr->customer->email : null}}" placeholder="Customer Email" disabled />
-                                        </div>
-                                        <!--end::Input group-->
-                                        <!--begin::Input group-->
-                                        <div class="mb-5">
-                                            <input id="customer_phone" type="text" class="form-control form-control-solid" value="{{isset($pnr) ? $pnr->customer->phone : null}}" placeholder="Customer Phone" disabled />
-                                        </div>
-                                        <!--end::Input group-->
-                                    </div>
+                                <div class="col-lg-8 fv-row">
+                                    <input type="text" name="number" class="form-control form-control-lg form-control-solid" placeholder="PNR Number" value="{{isset($pnr->number) ? $pnr->number : null}}" disabled />
+                                    <div class="fv-plugins-message-container invalid-feedback"></div>
                                 </div>
                                 <!--end::Col-->
                             </div>
@@ -100,6 +85,35 @@
                                 <div class="col-lg-8 fv-row">
                                     <input type="text" name="date" id="pnr_date" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="Pick date & time" value="{{isset($pnr->date) ? $pnr->date : null}}" disabled />
                                     <div class="fv-plugins-message-container invalid-feedback"></div>
+                                </div>
+                                <!--end::Col-->
+                            </div>
+                            <!--end::Input group-->
+                            <!--begin::Input group-->
+                            <div class="row mb-6">
+                                <!--begin::Label-->
+                                <label class="col-lg-4 col-form-label required fw-semibold fs-6">Status</label>
+                                <!--end::Label-->
+                                <!--begin::Col-->
+                                <div class="col-lg-8">
+                                    <!--begin::Row-->
+                                    <div class="row">
+                                        <!--begin::Col-->
+                                        <div class="col-lg-6 fv-row">
+                                            <select name="status" class="form-select form-select-lg form-select-solid" data-control="select2" data-placeholder="Select a status" disabled>
+                                                <option value="">Select a status</option>
+                                                <option value="pending" {{isset($pnr->status) && $pnr->status == 'pending' ? 'selected' : null}}>
+                                                    Pending</option>
+                                                <option value="issued" {{isset($pnr->status) && $pnr->status == 'issued' ? 'selected' : null}}>
+                                                    Issued</option>
+                                                <option value="cancelled" {{isset($pnr->status) && $pnr->status == 'cancelled' ? 'selected' : null}}>
+                                                    Cancelled</option>
+                                            </select>
+                                            <div class="fv-plugins-message-container invalid-feedback"></div>
+                                        </div>
+                                        <!--end::Col-->
+                                    </div>
+                                    <!--end::Row-->
                                 </div>
                                 <!--end::Col-->
                             </div>

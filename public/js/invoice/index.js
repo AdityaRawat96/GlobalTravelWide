@@ -13,6 +13,9 @@ var KTDatatablesServerSide = (function () {
             searchDelay: 500,
             processing: true,
             serverSide: true,
+            layout: {
+                scroll: false,
+            },
             order: [[0, "asc"]],
             stateSave: false,
             ajax: {
