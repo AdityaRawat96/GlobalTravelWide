@@ -91,6 +91,9 @@ class RefundController extends Controller
                 if ($columns[$order[0]['column']]['orderable'] == 'true') {
                     $query->orderBy($column, $dir);
                 }
+            } else {
+                // Order by first status and then by due date
+                $query->orderBy('status', 'desc')->orderBy('due_date', 'asc');
             }
 
             // get count of the records from query

@@ -13,7 +13,7 @@ var KTDatatablesServerSide = (function () {
             searchDelay: 500,
             processing: true,
             serverSide: true,
-            order: [[0, "desc"]],
+            order: [],
             stateSave: false,
             ajax: {
                 url: `${siteURL}/${siteUserRole}/refund`,
