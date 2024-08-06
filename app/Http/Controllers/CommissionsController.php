@@ -93,6 +93,11 @@ class CommissionsController extends Controller
         // $this->authorize('view', Auth::user(), $affiliate);
 
         if ($request->ajax()) {
+            if ($affiliate == null) {
+                // return empty datatable if affiliate is not found
+                return DataTables::of([])->make(true);
+            }
+
             $commission_calculation = $request->filter['commission_calculation'];
             $invoice_cal = $commission_calculation;
             $refund_cal = $commission_calculation == 'invoice_date' ? 'refund_date' : $commission_calculation;
@@ -161,7 +166,7 @@ class CommissionsController extends Controller
         $start_date = isset($request->start_date) ? $request->start_date : null;
         $end_date = isset($request->end_date) ? $request->end_date : null;
 
-        $data['affiliate_id'] = $affiliate->id;
+        $data['affiliate_id'] = $id;
         $data['commission_calculation'] = $commission_calculation;
         $data['start_date'] = $start_date;
         $data['end_date'] = $end_date;

@@ -246,6 +246,9 @@ var KTAppCalendar = (function () {
                             var start = new Date(event.start);
                             var end = new Date(event.end);
                             var minutes = (end - start) / 1000 / 60;
+                            if (minutes < 0) {
+                                minutes = 0;
+                            }
                             total_minutes += minutes;
                         });
 
@@ -254,7 +257,7 @@ var KTAppCalendar = (function () {
                         var minutes = total_minutes % 60;
                         // display the total hours worked
                         document.getElementById("total_hours").innerText =
-                            hours + " hours " + minutes + " minutes";
+                            hours + " hours " + parseInt(minutes) + " minutes";
                     },
                     editable: !0,
                     dayMaxEvents: !0,

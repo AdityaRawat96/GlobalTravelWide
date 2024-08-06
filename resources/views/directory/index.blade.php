@@ -170,6 +170,7 @@
                                 <!--end::Svg Icon-->New Folder
                             </button>
                             <!--end::Export-->
+                            @endif
                             <!--begin::Add customer-->
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                 data-bs-target="#kt_modal_upload">
@@ -190,7 +191,6 @@
                                 <!--end::Svg Icon-->Upload Files
                             </button>
                             <!--end::Add customer-->
-                            @endif
                         </div>
                         <!--end::Toolbar-->
                         <!--begin::Group actions-->

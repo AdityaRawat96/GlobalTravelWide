@@ -10,6 +10,7 @@ var KTDatatablesServerSide = (function () {
     // Private functions
     var initDatatable = function () {
         dt = $("#kt_datatable").DataTable({
+            responsive: true,
             searchDelay: 500,
             processing: true,
             serverSide: true,
@@ -38,6 +39,7 @@ var KTDatatablesServerSide = (function () {
             ],
             columnDefs: [
                 {
+                    responsivePriority: 1,
                     targets: -1,
                     data: null,
                     orderable: false,

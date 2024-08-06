@@ -56,9 +56,9 @@ class RefundController extends Controller
                 );
 
             // Check if the user is not an admin
-            if (auth()->user()->role != 'admin') {
-                $query->where('refunds.user_id', auth()->user()->id);
-            }
+            // if (auth()->user()->role != 'admin') {
+            //     $query->where('refunds.user_id', auth()->user()->id);
+            // }
 
 
             // only if the filter is not empty and exists filter the records
@@ -75,7 +75,7 @@ class RefundController extends Controller
             // Add the search query trim the search value and check if it is not empty
             if (!empty($search['value'])) {
                 $query->where(function ($query) use ($columns, $search) {
-                    $query->where('customer_name', 'like', '%' . $search['value'] . '%');
+                    $query->where('customers.name', 'like', '%' . $search['value'] . '%');
                     foreach ($columns as $column) {
                         if ($column['searchable'] == 'true' && $column['data'] != 'customer_name') {
                             $query->orWhere($column['data'], 'like', '%' . $search['value'] . '%');
@@ -171,9 +171,13 @@ class RefundController extends Controller
         unset($validated['cost']);
         $price = $validated['price'];
         unset($validated['price']);
+        $cost_alt = $validated['cost_alt'];
+        unset($validated['cost_alt']);
+        $price_alt = $validated['price_alt'];
+        unset($validated['price_alt']);
 
         // Check if the products, quantity, cost and price are of the same length
-        if (count($products) != count($quantity) || count($products) != count($cost) || count($products) != count($price)) {
+        if (count($products) != count($quantity) || count($products) != count($cost) || count($products) != count($price) || count($products) != count($cost_alt) || count($products) != count($price_alt)) {
             return response()->json(['error' => 'The products, quantity, cost and price must be of the same length'], 400);
         }
 
@@ -184,9 +188,11 @@ class RefundController extends Controller
             unset($validated['payment_date']);
             $payment_amount = $validated['payment_amount'];
             unset($validated['payment_amount']);
+            $payment_amount_alt = $validated['payment_amount_alt'];
+            unset($validated['payment_amount_alt']);
 
             // Check if the payment_mode, payment_date and payment_amount are of the same length
-            if (count($payment_mode) != count($payment_date) || count($payment_mode) != count($payment_amount)) {
+            if (count($payment_mode) != count($payment_date) || count($payment_mode) != count($payment_amount) || count($payment_mode) != count($payment_amount_alt)) {
                 return response()->json(['error' => 'The payment mode, payment date and payment amount must be of the same length'], 400);
             }
         }
@@ -220,6 +226,23 @@ class RefundController extends Controller
                 Product::create($product);
             }
 
+            // Store refund alternate products
+            if ($refund->currency == 'pkr') {
+                foreach ($products as $key => $product) {
+                    $product = [
+                        'type' => 'refund',
+                        'ref_id' => $refund->id,
+                        'catalogue_id' => $product,
+                        'quantity' => $quantity[$key],
+                        'cost' => $cost_alt[$key],
+                        'price' => $price_alt[$key],
+                        'revenue' => $price_alt[$key] - $cost_alt[$key],
+                        'currency' => 'pkr'
+                    ];
+                    Product::create($product);
+                }
+            }
+
             if (isset($payment_mode)) {
                 // Store refund payments
                 foreach ($payment_mode as $key => $mode) {
@@ -231,6 +254,21 @@ class RefundController extends Controller
                         'amount' => $payment_amount[$key]
                     ];
                     Payment::create($payment);
+                }
+
+                // Store refund alternate payments
+                if ($refund->currency == 'pkr') {
+                    foreach ($payment_amount_alt as $key => $amount) {
+                        $payment = [
+                            'type' => 'refund',
+                            'ref_id' => $refund->id,
+                            'mode' => 'cash',
+                            'date' => $payment_date[$key],
+                            'amount' => $amount,
+                            'currency' => 'pkr'
+                        ];
+                        Payment::create($payment);
+                    }
                 }
             }
 
@@ -267,13 +305,24 @@ class RefundController extends Controller
      * @param  \App\Models\Refund  $refund
      * @return \Illuminate\Http\Response
      */
-    public function show(Refund $refund)
+    public function show(Request $request, Refund $refund)
     {
         $this->authorize('view', $refund, Refund::class);
-        // return the view for showing the refund
-        $refund_products = Product::where('type', 'refund')->where('ref_id', $refund->id)->get();
-        $refund_payments = Payment::where('type', 'refund')->where('ref_id', $refund->id)->get();
+        if ($request->currency == 'pkr') {
+            $refund_products = Product::where('type', 'refund')->where('ref_id', $refund->id)->where('currency', 'pkr')->get();
+            $refund_payments = Payment::where('type', 'refund')->where('ref_id', $refund->id)->where('currency', 'pkr')->get();
+            $refund->total = $refund_products->sum('price');
+            $refund->revenue = $refund_products->sum('price') - $refund_products->sum('cost');
+            $refund->currencySymbol = '₨';
+            $refund->type = "Customer Refund";
+        } else {
+            $refund_products = Product::where('type', 'refund')->where('ref_id', $refund->id)->where('currency', 'gbp')->get();
+            $refund_payments = Payment::where('type', 'refund')->where('ref_id', $refund->id)->where('currency', 'gbp')->get();
+            $refund->currencySymbol = '£';
+            $refund->type = "Office Refund";
+        }
         $refund_attachments = Attachment::where('type', 'refund')->where('ref_id', $refund->id)->get();
+        // return the view for showing the refund
         return view('refund.show')->with(['refund' => $refund, 'refund_products' => $refund_products, 'refund_payments' => $refund_payments, 'refund_attachments' => $refund_attachments]);
     }
 
@@ -282,9 +331,20 @@ class RefundController extends Controller
     {
         $refund = Refund::where('id', $id)->first();
         $this->authorize('view', $refund, Refund::class);
+        if ($request->currency == 'pkr') {
+            $refund_products = Product::where('type', 'refund')->where('ref_id', $refund->id)->where('currency', 'pkr')->get();
+            $refund_payments = Payment::where('type', 'refund')->where('ref_id', $refund->id)->where('currency', 'pkr')->get();
+            $refund->total = $refund_products->sum('price');
+            $refund->revenue = $refund_products->sum('price') - $refund_products->sum('cost');
+            $refund->currencySymbol = '₨';
+            $refund->type = "Customer Refund";
+        } else {
+            $refund_products = Product::where('type', 'refund')->where('ref_id', $refund->id)->where('currency', 'gbp')->get();
+            $refund_payments = Payment::where('type', 'refund')->where('ref_id', $refund->id)->where('currency', 'gbp')->get();
+            $refund->currencySymbol = '£';
+            $refund->type = "Office Refund";
+        }
         // return the view for showing the refund
-        $refund_products = Product::where('type', 'refund')->where('ref_id', $refund->id)->get();
-        $refund_payments = Payment::where('type', 'refund')->where('ref_id', $refund->id)->get();
         $pdf = Pdf::loadView('pdf.refund', ['refund' => $refund, 'refund_products' => $refund_products, 'refund_payments' => $refund_payments, 'view' => false]);
         return $pdf->download('refund.pdf');
     }
@@ -302,9 +362,24 @@ class RefundController extends Controller
         $companies = Company::select('id', 'name')->get();
         $customers = Customer::select('id', 'name')->get();
         $products = Catalogue::select('id', 'name')->where('status', 'active')->get();
-        $refund_products = Product::where('type', 'refund')->where('ref_id', $refund->id)->get();
-        $refund_payments = Payment::where('type', 'refund')->where('ref_id', $refund->id)->get();
+        $refund_products = Product::where('type', 'refund')->where('ref_id', $refund->id)->where('currency', 'gbp')->get();
+        $refund_payments = Payment::where('type', 'refund')->where('ref_id', $refund->id)->where('currency', 'gbp')->get();
         $refund_attachments = Attachment::where('type', 'refund')->where('ref_id', $refund->id)->get();
+
+        if ($refund->currency == 'pkr') {
+            $refund_products_alt = Product::where('type', 'refund')->where('ref_id', $refund->id)->where('currency', 'pkr')->get();
+            $refund_payments_alt = Payment::where('type', 'refund')->where('ref_id', $refund->id)->where('currency', 'pkr')->get();
+
+            foreach ($refund_products as $key => $product) {
+                $refund_products[$key]->cost_alt = $refund_products_alt[$key]->cost;
+                $refund_products[$key]->price_alt = $refund_products_alt[$key]->price;
+            }
+
+            foreach ($refund_payments as $key => $payment) {
+                $refund_payments[$key]->amount_alt = $refund_payments_alt[$key]->amount;
+            }
+        }
+
         return view('refund.create')->with(
             [
                 'companies' => $companies,
@@ -340,10 +415,21 @@ class RefundController extends Controller
         unset($validated['cost']);
         $price = $validated['price'];
         unset($validated['price']);
+        if ($validated['currency'] == 'pkr') {
+            $cost_alt = $validated['cost_alt'];
+            unset($validated['cost_alt']);
+            $price_alt = $validated['price_alt'];
+            unset($validated['price_alt']);
+        }
 
         // Check if the products, quantity, cost and price are of the same length
         if (count($products) != count($quantity) || count($products) != count($cost) || count($products) != count($price)) {
             return response()->json(['error' => 'The products, quantity, cost and price must be of the same length'], 400);
+        }
+        if ($validated['currency'] == 'pkr') {
+            if (count($products) != count($cost_alt) || count($products) != count($price_alt)) {
+                return response()->json(['error' => 'The products, quantity, cost and price must be of the same length'], 400);
+            }
         }
 
         if (isset($validated['payment_mode'])) {
@@ -353,10 +439,19 @@ class RefundController extends Controller
             unset($validated['payment_date']);
             $payment_amount = $validated['payment_amount'];
             unset($validated['payment_amount']);
-
+            if ($validated['currency'] == 'pkr') {
+                $payment_amount_alt = $validated['payment_amount_alt'];
+                unset($validated['payment_amount_alt']);
+            }
             // Check if the payment_mode, payment_date and payment_amount are of the same length
             if (count($payment_mode) != count($payment_date) || count($payment_mode) != count($payment_amount)) {
                 return response()->json(['error' => 'The payment mode, payment date and payment amount must be of the same length'], 400);
+            }
+            if ($validated['currency'] == 'pkr') {
+                // Check if the payment_mode, payment_date and payment_amount are of the same length
+                if (count($payment_mode) != count($payment_amount_alt)) {
+                    return response()->json(['error' => 'The payment mode, payment date and payment amount must be of the same length'], 400);
+                }
             }
         }
 
@@ -389,6 +484,23 @@ class RefundController extends Controller
                 Product::create($product);
             }
 
+            // Store refund alternate products
+            if ($refund->currency == 'pkr') {
+                foreach ($products as $key => $product) {
+                    $product = [
+                        'type' => 'refund',
+                        'ref_id' => $refund->id,
+                        'catalogue_id' => $product,
+                        'quantity' => $quantity[$key],
+                        'cost' => $cost_alt[$key],
+                        'price' => $price_alt[$key],
+                        'revenue' => $price_alt[$key] - $cost_alt[$key],
+                        'currency' => 'pkr'
+                    ];
+                    Product::create($product);
+                }
+            }
+
             // Update refund payments
             Payment::where('type', 'refund')->where('ref_id', $refund->id)->delete();
 
@@ -402,6 +514,21 @@ class RefundController extends Controller
                         'amount' => $payment_amount[$key]
                     ];
                     Payment::create($payment);
+                }
+
+                // Store refund alternate payments
+                if ($refund->currency == 'pkr') {
+                    foreach ($payment_amount_alt as $key => $amount) {
+                        $payment = [
+                            'type' => 'refund',
+                            'ref_id' => $refund->id,
+                            'mode' => 'cash',
+                            'date' => $payment_date[$key],
+                            'amount' => $amount,
+                            'currency' => 'pkr'
+                        ];
+                        Payment::create($payment);
+                    }
                 }
             }
 

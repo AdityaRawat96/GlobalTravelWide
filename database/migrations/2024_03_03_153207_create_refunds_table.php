@@ -25,6 +25,7 @@ class CreateRefundsTable extends Migration
             $table->date('due_date');
             $table->float('total');
             $table->float('revenue');
+            $table->string('currency')->default('gbp');
             $table->string('status')->default('pending');
             $table->longText('notes')->nullable();
             $table->timestamps();

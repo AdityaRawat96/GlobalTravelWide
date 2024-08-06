@@ -886,7 +886,7 @@ var KTFileManagerList = (function () {
                 },
                 parallelUploads: 10,
                 previewTemplate: n,
-                maxFilesize: 1,
+                maxFilesize: 5,
                 autoProcessQueue: !1,
                 autoQueue: 1,
                 previewsContainer: e + " .dropzone-items",

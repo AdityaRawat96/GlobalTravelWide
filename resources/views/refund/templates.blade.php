@@ -29,17 +29,33 @@
               </div>
           </td>
           <td>
-              <div class="mb-5 fv-row">
-                  <input type="text" class="form-control form-control-solid text-end" name="cost[]" placeholder="0.00"
-                      value="0.00" data-kt-element="cost" />
+              <div class="input-group input-group-solid mb-5 fv-row">
+                  <span class="input-group-text elements_alt">£</span>
+                  <input type="text" class="form-control text-end" name="cost[]" placeholder="0.00" value="0.00"
+                      data-kt-element="cost" />
+                  <div class="fv-plugins-message-container invalid-feedback">
+                  </div>
+              </div>
+              <div class="input-group input-group-solid mb-5 fv-row elements_alt">
+                  <span class="input-group-text elements_alt">₨</span>
+                  <input type="text" class="form-control text-end" name="cost_alt[]" placeholder="0.00" value="0.00"
+                      data-kt-element="cost_alt" />
                   <div class="fv-plugins-message-container invalid-feedback">
                   </div>
               </div>
           </td>
           <td>
-              <div class="mb-5 fv-row">
-                  <input type="text" class="form-control form-control-solid text-end" name="price[]" placeholder="0.00"
-                      value="0.00" data-kt-element="price" />
+              <div class="input-group input-group-solid mb-5 fv-row">
+                  <span class="input-group-text elements_alt">£</span>
+                  <input type="text" class="form-control text-end" name="price[]" placeholder="0.00" value="0.00"
+                      data-kt-element="price" />
+                  <div class="fv-plugins-message-container invalid-feedback">
+                  </div>
+              </div>
+              <div class="input-group input-group-solid mb-5 fv-row elements_alt">
+                  <span class="input-group-text elements_alt">₨</span>
+                  <input type="text" class="form-control text-end" name="price_alt[]" placeholder="0.00" value="0.00"
+                      data-kt-element="price_alt" />
                   <div class="fv-plugins-message-container invalid-feedback">
                   </div>
               </div>
@@ -90,10 +106,18 @@
               </div>
           </td>
           <td>
-              <div class="mb-5 fv-row">
+              <div class="input-group input-group-solid mb-5 fv-row">
+                  <span class="input-group-text elements_alt">£</span>
                   <input type="text" class="form-control form-control-solid text-end" name="payment_amount[]"
                       placeholder="0.00" value="0.00" data-kt-element="payment_amount" />
                   <div class="fv-plugins-message-container invalid-feedback"></div>
+              </div>
+              <div class="input-group input-group-solid mb-5 fv-row elements_alt">
+                  <span class="input-group-text elements_alt">₨</span>
+                  <input type="text" class="form-control text-end" name="payment_amount_alt[]" placeholder="0.00"
+                      value="0.00" data-kt-element="payment_amount_alt" />
+                  <div class="fv-plugins-message-container invalid-feedback">
+                  </div>
               </div>
           </td>
           <td class="pt-5 text-end">

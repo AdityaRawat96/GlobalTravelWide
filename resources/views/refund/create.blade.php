@@ -180,6 +180,24 @@
                                                 </select>
                                                 <div class="fv-plugins-message-container invalid-feedback"></div>
                                             </div>
+                                            <!--end::Input group-->
+                                            <label class="form-label fs-6 fw-bold text-gray-700 mb-3 required">Default
+                                                currency</label>
+                                            <!--begin::Input group-->
+                                            <div class="mb-5 fv-row">
+                                                <select id="currency" name="currency"
+                                                    class="form-select form-select-lg form-select-solid"
+                                                    data-control="select2" data-placeholder="Select a currency">
+                                                    <option value="gbp"
+                                                        {{isset($refund) && $refund->currency == 'gbp' ? "selected"  : ""}}>
+                                                        Great British Pound (£)</option>
+                                                    <option value="pkr"
+                                                        {{isset($refund) && $refund->currency == 'pkr' ? "selected"  : ""}}>
+                                                        Pakistani Rupee (₨)</option>
+                                                </select>
+                                                <div class="fv-plugins-message-container invalid-feedback"></div>
+                                            </div>
+                                            <!--end::Input group-->
                                         </div>
                                         <!--end::Col-->
                                         <!--begin::Col-->
@@ -253,11 +271,11 @@
                                             <!--begin::Table head-->
                                             <thead>
                                                 <tr class="border-bottom fs-7 fw-bold text-gray-700 text-uppercase">
-                                                    <th class="min-w-200px w-475px required">Item</th>
+                                                    <th class="min-w-100px w-350px required">Item</th>
                                                     <th class="min-w-100px w-100px required">QTY</th>
-                                                    <th class="min-w-100px w-150px required">Refund from supplier (£)
+                                                    <th class="min-w-150px w-200px required">Refund from supplier (£)
                                                     </th>
-                                                    <th class="min-w-100px w-150px required">Refund to customer (£)</th>
+                                                    <th class="min-w-150px w-200px required">Refund to customer (£)</th>
                                                     <th class="text-end">Action</th>
                                                 </tr>
                                             </thead>
@@ -302,7 +320,8 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <div class="mb-5 fv-row">
+                                                        <div class="input-group input-group-solid mb-5 fv-row">
+                                                            <span class="input-group-text elements_alt">£</span>
                                                             <input type="text"
                                                                 class="form-control form-control-solid text-end"
                                                                 name="cost[{{ $index  }}]" placeholder="0.00"
@@ -311,14 +330,35 @@
                                                             <div class="fv-plugins-message-container invalid-feedback">
                                                             </div>
                                                         </div>
+                                                        <div
+                                                            class="input-group input-group-solid mb-5 fv-row elements_alt">
+                                                            <span class="input-group-text elements_alt">₨</span>
+                                                            <input type="text" class="form-control text-end"
+                                                                name="cost_alt[{{ $index  }}]]" placeholder="0.00"
+                                                                value="{{isset($refund_product->cost_alt) ? $refund_product->cost_alt : '0.00'}}"
+                                                                data-kt-element="cost_alt" />
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                            </div>
+                                                        </div>
                                                     </td>
                                                     <td>
-                                                        <div class="mb-5 fv-row">
+                                                        <div class="input-group input-group-solid mb-5 fv-row">
+                                                            <span class="input-group-text elements_alt">£</span>
                                                             <input type="text"
                                                                 class="form-control form-control-solid text-end"
                                                                 name="price[{{ $index  }}]" placeholder="0.00"
                                                                 value="{{$refund_product->price}}"
                                                                 data-kt-element="price" />
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="input-group input-group-solid mb-5 fv-row elements_alt">
+                                                            <span class="input-group-text elements_alt">₨</span>
+                                                            <input type="text" class="form-control text-end"
+                                                                name="price_alt[{{ $index  }}]]" placeholder="0.00"
+                                                                value="{{isset($refund_product->price_alt) ? $refund_product->price_alt : '0.00'}}"
+                                                                data-kt-element="price_alt" />
                                                             <div class="fv-plugins-message-container invalid-feedback">
                                                             </div>
                                                         </div>
@@ -381,7 +421,8 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <div class="mb-5 fv-row">
+                                                        <div class="input-group input-group-solid mb-5 fv-row">
+                                                            <span class="input-group-text elements_alt">£</span>
                                                             <input type="text"
                                                                 class="form-control form-control-solid text-end"
                                                                 name="cost[]" placeholder="0.00" value="0.00"
@@ -389,13 +430,32 @@
                                                             <div class="fv-plugins-message-container invalid-feedback">
                                                             </div>
                                                         </div>
+                                                        <div
+                                                            class="input-group input-group-solid mb-5 fv-row elements_alt">
+                                                            <span class="input-group-text elements_alt">₨</span>
+                                                            <input type="text" class="form-control text-end"
+                                                                name="cost_alt[]" placeholder="0.00" value="0.00"
+                                                                data-kt-element="cost_alt" />
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                            </div>
+                                                        </div>
                                                     </td>
                                                     <td>
-                                                        <div class="mb-5 fv-row">
+                                                        <div class="input-group input-group-solid mb-5 fv-row">
+                                                            <span class="input-group-text elements_alt">£</span>
                                                             <input type="text"
                                                                 class="form-control form-control-solid text-end"
                                                                 name="price[]" placeholder="0.00" value="0.00"
                                                                 data-kt-element="price" />
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="input-group input-group-solid mb-5 fv-row elements_alt">
+                                                            <span class="input-group-text elements_alt">₨</span>
+                                                            <input type="text" class="form-control text-end"
+                                                                name="price_alt[]" placeholder="0.00" value="0.00"
+                                                                data-kt-element="price_alt" />
                                                             <div class="fv-plugins-message-container invalid-feedback">
                                                             </div>
                                                         </div>
@@ -444,6 +504,17 @@
                                                     <th colspan="3" class="border-bottom border-bottom-dashed text-end">
                                                         £
                                                         <span data-kt-element="sub-total">0.00</span>
+                                                    </th>
+                                                </tr>
+                                                <tr
+                                                    class="border-top border-top-dashed align-top fs-6 fw-bold text-gray-700 elements_alt">
+                                                    <th class="text-primary" colspan="2">
+                                                    </th>
+                                                    <th colspan="1" class="border-bottom border-bottom-dashed ps-0">
+                                                    </th>
+                                                    <th colspan="3" class="border-bottom border-bottom-dashed text-end">
+                                                        ₨
+                                                        <span data-kt-element="sub-total-alt">0.00</span>
                                                     </th>
                                                 </tr>
                                             </tfoot>
@@ -511,12 +582,24 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <div class="mb-5 fv-row">
+                                                        <div class="input-group input-group-solid mb-5 fv-row">
+                                                            <span class="input-group-text elements_alt">£</span>
                                                             <input type="text"
                                                                 class="form-control form-control-solid text-end"
-                                                                name="payment_amount[{{ $index  }}]" placeholder="0.00"
+                                                                name="payment_amount[{{ $index  }}]]" placeholder="0.00"
                                                                 value="{{$refund_payment->amount}}"
                                                                 data-kt-element="payment_amount" />
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="input-group input-group-solid mb-5 fv-row elements_alt">
+                                                            <span class="input-group-text elements_alt">₨</span>
+                                                            <input type="text" class="form-control text-end"
+                                                                name="payment_amount_alt[{{ $index  }}]]"
+                                                                placeholder="0.00"
+                                                                value="{{isset($refund_payment->amount_alt) ? $refund_payment->amount_alt : '0.00'}}"
+                                                                data-kt-element="payment_amount_alt" />
                                                             <div class="fv-plugins-message-container invalid-feedback">
                                                             </div>
                                                         </div>
@@ -574,11 +657,29 @@
                                                         <span data-kt-element="paid-total">0.00</span>
                                                     </th>
                                                 </tr>
+                                                <tr
+                                                    class="border-top border-top-dashed align-top fs-6 fw-bold text-gray-700 elements_alt">
+                                                    <th class="text-primary" colspan="2">
+                                                    </th>
+                                                    <th colspan="1" class="border-bottom border-bottom-dashed ps-0">
+                                                    </th>
+                                                    <th colspan="3" class="border-bottom border-bottom-dashed text-end">
+                                                        ₨
+                                                        <span data-kt-element="paid-total-alt">0.00</span>
+                                                    </th>
+                                                </tr>
                                                 <tr class="align-top fw-bold text-gray-700">
                                                     <th colspan="2"></th>
                                                     <th colspan="1" class="fs-4 ps-0">Total</th>
                                                     <th colspan="3" class="text-end fs-4 text-nowrap">£
                                                         <span data-kt-element="grand-total">0.00</span>
+                                                    </th>
+                                                </tr>
+                                                <tr class="align-top fw-bold text-gray-700 elements_alt">
+                                                    <th colspan="2"></th>
+                                                    <th colspan="1" class="fs-4 ps-0"></th>
+                                                    <th colspan="3" class="text-end fs-4 text-nowrap">₨
+                                                        <span data-kt-element="grand-total-alt">0.00</span>
                                                     </th>
                                                 </tr>
                                             </tfoot>

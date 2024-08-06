@@ -1,4 +1,5 @@
 "use strict";
+var defaultCurrency = "gbp";
 var KTAppRefundsCreate = (function () {
     var e,
         f,
@@ -15,6 +16,8 @@ var KTAppRefundsCreate = (function () {
                 ),
                 a = 0,
                 b = 0,
+                c = 0,
+                d = 0,
                 n = wNumb({ decimals: 2, thousand: "," });
             t.map(function (e) {
                 var t = e.querySelector('[data-kt-element="quantity"]'),
@@ -30,6 +33,23 @@ var KTAppRefundsCreate = (function () {
                     (m.value = n.to(s)),
                     (t.value = i),
                     (a += r);
+                console.log(defaultCurrency);
+                if (defaultCurrency == "pkr") {
+                    console.log("pkr");
+                    var t = e.querySelector('[data-kt-element="quantity"]'),
+                        l = e.querySelector('[data-kt-element="price_alt"]'),
+                        m = e.querySelector('[data-kt-element="cost_alt"]'),
+                        r = n.from(l.value),
+                        s = n.from(m.value);
+                    r = !r || r < 0 ? 0 : r;
+                    s = !s || s < 0 ? 0 : s;
+                    var i = parseInt(t.value);
+                    (i = !i || i < 0 ? 1 : i),
+                        (l.value = n.to(r)),
+                        (m.value = n.to(s)),
+                        (t.value = i),
+                        (c += r);
+                }
             }),
                 p.map(function (e) {
                     var l = e.querySelector(
@@ -38,6 +58,14 @@ var KTAppRefundsCreate = (function () {
                         r = n.from(l.value);
                     r = !r || r < 0 ? 0 : r;
                     (l.value = n.to(r)), (b += r);
+                    if (defaultCurrency == "pkr") {
+                        var l = e.querySelector(
+                                '[data-kt-element="payment_amount_alt"]'
+                            ),
+                            r = n.from(l.value);
+                        r = !r || r < 0 ? 0 : r;
+                        (l.value = n.to(r)), (d += r);
+                    }
                 }),
                 (e.querySelector('[data-kt-element="sub-total"]').innerText =
                     n.to(a)),
@@ -45,6 +73,17 @@ var KTAppRefundsCreate = (function () {
                     n.to(b)),
                 (e.querySelector('[data-kt-element="grand-total"]').innerText =
                     n.to(a - b));
+            if (defaultCurrency == "pkr") {
+                (e.querySelector(
+                    '[data-kt-element="sub-total-alt"]'
+                ).innerText = n.to(c)),
+                    (e.querySelector(
+                        '[data-kt-element="paid-total-alt"]'
+                    ).innerText = n.to(d)),
+                    (e.querySelector(
+                        '[data-kt-element="grand-total-alt"]'
+                    ).innerText = n.to(c - d));
+            }
         },
         a = function () {
             if (
@@ -148,7 +187,7 @@ var KTAppRefundsCreate = (function () {
                 ),
                 KTUtil.on(
                     e,
-                    '[data-kt-element="items"] [data-kt-element="quantity"], [data-kt-element="items"] [data-kt-element="cost"], [data-kt-element="items"] [data-kt-element="price"]',
+                    '[data-kt-element="items"] [data-kt-element="quantity"], [data-kt-element="items"] [data-kt-element="cost"], [data-kt-element="items"] [data-kt-element="cost_alt"], [data-kt-element="items"] [data-kt-element="price"], [data-kt-element="items"] [data-kt-element="price_alt"]',
                     "change",
                     function (e) {
                         e.preventDefault(), t();
@@ -156,7 +195,7 @@ var KTAppRefundsCreate = (function () {
                 ),
                 KTUtil.on(
                     f,
-                    '[data-kt-element="payments"] [data-kt-element="payment_amount"]',
+                    '[data-kt-element="payments"] [data-kt-element="payment_amount"], [data-kt-element="payments"] [data-kt-element="payment_amount_alt"]',
                     "change",
                     function (e) {
                         e.preventDefault(), t();
@@ -173,8 +212,16 @@ var KTAppRefundsCreate = (function () {
                 $(e.querySelector('[name="payment_date[]"]')).flatpickr({
                     enableTime: !1,
                     dateFormat: "d, M Y",
-                }),
+                });
+            $(document).ready(function () {
+                defaultCurrency = $("#currency").val();
+                if (defaultCurrency == "gbp") {
+                    $(".elements_alt").addClass("d-none");
+                } else {
+                    $(".elements_alt").removeClass("d-none");
+                }
                 t();
+            });
         },
         handleDeleteRows: function () {
             // Select all delete buttons
@@ -251,6 +298,15 @@ var KTAppRefundsCreate = (function () {
             });
         },
         eventChange: function () {
+            $("#currency").on("change", function () {
+                defaultCurrency = $(this).val();
+                if (defaultCurrency == "gbp") {
+                    $(".elements_alt").addClass("d-none");
+                } else {
+                    $(".elements_alt").removeClass("d-none");
+                }
+            });
+
             $("#customer").on("change", function () {
                 var e = $(this).val();
                 $(".customer_details").addClass("d-none"),
@@ -360,11 +416,6 @@ var FormSubmission = (function () {
                                     maxSize: "5MB",
                                     message: "The selected file is not valid",
                                 },
-                            },
-                        },
-                        status: {
-                            validators: {
-                                notEmpty: { message: "This field is required" },
                             },
                         },
                     },
@@ -585,7 +636,10 @@ var FormSubmission = (function () {
                 if (
                     key.includes("payment_amount") ||
                     key.includes("price") ||
-                    key.includes("cost")
+                    key.includes("cost") ||
+                    key.includes("price_alt") ||
+                    key.includes("cost_alt") ||
+                    key.includes("payment_amount_alt")
                 ) {
                     var price = parseFloat(date.replace(/,/g, ""));
                     formData.set(key, price);

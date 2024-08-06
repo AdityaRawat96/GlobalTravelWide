@@ -14,7 +14,7 @@ class StoreAttachmentRequest extends FormRequest
     public function authorize()
     {
         // Only admin can create an attachment
-        return $this->user()->role === 'admin';
+        return $this->user()->role === 'admin' || $this->user()->role === 'staff';
     }
 
     /**

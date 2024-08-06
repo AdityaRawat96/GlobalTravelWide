@@ -18,8 +18,8 @@ class AffiliatePolicy
      */
     public function viewAny(User $user)
     {
-        // only allow the user to view the list of affiliates if they have role of admin
-        return $user->role === 'admin';
+        // only allow the user to view the list of affiliates if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**

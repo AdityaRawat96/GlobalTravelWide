@@ -32,7 +32,7 @@
                 <!--begin:Menu item-->
                 <div class="menu-item">
                     <!--begin:Menu link-->
-                    <a class="menu-link" href="{{ route('admin.dashboard.view') }}">
+                    <a class="menu-link" href="{{ route('staff.dashboard.view') }}">
                         <span class="menu-icon">
                             <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
                             <span class="svg-icon svg-icon-2">
@@ -87,7 +87,7 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link" href="{{ '/staff/sale/' . Auth::user()->id }}">
+                            <a class="menu-link" href="{{ env('APP_URL') . '/staff/sale/' . Auth::user()->id }}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
@@ -99,7 +99,7 @@
                         <!--begin:Menu item-->
                         <div class="menu-item">
                             <!--begin:Menu link-->
-                            <a class="menu-link" href="{{ '/staff/commission/' . Auth::user()->id }}">
+                            <a class="menu-link" href="{{ env('APP_URL') . '/staff/commission/' . Auth::user()->id }}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
