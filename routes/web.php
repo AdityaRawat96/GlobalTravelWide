@@ -40,20 +40,20 @@ use Illuminate\Support\Facades\Artisan;
 Route::get('clear-cache', function () {
     Artisan::call('clear-compiled');
     echo "clear-compiled: complete<br>";
-    Artisan::call('cache:clear');
-    echo "cache:clear: complete<br>";
-    Artisan::call('config:clear');
-    echo "config:clear: complete<br>";
-    Artisan::call('view:clear');
-    echo "view:clear: complete<br>";
     Artisan::call('optimize:clear');
     echo "optimize:clear: complete<br>";
-    Artisan::call('config:cache');
-    echo "config:cache: complete<br>";
-    Artisan::call('view:cache');
-    echo "view:cache: complete<br>";
     Artisan::call('route:clear');
     echo "route:clear: complete<br>";
+    Artisan::call('view:clear');
+    echo "view:clear: complete<br>";
+    Artisan::call('view:cache');
+    echo "view:cache: complete<br>";
+    Artisan::call('cache:clear');
+    echo "cache:clear: complete<br>";
+    Artisan::call('config:cache');
+    echo "config:cache: complete<br>";
+    Artisan::call('config:clear');
+    echo "config:clear: complete<br>";
 });
 
 Route::get('/symlink', function () {
