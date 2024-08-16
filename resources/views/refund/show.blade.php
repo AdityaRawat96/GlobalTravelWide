@@ -119,7 +119,8 @@
                                                 <div class="dropzone-item" style="display:none">
                                                     <!--begin::File-->
                                                     <div class="dropzone-file">
-                                                        <a href="#" class="dropzone-filename d-block" title="some_image_file_name.jpg">
+                                                        <a href="#" class="dropzone-filename d-block"
+                                                            title="some_image_file_name.jpg">
                                                             <span data-dz-name>some_image_file_name.jpg</span>
                                                             <strong>(<span data-dz-size>340kb</span>)</strong>
                                                         </a>
@@ -154,17 +155,20 @@
                                 <div class="row mb-5">
                                     <!--begin::Col-->
                                     <div class="col">
-                                        <a href="#" class="btn btn-light btn-active-light-primary w-100 reset">Dismiss</a>
+                                        <a href="#"
+                                            class="btn btn-light btn-active-light-primary w-100 reset">Dismiss</a>
                                     </div>
                                     <!--end::Col-->
                                     <!--begin::Col-->
                                     <div class="col">
                                         @if($refund->type == 'Office Refund')
-                                        <a href="{{ '/' . Auth::user()->role . '/refund/showPdf/' . $refund->id }}" class="btn btn-primary btn-active-light-primary w-100">
+                                        <a href="{{env('APP_URL') . '/' . Auth::user()->role . '/refund/showPdf/' . $refund->id }}"
+                                            class="btn btn-primary btn-active-light-primary w-100">
                                             Download
                                         </a>
                                         @else
-                                        <a href="{{ '/' . Auth::user()->role . '/refund/showPdf/' . $refund->id . '?currency=pkr' }}" class="btn btn-primary btn-active-light-primary w-100">
+                                        <a href="{{env('APP_URL') . '/' . Auth::user()->role . '/refund/showPdf/' . $refund->id . '?currency=pkr' }}"
+                                            class="btn btn-primary btn-active-light-primary w-100">
                                             Download
                                         </a>
                                         @endif
@@ -173,7 +177,8 @@
                                 </div>
                                 <!--end::Row-->
                                 <!--begin::Secondary button-->
-                                <a href="{{'/' . Auth::user()->role . '/refund/' . $refund->id}}" class="btn fw-bold btn-danger w-100" id="delete-refund">Delete</a>
+                                <a href="{{env('APP_URL') . '/' . Auth::user()->role . '/refund/' . $refund->id}}"
+                                    class="btn fw-bold btn-danger w-100" id="delete-refund">Delete</a>
                                 <!--end::Secondary button-->
                             </div>
                             <!--end::Actions-->
