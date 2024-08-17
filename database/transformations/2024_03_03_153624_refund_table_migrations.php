@@ -75,12 +75,20 @@ class RefundTableMigrations extends Migration
                         $payment_modes = explode(',', $payment_modes);
 
                         foreach ($payment_amounts as $key => $payment_amount) {
+                            $payment_mode = $payment_modes[$key];
+                            if ($payment_mode == 1) {
+                                $payment_mode = 'bank';
+                            } elseif ($payment_mode == 2) {
+                                $payment_mode = 'cash';
+                            } elseif ($payment_mode == 3) {
+                                $payment_mode = 'other';
+                            }
                             $localRefund_payment = [
                                 'type' => 'refund',
                                 'ref_id' => (int) $refund->id,
                                 'amount' => $payment_amount,
                                 'date' => $payment_dates[$key],
-                                'mode' => $payment_modes[$key],
+                                'mode' => $payment_mode,
                                 'currency' => 'gbp'
                             ];
                             Payment::create($localRefund_payment);

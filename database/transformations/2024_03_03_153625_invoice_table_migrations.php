@@ -132,13 +132,21 @@ class ProcessInvoice implements ShouldQueue
 
             foreach ($payment_amounts as $key => $payment_amount) {
                 if ($payment_amount != '' && $payment_amount != 'null' && $payment_amount != 'undefined') {
+                    $payment_mode = $payment_modes[$key];
+                    if ($payment_mode == 1) {
+                        $payment_mode = 'bank';
+                    } elseif ($payment_mode == 2) {
+                        $payment_mode = 'cash';
+                    } elseif ($payment_mode == 3) {
+                        $payment_mode = 'other';
+                    }
                     $date = $payment_dates[$key] == 'Invalid date' ? $this->invoice->invoiceDate : $payment_dates[$key];
                     $localInvoice_payment = [
                         'type' => 'invoice',
                         'ref_id' => (int) $this->invoice->id,
                         'amount' => $payment_amount,
                         'date' => $date,
-                        'mode' => $payment_modes[$key],
+                        'mode' => $payment_mode,
                         'currency' => 'gbp'
                     ];
                     Payment::create($localInvoice_payment);
