@@ -262,7 +262,7 @@ class RefundController extends Controller
                         $payment = [
                             'type' => 'refund',
                             'ref_id' => $refund->id,
-                            'mode' => 'cash',
+                            'mode' => $payment_mode[$key],
                             'date' => $payment_date[$key],
                             'amount' => $amount,
                             'currency' => 'pkr'
@@ -522,7 +522,7 @@ class RefundController extends Controller
                         $payment = [
                             'type' => 'refund',
                             'ref_id' => $refund->id,
-                            'mode' => 'cash',
+                            'mode' => $payment_mode[$key],
                             'date' => $payment_date[$key],
                             'amount' => $amount,
                             'currency' => 'pkr'

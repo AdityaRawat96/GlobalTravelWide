@@ -23,7 +23,7 @@ class CreateInvoicesTable extends Migration
             $table->integer('carrier_id')->nullable();
             $table->foreignId('user_id')->constrained('users');
             $table->date('due_date');
-            $table->date('departure_date');
+            $table->date('departure_date')->nullable();
             $table->float('total');
             $table->float('revenue');
             $table->date('invoice_date');

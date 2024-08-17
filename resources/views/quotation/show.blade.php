@@ -151,8 +151,10 @@
                                     <!--end::Col-->
                                     <!--begin::Col-->
                                     <div class="col">
-                                        <a href="{{route(env('APP_URL') . '/' . Auth::user()->role . '.quotation.showPdf', $quotation->id)}}"
-                                            class="btn btn-primary btn-active-light-primary w-100">Download</a>
+                                        <a href="{{ env('APP_URL') . '/' . Auth::user()->role . '/quotation/showPdf/' . $quotation->id }}"
+                                            class="btn btn-primary btn-active-light-primary w-100">
+                                            Download
+                                        </a>
                                     </div>
                                     <!--end::Col-->
                                 </div>

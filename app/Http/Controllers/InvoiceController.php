@@ -266,7 +266,7 @@ class InvoiceController extends Controller
                         $payment = [
                             'type' => 'invoice',
                             'ref_id' => $invoice->id,
-                            'mode' => 'cash',
+                            'mode' => $payment_mode[$key],
                             'date' => $payment_date[$key],
                             'amount' => $amount,
                             'currency' => 'pkr'
@@ -529,7 +529,7 @@ class InvoiceController extends Controller
                         $payment = [
                             'type' => 'invoice',
                             'ref_id' => $invoice->id,
-                            'mode' => 'cash',
+                            'mode' => $payment_mode[$key],
                             'date' => $payment_date[$key],
                             'amount' => $amount,
                             'currency' => 'pkr'

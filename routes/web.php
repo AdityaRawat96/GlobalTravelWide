@@ -61,7 +61,7 @@ Route::get('/symlink', function () {
 });
 
 Route::get('/initialize', function () {
-    Artisan::call('migrate:fresh');
+    // Artisan::call('migrate:fresh');
     Artisan::call('db:seed --class=RoleSeeder');
     Artisan::call('db:seed --class=AdminSeeder');
     Artisan::call('db:seed --class=CompanySeeder');
