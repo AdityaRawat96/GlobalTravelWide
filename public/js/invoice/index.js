@@ -17,7 +17,7 @@ var KTDatatablesServerSide = (function () {
             layout: {
                 scroll: false,
             },
-            order: [[0, "asc"]],
+            order: [],
             stateSave: false,
             ajax: {
                 url: `${siteURL}/${siteUserRole}/invoice`,

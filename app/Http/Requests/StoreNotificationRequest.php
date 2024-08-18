@@ -13,8 +13,8 @@ class StoreNotificationRequest extends FormRequest
      */
     public function authorize()
     {
-        // only allow the user to store a new notification if they have role of admin
-        return $this->user()->role === 'admin';
+        // only allow the user to store a new notification if they have role of admin or staff
+        return $this->user()->role === 'admin' || $this->user()->role === 'staff';
     }
 
     /**

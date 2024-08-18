@@ -408,11 +408,6 @@ var FormSubmission = (function () {
                                 notEmpty: { message: "This field is required" },
                             },
                         },
-                        carrier_id: {
-                            validators: {
-                                notEmpty: { message: "This field is required" },
-                            },
-                        },
                         departure_date: {
                             validators: {
                                 notEmpty: { message: "This field is required" },

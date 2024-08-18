@@ -228,8 +228,7 @@
                                                 <div class="fv-plugins-message-container invalid-feedback"></div>
                                             </div>
                                             <!--end::Input group-->
-                                            <label
-                                                class="form-label fs-6 fw-bold text-gray-700 mb-3 required">Carrier</label>
+                                            <label class="form-label fs-6 fw-bold text-gray-700 mb-3">Carrier</label>
                                             <!--begin::Input group-->
                                             <div class="mb-5 fv-row">
                                                 <select id="carrier" name="carrier_id"

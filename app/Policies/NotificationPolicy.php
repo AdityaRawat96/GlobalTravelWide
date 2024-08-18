@@ -43,8 +43,8 @@ class NotificationPolicy
      */
     public function create(User $user)
     {
-        // only allow the user to store a new notification if they have role of admin 
-        return $user->role === 'admin';
+        // only allow the user to store a new notification if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**
@@ -56,8 +56,8 @@ class NotificationPolicy
      */
     public function update(User $user, Notification $notification)
     {
-        // only allow the notification to view the list of notifications if they have role of admin 
-        return $user->role === 'admin';
+        // only allow the notification to view the list of notifications if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**
@@ -69,8 +69,8 @@ class NotificationPolicy
      */
     public function delete(User $user, Notification $notification)
     {
-        // only allow the notification to view the list of notifications if they have role of admin
-        return $user->role === 'admin';
+        // only allow the notification to view the list of notifications if they have role of admin or staff
+        return $user->role === 'admin' || $user->role === 'staff';
     }
 
     /**

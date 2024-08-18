@@ -75,9 +75,9 @@
                         </div>
                         <!--end::Search-->
 
-                        @if(Auth::user()->role == 'admin')
                         <!--begin::Toolbar-->
                         <div class="d-flex justify-content-end gap-2" data-kt-docs-table-toolbar="base">
+                            @if(Auth::user()->role == 'admin')
                             <!--begin::Export dropdown-->
                             <button type="button" class="btn btn-light-primary" data-kt-menu-trigger="click"
                                 data-kt-menu-placement="bottom-end">
@@ -116,6 +116,7 @@
                             </div>
                             <!--end::Menu-->
                             <!--end::Export dropdown-->
+                            @endif
                             <!--begin::Add Record -->
                             <a href="{{route(Auth::user()->role . '.notification.create')}}">
                                 <button type="button" class="btn btn-primary">Add Notification</button>
@@ -123,7 +124,6 @@
                             <!--end::Add Record -->
                         </div>
                         <!--end::Toolbar-->
-                        @endif
 
                         <!--begin::Group actions-->
                         <div class="d-flex justify-content-end align-items-center d-none"
