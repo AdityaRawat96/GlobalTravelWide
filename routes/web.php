@@ -61,10 +61,26 @@ Route::get('/symlink', function () {
 });
 
 Route::get('/initialize', function () {
-    // Artisan::call('migrate:fresh');
+    Artisan::call('migrate:fresh');
     Artisan::call('db:seed --class=RoleSeeder');
-    Artisan::call('db:seed --class=AdminSeeder');
+    // Artisan::call('db:seed --class=AdminSeeder');
     Artisan::call('db:seed --class=CompanySeeder');
+});
+
+// Route to tranform the database
+
+Route::get('/transform-data', function () {
+    Artisan::call('migrate --path=/database/transformations/2024_03_03_153616_user_table_migrations.php');
+    Artisan::call('migrate --path=/database/transformations/2024_03_03_153617_product_table_migrations.php');
+    Artisan::call('migrate --path=/database/transformations/2024_03_03_153618_customer_table_migrations.php');
+    Artisan::call('migrate --path=/database/transformations/2024_03_03_153619_attendance_table_migrations.php');
+    Artisan::call('migrate --path=/database/transformations/2024_03_03_153620_pnr_table_migrations.php');
+    Artisan::call('migrate --path=/database/transformations/2024_03_03_153621_query_table_migrations.php');
+    Artisan::call('migrate --path=/database/transformations/2024_03_03_153623_expense_table_migrations.php');
+    Artisan::call('migrate --path=/database/transformations/2024_03_03_153622_reminder_table_migrations.php');
+    Artisan::call('migrate --path=/database/transformations/2024_03_03_153624_refund_table_migrations.php');
+    Artisan::call('migrate --path=/database/transformations/2024_03_03_153625_invoice_table_migrations.php');
+    Artisan::call('migrate --path=/database/transformations/2024_03_03_153626_quotation_table_migrations.php');
 });
 
 Route::get('/', function () {
