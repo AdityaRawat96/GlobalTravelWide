@@ -38,10 +38,10 @@ class RefundTableMigrations extends Migration
                     $product_Ids = substr($refund->productID, 0, -1);
                     $product_Ids = explode(',', $product_Ids);
 
-                    $product_costs = substr($refund->productCostPrice, 0, -1);
+                    $product_costs = substr($refund->productSellingPrice, 0, -1);
                     $product_costs = explode(',', $product_costs);
 
-                    $product_prices = substr($refund->productSellingPrice, 0, -1);
+                    $product_prices = substr($refund->productCostPrice, 0, -1);
                     $product_prices = explode(',', $product_prices);
 
                     $product_quantities = substr($refund->productQuantity, 0, -1);

@@ -353,7 +353,7 @@ class InvoiceController extends Controller
         }
         // return the view for showing the invoice
         $pdf = Pdf::loadView('pdf.invoice', ['invoice' => $invoice, 'invoice_products' => $invoice_products, 'invoice_payments' => $invoice_payments, 'view' => false]);
-        return $pdf->download('invoice.pdf');
+        return $pdf->download($invoice->invoice_id . '.pdf');
     }
 
     /**

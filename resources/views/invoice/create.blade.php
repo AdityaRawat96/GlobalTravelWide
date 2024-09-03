@@ -797,12 +797,6 @@
                                             <!--end::Items-->
                                         </div>
                                         <!--end::Dropzone-->
-
-                                        <!--begin::Hint-->
-                                        <span class="form-text text-muted">Max file size is 5MB and max number of
-                                            files
-                                            is 5.</span>
-                                        <!--end::Hint-->
                                     </div>
                                     <!--end::Col-->
                                 </div>
@@ -895,29 +889,29 @@ $path = Storage::url($attach->path) . $attach->url;
 ?>
 
 <script>
-$("document").ready(() => {
-    var path = "{{ $path }}";
-    var fileSize = "{$fileSize}}";
-    var file = new File([path], "{{ $attach->name }}", {
-        type: "{{ $attach->mime_type }}",
-        lastModified: "{{ $attach->updated_at }}",
-        size: "{{ $attach->size }}" // Set file size in bytes
+    $("document").ready(() => {
+        var path = "{{ $path }}";
+        var fileSize = "{$fileSize}}";
+        var file = new File([path], "{{ $attach->name }}", {
+            type: "{{ $attach->mime_type }}",
+            lastModified: "{{ $attach->updated_at }}",
+            size: "{{ $attach->size }}" // Set file size in bytes
+        });
+        file['status'] = "added";
+        file['_removeLink'] = "a.dz-remove";
+        file['webkitRelativePath'] = "";
+        file['accepted'] = true;
+        file['dataURL'] = path;
+        file['upload'] = {
+            bytesSent: 0,
+            filename: "{{ $attach->name }}",
+            progress: 100,
+            total: "{{ $attach->size }}", // Set total file size in bytes
+            uuid: "{{ md5($attach->id) }}"
+        };
+        myDropzone.emit("addedfile", file, path);
+        myDropzone.files.push(file);
     });
-    file['status'] = "added";
-    file['_removeLink'] = "a.dz-remove";
-    file['webkitRelativePath'] = "";
-    file['accepted'] = true;
-    file['dataURL'] = path;
-    file['upload'] = {
-        bytesSent: 0,
-        filename: "{{ $attach->name }}",
-        progress: 100,
-        total: "{{ $attach->size }}", // Set total file size in bytes
-        uuid: "{{ md5($attach->id) }}"
-    };
-    myDropzone.emit("addedfile", file, path);
-    myDropzone.files.push(file);
-});
 </script>
 @endforeach
 @endif

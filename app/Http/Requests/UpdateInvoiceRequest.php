@@ -55,8 +55,8 @@ class UpdateInvoiceRequest extends FormRequest
             'payment_amount.*' => ['numeric'],
             'payment_amount_alt' => ['array'],
             'payment_amount_alt.*' => ['numeric'],
-            'file' => ['array', 'max:10'],
-            'file.*' => ['file', 'max:5120'],
+            'file' => ['array'],
+            'file.*' => ['file'],
         ];
     }
 }

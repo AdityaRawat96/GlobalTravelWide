@@ -51,8 +51,8 @@ class StoreQuotationRequest extends FormRequest
             'checkin_time.*' => ['datetime'],
             'checkout_time' => ['array'],
             'checkout_time.*' => ['datetime'],
-            'file' => ['array', 'max:10'],
-            'file.*' => ['file', 'max:5120'],
+            'file' => ['array'],
+            'file.*' => ['file'],
         ];
     }
 }

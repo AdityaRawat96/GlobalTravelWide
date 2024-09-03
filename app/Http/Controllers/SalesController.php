@@ -48,10 +48,10 @@ class SalesController extends Controller
                 $start_date = $request->filter['start_date'];
                 $end_date = $request->filter['end_date'];
 
-                $invoices_sum_total = Invoice::where('user_id', $user->id)->where($invoice_cal, '>=', $start_date)->where($invoice_cal, '<=', $end_date)->sum('total');
-                $invoices_sum_revenue = Invoice::where('user_id', $user->id)->where($invoice_cal, '>=', $start_date)->where($invoice_cal, '<=', $end_date)->sum('revenue');
-                $refunds_sum_total = Refund::where('user_id', $user->id)->where($refund_cal, '>=', $start_date)->where($refund_cal, '<=', $end_date)->sum('total');
-                $refunds_sum_revenue = Refund::where('user_id', $user->id)->where($refund_cal, '>=', $start_date)->where($refund_cal, '<=', $end_date)->sum('revenue');
+                $invoices_sum_total = Invoice::where('user_id', $user->id)->where('status', '=', 'paid')->where($invoice_cal, '>=', $start_date)->where($invoice_cal, '<=', $end_date)->sum('total');
+                $invoices_sum_revenue = Invoice::where('user_id', $user->id)->where('status', '=', 'paid')->where($invoice_cal, '>=', $start_date)->where($invoice_cal, '<=', $end_date)->sum('revenue');
+                $refunds_sum_total = Refund::where('user_id', $user->id)->where('status', '=', 'paid')->where($refund_cal, '>=', $start_date)->where($refund_cal, '<=', $end_date)->sum('total');
+                $refunds_sum_revenue = Refund::where('user_id', $user->id)->where('status', '=', 'paid')->where($refund_cal, '>=', $start_date)->where($refund_cal, '<=', $end_date)->sum('revenue');
 
                 $total = $invoices_sum_total + $refunds_sum_total;
                 $revenue = $invoices_sum_revenue + $refunds_sum_revenue;
@@ -101,8 +101,8 @@ class SalesController extends Controller
 
             // show all the invoices and refunds geenreaed by this user in a combined datatable
 
-            $invoices = Invoice::where('user_id', $user->id)->where($invoice_cal, '>=', $start_date)->where($invoice_cal, '<=', $end_date)->get();
-            $refunds = Refund::where('user_id', $user->id)->where($refund_cal, '>=', $start_date)->where($refund_cal, '<=', $end_date)->get();
+            $invoices = Invoice::where('user_id', $user->id)->where('status', '=', 'paid')->where($invoice_cal, '>=', $start_date)->where($invoice_cal, '<=', $end_date)->get();
+            $refunds = Refund::where('user_id', $user->id)->where('status', '=', 'paid')->where($refund_cal, '>=', $start_date)->where($refund_cal, '<=', $end_date)->get();
 
             $invoices_sum_total = $invoices->sum('total');
             $invoices_sum_revenue = $invoices->sum('revenue');

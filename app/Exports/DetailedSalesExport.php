@@ -35,8 +35,8 @@ class DetailedSalesExport implements FromCollection, WithHeadings, WithStyles, S
         $start_date = $this->data['start_date'];
         $end_date = $this->data['end_date'];
 
-        $invoices = Invoice::where('user_id', $this->data['user_id'])->where($invoice_cal, '>=', $start_date)->where($invoice_cal, '<=', $end_date)->get();
-        $refunds = Refund::where('user_id', $this->data['user_id'])->where($refund_cal, '>=', $start_date)->where($refund_cal, '<=', $end_date)->get();
+        $invoices = Invoice::where('user_id', $this->data['user_id'])->where('status', '=', 'paid')->where($invoice_cal, '>=', $start_date)->where($invoice_cal, '<=', $end_date)->get();
+        $refunds = Refund::where('user_id', $this->data['user_id'])->where('status', '=', 'paid')->where($refund_cal, '>=', $start_date)->where($refund_cal, '<=', $end_date)->get();
         $data = $invoices->merge($refunds);
 
         return $data;

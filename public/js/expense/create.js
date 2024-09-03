@@ -31,14 +31,14 @@ var KTExpenseSettings = (function () {
                             },
                         },
                         // Add file size and number of files validation
-                        file: {
-                            validators: {
-                                file: {
-                                    maxSize: "5MB",
-                                    message: "The selected file is not valid",
-                                },
-                            },
-                        },
+                        // file: {
+                        //     validators: {
+                        //         file: {
+                        //             maxSize: "5MB",
+                        //             message: "The selected file is not valid",
+                        //         },
+                        //     },
+                        // },
                     },
                     plugins: {
                         trigger: new FormValidation.plugins.Trigger(),
@@ -207,8 +207,8 @@ var KTExpenseSettings = (function () {
                 autoProcessQueue: false,
                 paramName: "file",
                 previewTemplate: previewTemplate,
-                maxFilesize: 5, // Max filesize in MB
-                maxFiles: 10,
+                // maxFilesize: 5, // Max filesize in MB
+                // maxFiles: 10,
                 autoQueue: false, // Make sure the files aren't queued until manually added
                 previewsContainer: id + " .dropzone-items", // Define the container to display the previews
                 clickable: id + " .dropzone-select", // Define the element that should be used as click trigger to select files.

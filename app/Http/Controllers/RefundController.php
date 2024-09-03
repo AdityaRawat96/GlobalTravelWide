@@ -167,13 +167,13 @@ class RefundController extends Controller
         unset($validated['product']);
         $quantity = $validated['quantity'];
         unset($validated['quantity']);
-        $cost = $validated['cost'];
+        $price = $validated['cost'];
         unset($validated['cost']);
-        $price = $validated['price'];
+        $cost = $validated['price'];
         unset($validated['price']);
-        $cost_alt = $validated['cost_alt'];
+        $price_alt = $validated['cost_alt'];
         unset($validated['cost_alt']);
-        $price_alt = $validated['price_alt'];
+        $cost_alt = $validated['price_alt'];
         unset($validated['price_alt']);
 
         // Check if the products, quantity, cost and price are of the same length
@@ -346,7 +346,7 @@ class RefundController extends Controller
         }
         // return the view for showing the refund
         $pdf = Pdf::loadView('pdf.refund', ['refund' => $refund, 'refund_products' => $refund_products, 'refund_payments' => $refund_payments, 'view' => false]);
-        return $pdf->download('refund.pdf');
+        return $pdf->download($refund->refund_id . '.pdf');
     }
 
     /**
@@ -411,14 +411,14 @@ class RefundController extends Controller
         unset($validated['product']);
         $quantity = $validated['quantity'];
         unset($validated['quantity']);
-        $cost = $validated['cost'];
+        $price = $validated['cost'];
         unset($validated['cost']);
-        $price = $validated['price'];
+        $cost = $validated['price'];
         unset($validated['price']);
         if ($validated['currency'] == 'pkr') {
-            $cost_alt = $validated['cost_alt'];
+            $price_alt = $validated['cost_alt'];
             unset($validated['cost_alt']);
-            $price_alt = $validated['price_alt'];
+            $cost_alt = $validated['price_alt'];
             unset($validated['price_alt']);
         }
 

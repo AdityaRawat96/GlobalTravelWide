@@ -13,7 +13,7 @@ class UpdateCatalogueRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->role === 'admin';
+        return $this->user()->role === 'admin' || $this->user()->role === 'staff';
     }
 
     /**

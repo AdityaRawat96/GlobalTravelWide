@@ -47,10 +47,10 @@ class CommissionsExport implements FromCollection, WithHeadings, WithStyles, Sho
             $start_date = $this->data['start_date'];
             $end_date = $this->data['end_date'];
 
-            $invoices_sum_total = Invoice::where('affiliate_id', $affiliate->id)->where($invoice_cal, '>=', $start_date)->where($invoice_cal, '<=', $end_date)->sum('total');
-            $invoices_sum_revenue = Invoice::where('affiliate_id', $affiliate->id)->where($invoice_cal, '>=', $start_date)->where($invoice_cal, '<=', $end_date)->sum('revenue');
-            $refunds_sum_total = Refund::where('affiliate_id', $affiliate->id)->where($refund_cal, '>=', $start_date)->where($refund_cal, '<=', $end_date)->sum('total');
-            $refunds_sum_revenue = Refund::where('affiliate_id', $affiliate->id)->where($refund_cal, '>=', $start_date)->where($refund_cal, '<=', $end_date)->sum('revenue');
+            $invoices_sum_total = Invoice::where('affiliate_id', $affiliate->id)->where('status', '=', 'paid')->where($invoice_cal, '>=', $start_date)->where($invoice_cal, '<=', $end_date)->sum('total');
+            $invoices_sum_revenue = Invoice::where('affiliate_id', $affiliate->id)->where('status', '=', 'paid')->where($invoice_cal, '>=', $start_date)->where($invoice_cal, '<=', $end_date)->sum('revenue');
+            $refunds_sum_total = Refund::where('affiliate_id', $affiliate->id)->where('status', '=', 'paid')->where($refund_cal, '>=', $start_date)->where($refund_cal, '<=', $end_date)->sum('total');
+            $refunds_sum_revenue = Refund::where('affiliate_id', $affiliate->id)->where('status', '=', 'paid')->where($refund_cal, '>=', $start_date)->where($refund_cal, '<=', $end_date)->sum('revenue');
 
             $total = $invoices_sum_total + $refunds_sum_total;
             $revenue = $invoices_sum_revenue + $refunds_sum_revenue;

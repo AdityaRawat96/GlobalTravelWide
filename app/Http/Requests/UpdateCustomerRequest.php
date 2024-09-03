@@ -14,8 +14,8 @@ class UpdateCustomerRequest extends FormRequest
      */
     public function authorize()
     {
-        // only allow the customer to update a customer if they have role of admin or the customer is the same as the authenticated customer
-        return $this->user()->role === 'admin' || $this->user()->id === $this->route('customer')->added_by;
+        // only allow the customer to update a customer if they have role of admin or the staff 
+        return $this->user()->role === 'admin' || $this->user()->role === 'staff';
     }
 
     /**
@@ -27,7 +27,7 @@ class UpdateCustomerRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('customers')->ignore($this->customer->id)],
+            'email' => ['required', 'string', 'email', 'max:255'],
             'phone' => ['required', 'string', 'max:255'],
         ];
     }

@@ -54,7 +54,7 @@ var KTDatatablesServerSide = (function () {
                             <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px py-4" data-kt-menu="true">
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
-                                    <a href="${siteURL}/${siteUserRole}/customer/${parseInt(
+                                    <a target="_blank" href="${siteURL}/${siteUserRole}/customer/${parseInt(
                             data.id.substring(1),
                             10
                         )}" class="menu-link px-3" data-kt-docs-table-filter="view_row">
@@ -64,7 +64,7 @@ var KTDatatablesServerSide = (function () {
                                 <!--end::Menu item-->
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
-                                    <a href="${siteURL}/${siteUserRole}/customer/${parseInt(
+                                    <a target="_blank" href="${siteURL}/${siteUserRole}/customer/${parseInt(
                             data.id.substring(1),
                             10
                         )}/edit" class="menu-link px-3" data-kt-docs-table-filter="edit_row">

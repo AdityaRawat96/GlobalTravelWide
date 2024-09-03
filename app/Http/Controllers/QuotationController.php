@@ -263,7 +263,7 @@ class QuotationController extends Controller
         $quotation_airlines = Airline::where('quotation_id', $quotation->id)->get();
         $quotation_hotels = Hotel::where('quotation_id', $quotation->id)->get();
         $pdf = Pdf::loadView('pdf.quotation', ['quotation' => $quotation, 'quotation_airlines' => $quotation_airlines, 'quotation_hotels' => $quotation_hotels, 'view' => false]);
-        return $pdf->download('quotation.pdf');
+        return $pdf->download($quotation->quotation_id . '.pdf');
     }
 
     /**
