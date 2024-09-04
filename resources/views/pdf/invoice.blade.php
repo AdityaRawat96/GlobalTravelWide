@@ -285,7 +285,7 @@
                 between your journeys.<br>
             </p>
             @endif
-            <br />
+            <!-- <br />
             <p>
                 <b>Account Details</b><br />
                 Global Travelwide Ltd.<br />
@@ -293,7 +293,7 @@
                 <br />
                 Bank Name: NatWest | Sort Code: 517057 | Account No:89222709
                 <br />
-            </p>
+            </p> -->
         </div>
         <div class="footer" style="
           position: relative;
