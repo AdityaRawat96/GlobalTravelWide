@@ -135,12 +135,14 @@
                                             <div class="dropzone-items wm-200px">
                                                 <div class="dropzone-item" style="display:none">
                                                     <!--begin::File-->
-                                                    <div class="dropzone-file">
+                                                    <div class="dropzone-file" style="position: relative;">
                                                         <a href="#" class="dropzone-filename d-block"
                                                             title="some_image_file_name.jpg">
                                                             <span data-dz-name>some_image_file_name.jpg</span>
                                                             <strong>(<span data-dz-size>340kb</span>)</strong>
                                                         </a>
+                                                        <img data-dz-thumbnail class="dropzone-thumbnail mt-3"
+                                                            style="width: 100%; height: auto;" />
                                                         <div class="dropzone-error" data-dz-errormessage></div>
                                                     </div>
                                                     <!--end::File-->

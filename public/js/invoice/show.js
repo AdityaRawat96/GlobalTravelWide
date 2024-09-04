@@ -119,6 +119,17 @@ var KTInvoiceSettings = (function () {
                     "(" +
                     (file.upload.total / Math.pow(1024, 2)).toFixed(2) +
                     " MB)";
+                // only if file is an image
+                if (file.type.match(/image.*/)) {
+                    file.previewElement.querySelector(
+                        id + " .dropzone-thumbnail"
+                    ).src = file.dataURL;
+                } else {
+                    // remove thumbnail
+                    file.previewElement
+                        .querySelector(id + " .dropzone-thumbnail")
+                        .remove();
+                }
 
                 const dropzoneItems =
                     dropzone.querySelectorAll(".dropzone-item");
