@@ -237,7 +237,7 @@
                                                     <option value="">Select a carrier</option>
                                                     @foreach($carriers as $carrier)
                                                     <option value="{{$carrier->id}}"
-                                                        {{isset($invoice) && $invoice->carrier->id == $carrier->id ? "selected"  : ""}}>
+                                                        {{isset($invoice) && isset($invoice->carrier) && $invoice->carrier->id == $carrier->id ? "selected"  : ""}}>
                                                         {{"C" . str_pad($carrier->id, 5, '0', STR_PAD_LEFT) . " - " . $carrier->name}}
                                                     </option>
                                                     @endforeach
