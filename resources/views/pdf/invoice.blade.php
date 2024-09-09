@@ -67,10 +67,16 @@
                 <tr style="position: relative; width: 100%">
                     <td style="position: relative; width: 33%">
                         <address>
+                            @if($invoice->company->id == 3)
+                            Office No 2, 1st Floor,<br />
+                            Rahman Plaza, I-10/4, Islamabad<br />
+                            Phone: 051-4448517<br />
+                            @else
                             F3, 298 Romford Road<br />
                             London<br />
                             E7 9HD<br />
                             Phone: 0203 0020535<br />
+                            @endif
                         </address>
                     </td>
                     <td style="position: relative; width: 33%">

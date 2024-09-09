@@ -20,8 +20,8 @@ class CreateQuotationsTable extends Migration
             $table->string('ref_number')->nullable();
             $table->integer('company_id');
             $table->integer('customer_id');
-            $table->float('cost');
-            $table->float('price');
+            $table->double('cost', 20, 2);
+            $table->double('price', 20, 2);
             $table->date('quotation_date');
             $table->longText('airline_notes')->nullable();
             $table->longText('hotel_notes')->nullable();

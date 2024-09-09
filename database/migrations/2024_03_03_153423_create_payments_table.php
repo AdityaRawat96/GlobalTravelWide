@@ -18,7 +18,7 @@ class CreatePaymentsTable extends Migration
             $table->string('type');
             $table->integer('ref_id');
             $table->string('mode');
-            $table->float('amount');
+            $table->double('amount', 20, 2);
             $table->date('date');
             $table->string('currency')->default('gbp');
             $table->timestamps();

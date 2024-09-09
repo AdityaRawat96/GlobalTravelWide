@@ -19,9 +19,9 @@ class CreateProductsTable extends Migration
             $table->integer('ref_id');
             $table->foreignId('catalogue_id');
             $table->integer('quantity');
-            $table->float('cost');
-            $table->float('price');
-            $table->float('revenue');
+            $table->double('cost', 20, 2);
+            $table->double('price', 20, 2);
+            $table->double('revenue', 20, 2);
             $table->string('currency')->default('gbp');
             $table->timestamps();
         });
