@@ -216,7 +216,8 @@
                                             <div class="mb-5 fv-row">
                                                 <select id="affiliate" name="affiliate_id"
                                                     class="form-select form-select-lg form-select-solid"
-                                                    data-control="select2" data-placeholder="Select a affiliate">
+                                                    data-control="select2" data-placeholder="Select a affiliate"
+                                                    data-allow-clear="true">
                                                     <option value="">Select a affiliate</option>
                                                     @foreach($affiliates as $affiliate)
                                                     <option value="{{$affiliate->id}}"
