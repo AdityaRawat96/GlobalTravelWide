@@ -12,6 +12,23 @@ table .btn-sm {
     max-width: 300px;
 }
 
+.light.shortcut-buttons-flatpickr-wrapper {
+    background-color: white !important;
+}
+
+.shortcut-buttons-flatpickr-buttons {
+    justify-content: space-between;
+    width: 100%;
+    margin: 0 10px;
+}
+
+.shortcut-buttons-flatpickr-button {
+    border: none;
+    background-color: transparent;
+    color: #009ef7;
+    font-size: 12px;
+}
+
 .dropzone.dropzone-queue .dropzone-item .dropzone-file {
     flex-grow: 1;
     flex: 1;
