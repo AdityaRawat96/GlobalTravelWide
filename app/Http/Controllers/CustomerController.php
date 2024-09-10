@@ -48,10 +48,12 @@ class CustomerController extends Controller
                 foreach ($columns as $column) {
                     if ($column['searchable'] == 'true') {
                         if (!$column_searched) {
-                            $query->where($column['data'], 'like', '%' . $search['value'] . '%');
+                            // $query->where($column['data'], 'like', '%' . $search['value'] . '%');
+                            $query->whereRaw("REPLACE(" . $column['data'] . ", ' ', '') LIKE '%" . str_replace(' ', '', $search['value']) . "%'");
                             $column_searched = true;
                         } else {
-                            $query->orWhere($column['data'], 'like', '%' . $search['value'] . '%');
+                            // $query->orWhere($column['data'], 'like', '%' . $search['value'] . '%');
+                            $query->orWhereRaw("REPLACE(" . $column['data'] . ", ' ', '') LIKE '%" . str_replace(' ', '', $search['value']) . "%'");
                         }
                     }
                 }
