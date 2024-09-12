@@ -80,15 +80,17 @@ class InvoiceController extends Controller
             // Add the search query trim the search value and check if it is not empty
             if (!empty($search['value'])) {
                 $query->where(function ($query) use ($columns, $search) {
-                    $query->where('customers.name', 'like', '%' . $search['value'] . '%')
-                        ->orWhere('carriers.name', 'like', '%' . $search['value'] . '%'); // Add carrier name search
+                    $query->whereRaw("REPLACE(customers.name, ' ', '') LIKE '%" . str_replace(' ', '', $search['value']) . "%'")
+                        ->orWhereRaw("REPLACE(carriers.name, ' ', '') LIKE '%" . str_replace(' ', '', $search['value']) . "%'"); // Add carrier name search
                     foreach ($columns as $column) {
                         if ($column['searchable'] == 'true' && $column['data'] != 'customer_name' && $column['data'] != 'carrier_name') {
-                            $query->orWhere("invoices." . $column['data'], 'like', '%' . $search['value'] . '%');
+                            $query->orWhereRaw("REPLACE(invoices." . $column['data'] . ", ' ', '') LIKE '%" . str_replace(' ', '', $search['value']) . "%'");
                         }
                     }
                 });
             }
+
+
 
             // Add the order by clause if the column is orderable
             if (!empty($order)) {

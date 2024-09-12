@@ -75,10 +75,10 @@ class RefundController extends Controller
             // Add the search query trim the search value and check if it is not empty
             if (!empty($search['value'])) {
                 $query->where(function ($query) use ($columns, $search) {
-                    $query->where('customers.name', 'like', '%' . $search['value'] . '%');
+                    $query->whereRaw("REPLACE(customers.name, ' ', '') LIKE '%" . str_replace(' ', '', $search['value']) . "%'");
                     foreach ($columns as $column) {
                         if ($column['searchable'] == 'true' && $column['data'] != 'customer_name') {
-                            $query->orWhere($column['data'], 'like', '%' . $search['value'] . '%');
+                            $query->orWhereRaw("REPLACE(refunds." . $column['data'] . ", ' ', '') LIKE '%" . str_replace(' ', '', $search['value']) . "%'");
                         }
                     }
                 });
