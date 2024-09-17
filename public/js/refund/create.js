@@ -158,6 +158,20 @@ var KTAppRefundsCreate = (function () {
                             .appendChild(l),
                             b(),
                             t();
+
+                        // Set payment mode as default payment mode
+                        var paymentMode = f.querySelector(
+                            '[data-kt-element="payments"] [name="payment_mode[]"]'
+                        );
+                        paymentMode.value = "bank";
+
+                        // Set today's date as default payment date
+                        var paymentDate = f.querySelector(
+                            '[data-kt-element="payments"] [name="payment_date[]"]'
+                        );
+                        var date = new Date();
+                        var formattedDate = moment(date).format("DD, MMM YYYY");
+                        paymentDate.value = formattedDate;
                     }),
                 KTUtil.on(
                     e,
@@ -204,14 +218,95 @@ var KTAppRefundsCreate = (function () {
                 $(e.querySelector('[name="refund_date"]')).flatpickr({
                     enableTime: !1,
                     dateFormat: "d, M Y",
+                    plugins: [
+                        ShortcutButtonsPlugin({
+                            button: [
+                                {
+                                    class: "btn btn-light btn-active-light-primary",
+                                    label: "Clear",
+                                },
+                                {
+                                    class: "btn btn-light btn-active-light-primary",
+                                    label: "Today",
+                                },
+                            ],
+                            onClick: (index, fp) => {
+                                let date;
+                                switch (index) {
+                                    case 0:
+                                        fp.clear();
+                                        fp.close();
+                                        break;
+                                    case 1:
+                                        date = new Date();
+                                        fp.setDate(date);
+                                        break;
+                                }
+                            },
+                        }),
+                    ],
                 }),
                 $(e.querySelector('[name="due_date"]')).flatpickr({
                     enableTime: !1,
                     dateFormat: "d, M Y",
+                    plugins: [
+                        ShortcutButtonsPlugin({
+                            button: [
+                                {
+                                    class: "btn btn-light btn-active-light-primary",
+                                    label: "Clear",
+                                },
+                                {
+                                    class: "btn btn-light btn-active-light-primary",
+                                    label: "Today",
+                                },
+                            ],
+                            onClick: (index, fp) => {
+                                let date;
+                                switch (index) {
+                                    case 0:
+                                        fp.clear();
+                                        fp.close();
+                                        break;
+                                    case 1:
+                                        date = new Date();
+                                        fp.setDate(date);
+                                        break;
+                                }
+                            },
+                        }),
+                    ],
                 }),
                 $(e.querySelector('[name="payment_date[]"]')).flatpickr({
                     enableTime: !1,
                     dateFormat: "d, M Y",
+                    plugins: [
+                        ShortcutButtonsPlugin({
+                            button: [
+                                {
+                                    class: "btn btn-light btn-active-light-primary",
+                                    label: "Clear",
+                                },
+                                {
+                                    class: "btn btn-light btn-active-light-primary",
+                                    label: "Today",
+                                },
+                            ],
+                            onClick: (index, fp) => {
+                                let date;
+                                switch (index) {
+                                    case 0:
+                                        fp.clear();
+                                        fp.close();
+                                        break;
+                                    case 1:
+                                        date = new Date();
+                                        fp.setDate(date);
+                                        break;
+                                }
+                            },
+                        }),
+                    ],
                 });
             $(document).ready(function () {
                 defaultCurrency = $("#currency").val();
@@ -369,6 +464,33 @@ var KTAppRefundsCreate = (function () {
                     newDatepicker.flatpickr({
                         enableTime: !1,
                         dateFormat: "d, M Y",
+                        plugins: [
+                            ShortcutButtonsPlugin({
+                                button: [
+                                    {
+                                        class: "btn btn-light btn-active-light-primary",
+                                        label: "Clear",
+                                    },
+                                    {
+                                        class: "btn btn-light btn-active-light-primary",
+                                        label: "Today",
+                                    },
+                                ],
+                                onClick: (index, fp) => {
+                                    let date;
+                                    switch (index) {
+                                        case 0:
+                                            fp.clear();
+                                            fp.close();
+                                            break;
+                                        case 1:
+                                            date = new Date();
+                                            fp.setDate(date);
+                                            break;
+                                    }
+                                },
+                            }),
+                        ],
                     });
                 }
             );

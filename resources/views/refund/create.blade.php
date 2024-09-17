@@ -325,7 +325,7 @@
                                                             <input type="text"
                                                                 class="form-control form-control-solid text-end"
                                                                 name="cost[{{ $index  }}]" placeholder="0.00"
-                                                                value="{{$refund_product->cost}}"
+                                                                value="{{$refund_product->price}}"
                                                                 data-kt-element="cost" />
                                                             <div class="fv-plugins-message-container invalid-feedback">
                                                             </div>
@@ -335,7 +335,7 @@
                                                             <span class="input-group-text elements_alt">₨</span>
                                                             <input type="text" class="form-control text-end"
                                                                 name="cost_alt[{{ $index  }}]]" placeholder="0.00"
-                                                                value="{{isset($refund_product->cost_alt) ? $refund_product->cost_alt : '0.00'}}"
+                                                                value="{{isset($refund_product->price_alt) ? $refund_product->price_alt : '0.00'}}"
                                                                 data-kt-element="cost_alt" />
                                                             <div class="fv-plugins-message-container invalid-feedback">
                                                             </div>
@@ -347,7 +347,7 @@
                                                             <input type="text"
                                                                 class="form-control form-control-solid text-end"
                                                                 name="price[{{ $index  }}]" placeholder="0.00"
-                                                                value="{{$refund_product->price}}"
+                                                                value="{{$refund_product->cost}}"
                                                                 data-kt-element="price" />
                                                             <div class="fv-plugins-message-container invalid-feedback">
                                                             </div>
@@ -357,7 +357,7 @@
                                                             <span class="input-group-text elements_alt">₨</span>
                                                             <input type="text" class="form-control text-end"
                                                                 name="price_alt[{{ $index  }}]]" placeholder="0.00"
-                                                                value="{{isset($refund_product->price_alt) ? $refund_product->price_alt : '0.00'}}"
+                                                                value="{{isset($refund_product->cost_alt) ? $refund_product->cost_alt : '0.00'}}"
                                                                 data-kt-element="price_alt" />
                                                             <div class="fv-plugins-message-container invalid-feedback">
                                                             </div>
@@ -855,6 +855,9 @@
 
 @section('pagespecificscripts')
 <!--begin::Custom Javascript(used for this page only)-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shortcut-buttons-flatpickr@0.1.0/dist/themes/light.min.css">
+<script src="https://cdn.jsdelivr.net/npm/shortcut-buttons-flatpickr@0.1.0/dist/shortcut-buttons-flatpickr.min.js">
+</script>
 <script src="{{asset('js/refund/create.js')}}"></script>
 <!--end::Custom Javascript-->
 @if(isset($refund))
@@ -864,29 +867,29 @@ $path = Storage::url($attach->path) . $attach->url;
 ?>
 
 <script>
-    $("document").ready(() => {
-        var path = "{{ $path }}";
-        var fileSize = "{$fileSize}}";
-        var file = new File([path], "{{ $attach->name }}", {
-            type: "{{ $attach->mime_type }}",
-            lastModified: "{{ $attach->updated_at }}",
-            size: "{{ $attach->size }}" // Set file size in bytes
-        });
-        file['status'] = "added";
-        file['_removeLink'] = "a.dz-remove";
-        file['webkitRelativePath'] = "";
-        file['accepted'] = true;
-        file['dataURL'] = path;
-        file['upload'] = {
-            bytesSent: 0,
-            filename: "{{ $attach->name }}",
-            progress: 100,
-            total: "{{ $attach->size }}", // Set total file size in bytes
-            uuid: "{{ md5($attach->id) }}"
-        };
-        myDropzone.emit("addedfile", file, path);
-        myDropzone.files.push(file);
+$("document").ready(() => {
+    var path = "{{ $path }}";
+    var fileSize = "{$fileSize}}";
+    var file = new File([path], "{{ $attach->name }}", {
+        type: "{{ $attach->mime_type }}",
+        lastModified: "{{ $attach->updated_at }}",
+        size: "{{ $attach->size }}" // Set file size in bytes
     });
+    file['status'] = "added";
+    file['_removeLink'] = "a.dz-remove";
+    file['webkitRelativePath'] = "";
+    file['accepted'] = true;
+    file['dataURL'] = path;
+    file['upload'] = {
+        bytesSent: 0,
+        filename: "{{ $attach->name }}",
+        progress: 100,
+        total: "{{ $attach->size }}", // Set total file size in bytes
+        uuid: "{{ md5($attach->id) }}"
+    };
+    myDropzone.emit("addedfile", file, path);
+    myDropzone.files.push(file);
+});
 </script>
 @endforeach
 @endif
