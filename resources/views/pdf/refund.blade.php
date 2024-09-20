@@ -6,32 +6,32 @@
 
     @if($view)
     <style>
-    @font-face {
-        font-family: "Poppins";
-        src: url("{{ asset('fonts/Poppins-Regular.ttf') }}") format("truetype");
-    }
+        @font-face {
+            font-family: "Poppins";
+            src: url("{{ asset('fonts/Poppins-Regular.ttf') }}") format("truetype");
+        }
 
-    .refund-details {
-        line-height: 12px !important;
-    }
+        .refund-details {
+            line-height: 12px !important;
+        }
     </style>
     @else
     <style>
-    @font-face {
-        font-family: "Poppins";
-        src: url("{{ storage_path('fonts/Poppins-Regular.ttf') }}") format("truetype");
-    }
+        @font-face {
+            font-family: "Poppins";
+            src: url("{{ storage_path('fonts/Poppins-Regular.ttf') }}") format("truetype");
+        }
     </style>
     @endif
 
     <style>
-    .content {
-        font-family: "Poppins", sans-serif !important;
-    }
+        .content {
+            font-family: "Poppins", sans-serif !important;
+        }
 
-    th {
-        background-color: #f9f9f9;
-    }
+        th {
+            background-color: #f9f9f9;
+        }
     </style>
 </head>
 
@@ -136,7 +136,7 @@
                     <td>{{$product->quantity}}</td>
                     <td>{{$product->catalogue->name}}</td>
                     <td>{{$product->catalogue->description}}</td>
-                    <td style="text-align: right">£ {{ number_format($product->price, 2, '.', ',') }}</td>
+                    <td style="text-align: right">£ {{ number_format($product->cost, 2, '.', ',') }}</td>
                 </tr>
                 @endforeach
             </tbody>

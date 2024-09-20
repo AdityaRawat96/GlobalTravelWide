@@ -213,11 +213,21 @@ class InvoiceController extends Controller
             $validated['user_id'] = auth()->user()->id;
             $validated['total'] = array_sum($price);
             $validated['revenue'] = array_sum($price) - array_sum($cost);
-            if (isset($payment_amount) && array_sum($price) == array_sum($payment_amount)) {
-                $validated['status'] = 'paid';
+
+            if (isset($payment_amount)) {
+                $price_sum = array_sum($price);
+                $payment_sum = array_sum($payment_amount);
+                $price_sum = number_format($price_sum, 2, '.', '');
+                $payment_sum = number_format($payment_sum, 2, '.', '');
+                if ($price_sum == $payment_sum) {
+                    $validated['status'] = 'paid';
+                } else {
+                    $validated['status'] = 'pending';
+                }
             } else {
                 $validated['status'] = 'pending';
             }
+
             // Store the invoice in the database
             $invoice = Invoice::create($validated);
 
@@ -473,8 +483,16 @@ class InvoiceController extends Controller
 
             $validated['total'] = array_sum($price);
             $validated['revenue'] = array_sum($price) - array_sum($cost);
-            if (isset($payment_amount) && array_sum($price) == array_sum($payment_amount)) {
-                $validated['status'] = 'paid';
+            if (isset($payment_amount)) {
+                $price_sum = array_sum($price);
+                $payment_sum = array_sum($payment_amount);
+                $price_sum = number_format($price_sum, 2, '.', '');
+                $payment_sum = number_format($payment_sum, 2, '.', '');
+                if ($price_sum == $payment_sum) {
+                    $validated['status'] = 'paid';
+                } else {
+                    $validated['status'] = 'pending';
+                }
             } else {
                 $validated['status'] = 'pending';
             }

@@ -201,7 +201,7 @@ class RefundController extends Controller
             DB::beginTransaction();
 
             $validated['user_id'] = auth()->user()->id;
-            $validated['total'] = array_sum($price);
+            $validated['total'] = array_sum($cost);
             $validated['revenue'] = array_sum($price) - array_sum($cost);
             // if (isset($payment_amount) && array_sum($price) == array_sum($payment_amount)) {
             //     $validated['status'] = 'paid';
@@ -311,7 +311,7 @@ class RefundController extends Controller
         if ($request->currency == 'pkr') {
             $refund_products = Product::where('type', 'refund')->where('ref_id', $refund->id)->where('currency', 'pkr')->get();
             $refund_payments = Payment::where('type', 'refund')->where('ref_id', $refund->id)->where('currency', 'pkr')->get();
-            $refund->total = $refund_products->sum('price');
+            $refund->total = $refund_products->sum('cost');
             $refund->revenue = $refund_products->sum('price') - $refund_products->sum('cost');
             $refund->currencySymbol = '₨';
             $refund->type = "Customer Refund";
@@ -334,7 +334,7 @@ class RefundController extends Controller
         if ($request->currency == 'pkr') {
             $refund_products = Product::where('type', 'refund')->where('ref_id', $refund->id)->where('currency', 'pkr')->get();
             $refund_payments = Payment::where('type', 'refund')->where('ref_id', $refund->id)->where('currency', 'pkr')->get();
-            $refund->total = $refund_products->sum('price');
+            $refund->total = $refund_products->sum('cost');
             $refund->revenue = $refund_products->sum('price') - $refund_products->sum('cost');
             $refund->currencySymbol = '₨';
             $refund->type = "Customer Refund";
@@ -458,7 +458,7 @@ class RefundController extends Controller
         try {
             DB::beginTransaction();
 
-            $validated['total'] = array_sum($price);
+            $validated['total'] = array_sum($cost);
             $validated['revenue'] = array_sum($price) - array_sum($cost);
             // if (isset($payment_amount) && array_sum($price) == array_sum($payment_amount)) {
             //     $validated['status'] = 'paid';
