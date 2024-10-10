@@ -27,6 +27,10 @@ class CommissionsController extends Controller
         if ($request->ajax()) {
             // Get the values from the request object
             $start = $request->start;
+            $length = $request->length;
+            $search = $request->search;
+            $order = $request->order;
+            $columns = $request->columns;
 
             // Build an eloquent query using these values
             $query =  Affiliate::select(
@@ -35,8 +39,20 @@ class CommissionsController extends Controller
                 'commission'
             );
 
+            // Add the search query trim the search value and check if it is not empty
+            if (!empty($search['value'])) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('first_name', 'like', '%' . trim($search['value']) . '%')
+                        ->orWhere('last_name', 'like', '%' . trim($search['value']) . '%');
+                });
+            }
+
             // get count of the records from query
             $recordsFiltered = $query->count();
+
+            // Get the data
+            $query->offset($start)
+                ->limit($length);
 
             $data_filtered = $query->get();
 

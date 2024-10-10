@@ -1,3 +1,7 @@
+.fc-day-other div {
+    display: none;
+}
+
 table .btn-sm {
     width: 100px !important;
     margin-left: auto;
