@@ -130,6 +130,25 @@
                                         <!--begin::Input group-->
                                         <div class="mb-10">
                                             <!--begin::Label-->
+                                            <label class="form-label fw-semibold">Invoice Type:</label>
+                                            <!--end::Label-->
+                                            <!--begin::Input-->
+                                            <div>
+                                                <select class="form-select form-select-solid filter-option"
+                                                    data-kt-select2="true" data-placeholder="Select option"
+                                                    data-filter-target="invoice_date_main" data-filter-type="date"
+                                                    data-dropdown-parent="#table_filter" data-allow-clear="true">
+                                                    <option></option>
+                                                    <option value="<=,{{date('Y-m-d')}}">Past Invoices</option>
+                                                    <option value=">,{{date('Y-m-d')}}">Future Invoices</option>
+                                                </select>
+                                            </div>
+                                            <!--end::Input-->
+                                        </div>
+                                        <!--end::Input group-->
+                                        <!-- begin::Input group-->
+                                        <div class="mb-10 d-none">
+                                            <!--begin::Label-->
                                             <label class="form-label fw-semibold">Invoice Date:</label>
                                             <!--end::Label-->
                                             <!--begin::Input-->
@@ -147,7 +166,7 @@
                                             </div>
                                             <!--end::Input-->
                                         </div>
-                                        <!--end::Input group-->
+                                        <!--end::Input group -->
                                         <!--begin::Actions-->
                                         <div class="d-flex justify-content-end">
                                             <button type="reset"

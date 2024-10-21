@@ -535,48 +535,60 @@ KTUtil.onDOMContentLoaded(function () {
 });
 var myDropzone;
 var FormSubmission = (function () {
-    var t, n, r;
+    var t, n, r, validationObj;
     return {
         init: function () {
-            (r = document.querySelector("#kt_create_form")),
+            (validationObj = {
+                invoice_date: {
+                    validators: {
+                        notEmpty: { message: "This field is required" },
+                    },
+                },
+                invoice_due_date: {
+                    validators: {
+                        notEmpty: { message: "This field is required" },
+                    },
+                },
+                company: {
+                    validators: {
+                        notEmpty: { message: "This field is required" },
+                    },
+                },
+                departure_date: {
+                    validators: {
+                        notEmpty: { message: "This field is required" },
+                    },
+                },
+                customer: {
+                    validators: {
+                        notEmpty: { message: "This field is required" },
+                    },
+                },
+                // Add file size and number of files validation
+                // file: {
+                //     validators: {
+                //         file: {
+                //             maxSize: "5MB",
+                //             message: "The selected file is not valid",
+                //         },
+                //     },
+                // },
+            }),
+                (r = document.querySelector("#kt_create_form")),
                 (t = document.querySelector("#kt_form_submit")),
                 (n = FormValidation.formValidation(r, {
-                    fields: {
-                        invoice_date: {
-                            validators: {
-                                notEmpty: { message: "This field is required" },
-                            },
-                        },
-                        invoice_due_date: {
-                            validators: {
-                                notEmpty: { message: "This field is required" },
-                            },
-                        },
-                        company: {
-                            validators: {
-                                notEmpty: { message: "This field is required" },
-                            },
-                        },
-                        departure_date: {
-                            validators: {
-                                notEmpty: { message: "This field is required" },
-                            },
-                        },
-                        customer: {
-                            validators: {
-                                notEmpty: { message: "This field is required" },
-                            },
-                        },
-                        // Add file size and number of files validation
-                        // file: {
-                        //     validators: {
-                        //         file: {
-                        //             maxSize: "5MB",
-                        //             message: "The selected file is not valid",
-                        //         },
-                        //     },
-                        // },
-                    },
+                    fields:
+                        $("#kt_create_form").attr("method") == "PUT"
+                            ? validationObj
+                            : Object.assign({}, validationObj, {
+                                  carrier_id: {
+                                      validators: {
+                                          notEmpty: {
+                                              message: "This field is required",
+                                          },
+                                      },
+                                  },
+                              }),
                     plugins: {
                         trigger: new FormValidation.plugins.Trigger(),
                         bootstrap: new FormValidation.plugins.Bootstrap5({

@@ -68,11 +68,19 @@ class InvoiceController extends Controller
 
             // only if the filter is not empty and exists filter the records
             if (!empty($request->filter) && isset($request->filter)) {
+                $main_date_filter = false;
                 foreach ($request->filter as $filter) {
                     if ($filter['type'] == 'text') {
                         $query->where($filter['name'], $filter['comparator'], $filter['value']);
                     } else if ($filter['type'] == 'date') {
-                        $query->whereDate($filter['name'], $filter['comparator'], $filter['value']);
+                        // Check if $filter['name'] includes '_main'
+                        if (strpos($filter['name'], '_main') !== false) {
+                            $main_date_filter = true;
+                            $query->whereDate(str_replace('_main', '', $filter['name']), $filter['comparator'], $filter['value']);
+                        }
+                        // if (!$main_date_filter) {
+                        //     $query->whereDate($filter['name'], $filter['comparator'], $filter['value']);
+                        // }
                     }
                 }
             }

@@ -30,7 +30,11 @@ class AttendanceController extends Controller
             $attendance->start = $attendance->date . 'T' . date('H:i:s', strtotime($attendance->in_time));
             if ($attendance->out_time) {
                 $attendance->end = $attendance->date . 'T' . date('H:i:s', strtotime($attendance->out_time));
-                $attendance->description = 'Duration: ' . $attendance->duration . ' minutes';
+                if (isset($attendance->duration)) {
+                    $hours = floor($attendance->duration / 60);
+                    $minutes = $attendance->duration % 60;
+                    $attendance->description = 'Duration: ' . $hours . ' hours ' . $minutes . ' minutes';
+                }
                 $attendance->className = 'fc-event-success';
             } else {
                 $attendance->description = 'Out time not marked yet';
