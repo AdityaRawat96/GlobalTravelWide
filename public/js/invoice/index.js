@@ -119,8 +119,11 @@ var KTDatatablesServerSide = (function () {
     };
 
     var initDateRangeFilter = () => {
-        var startDate = "01/01/2015";
+        var startDate = "01/01/1950";
         var endDate = moment().endOf("month").format("DD/MM/YYYY");
+        endDate = moment(endDate, "DD/MM/YYYY")
+            .add(200, "years")
+            .format("DD/MM/YYYY");
         $(".datetimepicker-input").daterangepicker({
             timePicker: false,
             startDate: startDate,
