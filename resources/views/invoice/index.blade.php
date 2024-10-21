@@ -139,8 +139,8 @@
                                                     data-filter-target="departure_date_main" data-filter-type="date"
                                                     data-dropdown-parent="#table_filter" data-allow-clear="true">
                                                     <option></option>
-                                                    <option value="<=,{{date('Y-m-d')}}">Past Invoices</option>
-                                                    <option value=">,{{date('Y-m-d')}}">Future Invoices</option>
+                                                    <option value="<,{{date('Y-m-d')}}">Past Invoices</option>
+                                                    <option value=">=,{{date('Y-m-d')}}">Future Invoices</option>
                                                 </select>
                                             </div>
                                             <!--end::Input-->
