@@ -8,12 +8,9 @@ use App\Http\Requests\StoreQuotationRequest;
 use App\Http\Requests\UpdateQuotationRequest;
 use App\Models\Airline;
 use App\Models\Attachment;
-use App\Models\Catalogue;
 use App\Models\Company;
 use App\Models\Customer;
 use App\Models\Hotel;
-use App\Models\Payment;
-use App\Models\Product;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -470,19 +467,23 @@ class QuotationController extends Controller
     }
 
     // Export the quotations to excel
-    public function export($type = 'excel')
+    public function export(Request $request, $type = 'excel')
     {
+        $data = [
+            'date' => $request->date,
+            'company' =>  $request->company
+        ];
         if ($type == 'excel') {
             // return the excel file 
-            return Excel::download(new QuotationsExport, 'quotations_' . time() . '.xlsx');
+            return Excel::download(new QuotationsExport($data), 'quotations_' . time() . '.xlsx');
         } else if ($type == 'csv') {
             // return the csv file
-            return Excel::download(new QuotationsExport, 'quotations_' . time() . '.csv', \Maatwebsite\Excel\Excel::CSV, [
+            return Excel::download(new QuotationsExport($data), 'quotations_' . time() . '.csv', \Maatwebsite\Excel\Excel::CSV, [
                 'Content-Type' => 'text/csv',
             ]);
         } else if ($type == 'pdf') {
             // return the pdf file
-            return Excel::download(new QuotationsExport, 'quotations_' . time() . '.pdf', \Maatwebsite\Excel\Excel::MPDF);
+            return Excel::download(new QuotationsExport($data), 'quotations_' . time() . '.pdf', \Maatwebsite\Excel\Excel::MPDF);
         }
     }
 }

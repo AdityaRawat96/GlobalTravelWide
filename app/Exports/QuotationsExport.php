@@ -12,6 +12,13 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 class QuotationsExport implements FromCollection, WithHeadings, WithStyles, ShouldAutoSize
 {
+    protected $data;
+
+    // Constructor to accept data for collection
+    public function __construct($data)
+    {
+        $this->data = $data;
+    }
     /**
      * @return \Illuminate\Support\Collection
      */
@@ -28,7 +35,18 @@ class QuotationsExport implements FromCollection, WithHeadings, WithStyles, Shou
                 'customers.name as customer_name',
                 DB::raw("DATE_FORMAT(quotations.quotation_date, '%d-%m-%Y') as quotation_date"),
                 'quotations.total',
-            )->get();
+            );
+        if ($this->data['date'] != null) {
+            $params = explode(',', $this->data['date']);
+            $quotations = $quotations->where('quotations.quotation_date', $params[0], $params[1]);
+        }
+
+        if ($this->data['company'] != null) {
+            $params = explode(',', $this->data['company']);
+            $quotations = $quotations->where('quotations.company_id', $params[0], $params[1]);
+        }
+
+        $quotations = $quotations->get();
 
         return $quotations;
     }

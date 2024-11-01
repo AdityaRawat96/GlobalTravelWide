@@ -12,6 +12,14 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 class InvoicesExport implements FromCollection, WithHeadings, WithStyles, ShouldAutoSize
 {
+    protected $data;
+
+    // Constructor to accept data for collection
+    public function __construct($data)
+    {
+        $this->data = $data;
+    }
+
     /**
      * @return \Illuminate\Support\Collection
      */
@@ -31,7 +39,18 @@ class InvoicesExport implements FromCollection, WithHeadings, WithStyles, Should
                 DB::raw("DATE_FORMAT(invoices.departure_date, '%d-%m-%Y') as departure_date"),
                 DB::raw("DATE_FORMAT(invoices.invoice_date, '%d-%m-%Y') as invoice_date"),
                 'invoices.total',
-            )->get();
+            );
+        if ($this->data['date'] != null) {
+            $params = explode(',', $this->data['date']);
+            $invoices = $invoices->where('invoices.refund_date', $params[0], $params[1]);
+        }
+
+        if ($this->data['company'] != null) {
+            $params = explode(',', $this->data['company']);
+            $invoices = $invoices->where('invoices.company_id', $params[0], $params[1]);
+        }
+
+        $invoices = $invoices->get();
 
         return $invoices;
     }

@@ -114,7 +114,8 @@
                                             <!--end::Label-->
                                             <!--begin::Input-->
                                             <div>
-                                                <select class="form-select form-select-solid filter-option"
+                                                <select
+                                                    class="form-select form-select-solid filter-option company_filter"
                                                     data-kt-select2="true" data-placeholder="Select option"
                                                     data-filter-type="text" data-filter-target="company_id"
                                                     data-dropdown-parent="#table_filter" data-allow-clear="true">
@@ -134,7 +135,7 @@
                                             <!--end::Label-->
                                             <!--begin::Input-->
                                             <div>
-                                                <select class="form-select form-select-solid filter-option"
+                                                <select class="form-select form-select-solid filter-option date_filter"
                                                     data-kt-select2="true" data-placeholder="Select option"
                                                     data-filter-target="departure_date_main" data-filter-type="date"
                                                     data-dropdown-parent="#table_filter" data-allow-clear="true">
@@ -196,7 +197,7 @@
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
                                     <a href="{{route(Auth::user()->role . '.invoice.export', 'excel')}}"
-                                        class="menu-link px-3" data-kt-export="excel">
+                                        class="menu-link px-3 menu-link-export" data-kt-export="excel">
                                         Export as Excel
                                     </a>
                                 </div>
@@ -204,7 +205,7 @@
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
                                     <a href="{{route(Auth::user()->role . '.invoice.export', 'csv')}}"
-                                        class="menu-link px-3" data-kt-export="csv">
+                                        class="menu-link px-3 menu-link-export" data-kt-export="csv">
                                         Export as CSV
                                     </a>
                                 </div>
@@ -212,7 +213,7 @@
                                 <!--begin::Menu item-->
                                 <div class="menu-item px-3">
                                     <a href="{{route(Auth::user()->role . '.invoice.export', 'pdf')}}"
-                                        class="menu-link px-3" data-kt-export="pdf">
+                                        class="menu-link px-3 menu-link-export" data-kt-export="pdf">
                                         Export as PDF
                                     </a>
                                 </div>

@@ -309,6 +309,40 @@ var KTDatatablesServerSide = (function () {
         });
     };
 
+    // Export Datatable
+    var handleExportDatatable = () => {
+        $(".menu-link-export").click(function (e) {
+            e.preventDefault();
+            var form_url = $(this).attr("href");
+
+            var company_filter = $(".company_filter").val();
+            var date_filter = $(".date_filter").val();
+
+            // create form with data and submit
+            var form = document.createElement("form");
+            form.setAttribute("method", "get");
+            form.setAttribute("action", form_url);
+
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", "date");
+            hiddenField.setAttribute("value", date_filter);
+            form.appendChild(hiddenField);
+
+            hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", "company");
+            hiddenField.setAttribute("value", company_filter);
+            form.appendChild(hiddenField);
+
+            document.body.appendChild(form);
+            form.submit();
+
+            // remove form after submit
+            document.body.removeChild(form);
+        });
+    };
+
     // Public methods
     return {
         init: function () {
@@ -317,6 +351,7 @@ var KTDatatablesServerSide = (function () {
             handleSearchDatatable();
             handleDeleteRows();
             handleFilterDatatable();
+            handleExportDatatable();
         },
     };
 })();

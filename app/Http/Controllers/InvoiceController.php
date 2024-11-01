@@ -659,19 +659,23 @@ class InvoiceController extends Controller
     }
 
     // Export the invoices to excel
-    public function export($type = 'excel')
+    public function export(Request $request, $type = 'excel')
     {
+        $data = [
+            'date' => $request->date,
+            'company' =>  $request->company
+        ];
         if ($type == 'excel') {
             // return the excel file 
-            return Excel::download(new InvoicesExport, 'invoices_' . time() . '.xlsx');
+            return Excel::download(new InvoicesExport($data), 'invoices_' . time() . '.xlsx');
         } else if ($type == 'csv') {
             // return the csv file
-            return Excel::download(new InvoicesExport, 'invoices_' . time() . '.csv', \Maatwebsite\Excel\Excel::CSV, [
+            return Excel::download(new InvoicesExport($data), 'invoices_' . time() . '.csv', \Maatwebsite\Excel\Excel::CSV, [
                 'Content-Type' => 'text/csv',
             ]);
         } else if ($type == 'pdf') {
             // return the pdf file
-            return Excel::download(new InvoicesExport, 'invoices_' . time() . '.pdf', \Maatwebsite\Excel\Excel::MPDF);
+            return Excel::download(new InvoicesExport($data), 'invoices_' . time() . '.pdf', \Maatwebsite\Excel\Excel::MPDF);
         }
     }
 }

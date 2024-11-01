@@ -13,6 +13,13 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 
 class RefundsExport implements FromCollection, WithHeadings, WithStyles, ShouldAutoSize, WithMapping
 {
+    protected $data;
+
+    // Constructor to accept data for collection
+    public function __construct($data)
+    {
+        $this->data = $data;
+    }
     /**
      * @return \Illuminate\Support\Collection
      */
@@ -31,7 +38,18 @@ class RefundsExport implements FromCollection, WithHeadings, WithStyles, ShouldA
                 'customers.name as customer_name',
                 DB::raw("DATE_FORMAT(refunds.refund_date, '%d-%m-%Y') as refund_date"),
                 'refunds.total',
-            )->get();
+            );
+        if ($this->data['date'] != null) {
+            $params = explode(',', $this->data['date']);
+            $refunds = $refunds->where('refunds.departure_date', $params[0], $params[1]);
+        }
+
+        if ($this->data['company'] != null) {
+            $params = explode(',', $this->data['company']);
+            $refunds = $refunds->where('refunds.company_id', $params[0], $params[1]);
+        }
+
+        $refunds = $refunds->get();
 
         return $refunds;
     }
