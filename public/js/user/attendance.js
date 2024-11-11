@@ -245,9 +245,14 @@ var KTAppCalendar = (function () {
                         month_events.forEach(function (event) {
                             var start = new Date(event.start);
                             var end = new Date(event.end);
-                            var event_month = start.getMonth();
-                            var selected_month = new Date(first_day).getMonth();
-                            if (event_month === selected_month) {
+                            var selectedStartDate =
+                                e?.currentData?.dateProfile?.currentRange
+                                    ?.start;
+                            if (
+                                selectedStartDate &&
+                                new Date(selectedStartDate).getMonth() ===
+                                    start.getMonth()
+                            ) {
                                 var minutes = (end - start) / 1000 / 60;
                                 if (minutes < 0) {
                                     minutes = 0;
