@@ -42,7 +42,7 @@ class InvoicesExport implements FromCollection, WithHeadings, WithStyles, Should
             );
         if ($this->data['date'] != null) {
             $params = explode(',', $this->data['date']);
-            $invoices = $invoices->where('invoices.refund_date', $params[0], $params[1]);
+            $invoices = $invoices->where('invoices.departure_date', $params[0], $params[1]);
         }
 
         if ($this->data['company'] != null) {

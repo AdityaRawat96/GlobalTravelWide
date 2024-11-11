@@ -41,7 +41,7 @@ class RefundsExport implements FromCollection, WithHeadings, WithStyles, ShouldA
             );
         if ($this->data['date'] != null) {
             $params = explode(',', $this->data['date']);
-            $refunds = $refunds->where('refunds.departure_date', $params[0], $params[1]);
+            $refunds = $refunds->where('refunds.refund_date', $params[0], $params[1]);
         }
 
         if ($this->data['company'] != null) {
