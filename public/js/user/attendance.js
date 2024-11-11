@@ -222,14 +222,13 @@ var KTAppCalendar = (function () {
                         }),
                             B();
                     },
-                    datesSet: function (e) {
-                        console.log(e);
+                    datesSet: function (dateset) {
                         // get the first day of the month
-                        var first_day = e.startStr;
+                        var first_day = dateset.startStr;
                         // get the last day of the month
-                        var last_day = e.endStr;
+                        var last_day = dateset.endStr;
                         // get the events for the month
-                        var events = e.view.calendar.getEvents();
+                        var events = dateset.view.calendar.getEvents();
                         // filter the events for the month
                         var month_events = events.filter(function (event) {
                             var event_date = new Date(event.startStr);
