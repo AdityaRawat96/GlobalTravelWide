@@ -6,6 +6,7 @@ use App\Exports\AffiliatesExport;
 use App\Models\Affiliate;
 use App\Http\Requests\StoreAffiliateRequest;
 use App\Http\Requests\UpdateAffiliateRequest;
+use App\Models\Customer;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -38,7 +39,6 @@ class AffiliateController extends Controller
                 'name',
                 'email',
                 'phone',
-                'commission',
                 'added_by',
             );
 
@@ -101,8 +101,9 @@ class AffiliateController extends Controller
     public function create()
     {
         $this->authorize('create', Affiliate::class);
+        $customers = Customer::select('id', 'name')->get();
         // return the view for creating a new affiliate
-        return view('affiliate.create');
+        return view('affiliate.create')->with(['customers' => $customers]);
     }
 
     /**

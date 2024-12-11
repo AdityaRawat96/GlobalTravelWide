@@ -25,7 +25,6 @@ class AffiliatesExport implements FromCollection, WithHeadings, WithStyles, Shou
             'name',
             'email',
             'phone',
-            'commission',
             DB::raw("CONCAT('" . $app_short_name . "', LPAD(added_by, 5, '0')) as added_by"),
         )->get();
 
@@ -39,7 +38,6 @@ class AffiliatesExport implements FromCollection, WithHeadings, WithStyles, Shou
             'Name',
             'Email',
             'Phone',
-            'Commission(%)',
             'Added By',
         ];
     }

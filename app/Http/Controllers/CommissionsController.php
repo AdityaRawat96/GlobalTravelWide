@@ -36,7 +36,6 @@ class CommissionsController extends Controller
             $query =  Affiliate::select(
                 'id',
                 'name',
-                'commission'
             );
 
             // Add the search query trim the search value and check if it is not empty
@@ -62,23 +61,21 @@ class CommissionsController extends Controller
                 // only if the filter is not empty and exists filter the records
                 $commission_calculation = $request->filter['commission_calculation'];
                 $invoice_cal = $commission_calculation;
-                $refund_cal = $commission_calculation == 'invoice_date' ? 'refund_date' : $commission_calculation;
                 $start_date = $request->filter['start_date'];
                 $end_date = $request->filter['end_date'];
 
                 $invoices_sum_total = Invoice::where('affiliate_id', $affiliate->id)->where($invoice_cal, '>=', $start_date)->where($invoice_cal, '<=', $end_date)->sum('total');
                 $invoices_sum_revenue = Invoice::where('affiliate_id', $affiliate->id)->where($invoice_cal, '>=', $start_date)->where($invoice_cal, '<=', $end_date)->sum('revenue');
-                $refunds_sum_total = Refund::where('affiliate_id', $affiliate->id)->where($refund_cal, '>=', $start_date)->where($refund_cal, '<=', $end_date)->sum('total');
-                $refunds_sum_revenue = Refund::where('affiliate_id', $affiliate->id)->where($refund_cal, '>=', $start_date)->where($refund_cal, '<=', $end_date)->sum('revenue');
+                $invoices_sum_commission = Invoice::where('affiliate_id', $affiliate->id)->where($invoice_cal, '>=', $start_date)->where($invoice_cal, '<=', $end_date)->sum('commission');
 
-                $total = $invoices_sum_total + $refunds_sum_total;
-                $commission_generated = ($invoices_sum_revenue + $refunds_sum_revenue) * ($affiliate->commission / 100);
-                $revenue = ($invoices_sum_revenue + $refunds_sum_revenue);
-                $total_revenue += $commission_generated;
+                $total = $invoices_sum_total;
+                $commission_generated = $invoices_sum_commission;
+                $revenue = ($invoices_sum_total - $commission_generated);
+                $total_revenue += $revenue;
 
                 $data_filtered[$index]->total = $total;
                 $data_filtered[$index]->revenue = $revenue;
-                $data_filtered[$index]->commission_percentage = $affiliate->commission;
+                $data_filtered[$index]->commission_percentage = $commission_generated ? number_format(($commission_generated / $total) * 100, 2) : 0;
                 $data_filtered[$index]->commission = $commission_generated;
             }
 
@@ -120,21 +117,19 @@ class CommissionsController extends Controller
             $start_date = $request->filter['start_date'];
             $end_date = $request->filter['end_date'];
 
-            // show all the invoices and refunds geenreaed by this affiliate in a combined datatable
+            // show all the invoices geenreaed by this affiliate in a combined datatable
 
             $invoices = Invoice::where('affiliate_id', $affiliate->id)->where($invoice_cal, '>=', $start_date)->where($invoice_cal, '<=', $end_date)->get();
-            $refunds = Refund::where('affiliate_id', $affiliate->id)->where($refund_cal, '>=', $start_date)->where($refund_cal, '<=', $end_date)->get();
 
             $invoices_sum_total = $invoices->sum('total');
             $invoices_sum_revenue = $invoices->sum('revenue');
-            $refunds_sum_total = $refunds->sum('total');
-            $refunds_sum_revenue = $refunds->sum('revenue');
+            $invoices_sum_commission = $invoices->sum('commission');
 
-            $total = $invoices_sum_total + $refunds_sum_total;
-            $revenue = ($invoices_sum_revenue + $refunds_sum_revenue);
-            $commission = ($invoices_sum_revenue + $refunds_sum_revenue) * ($affiliate->commission / 100);
+            $total = $invoices_sum_total;
+            $revenue = ($invoices_sum_revenue - $invoices_sum_commission);
+            $commission = $invoices_sum_commission;
 
-            $data = $invoices->merge($refunds);
+            $data = $invoices;
 
             $datatable = DataTables::of($data)
                 ->with('total', $total)
@@ -153,7 +148,7 @@ class CommissionsController extends Controller
                     return $data instanceof Invoice ? $data->invoice_date : $data->refund_date;
                 })
                 ->addColumn('commission_percentage', function ($data) {
-                    return $data->affiliate->commission;
+                    return $data->commission ? number_format(($data->commission / $data->total) * 100, 2) : 0;
                 })
                 ->addColumn('total', function ($data) {
                     return $data->total;
@@ -162,7 +157,7 @@ class CommissionsController extends Controller
                     return $data->revenue;
                 })
                 ->addColumn('commission', function ($data) {
-                    return $data->revenue * ($data->affiliate->commission / 100);
+                    return $data->commission;
                 })
                 ->addColumn('status', function ($data) {
                     if ($data->due_date < date('Y-m-d') && $data->status == 'pending') {

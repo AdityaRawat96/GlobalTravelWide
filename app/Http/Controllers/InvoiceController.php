@@ -12,6 +12,7 @@ use App\Models\Carrier;
 use App\Models\Catalogue;
 use App\Models\Company;
 use App\Models\Customer;
+use App\Models\Expense;
 use App\Models\Payment;
 use App\Models\Product;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -180,6 +181,7 @@ class InvoiceController extends Controller
         $this->authorize('create', Invoice::class);
         // Get the validated data from the request
         $validated = $request->validated();
+        $commission = isset($validated['commission']) ? (float) $validated['commission'] : 0.0;
 
         $products = $validated['product'];
         unset($validated['product']);
@@ -220,7 +222,7 @@ class InvoiceController extends Controller
 
             $validated['user_id'] = auth()->user()->id;
             $validated['total'] = array_sum($price);
-            $validated['revenue'] = array_sum($price) - array_sum($cost);
+            $validated['revenue'] = array_sum($price) - array_sum($cost) - $commission;
 
             if (isset($payment_amount)) {
                 $price_sum = array_sum($price);
@@ -238,6 +240,17 @@ class InvoiceController extends Controller
 
             // Store the invoice in the database
             $invoice = Invoice::create($validated);
+
+            if (isset($validated['affiliate_id']) && $validated['affiliate_id'] != null) {
+                $affiliate = Affiliate::find($validated['affiliate_id']);
+                $expense = Expense::create([
+                    'user_id' => auth()->user()->id,
+                    'invoice_id' => $invoice->id,
+                    'amount' => $commission,
+                    'date' => $invoice->invoice_date,
+                    'description' => 'Commission for ' . $affiliate->name . ' for invoice ' . $invoice->invoice_id
+                ]);
+            }
 
             // Store invoice products
             foreach ($products as $key => $product) {
@@ -437,6 +450,7 @@ class InvoiceController extends Controller
         $this->authorize('update', $invoice, Invoice::class);
         // Get the validated data from the request
         $validated = $request->validated();
+        $commission = isset($validated['commission']) ? (float) $validated['commission'] : 0.0;
 
         $products = $validated['product'];
         unset($validated['product']);
@@ -490,7 +504,7 @@ class InvoiceController extends Controller
             DB::beginTransaction();
 
             $validated['total'] = array_sum($price);
-            $validated['revenue'] = array_sum($price) - array_sum($cost);
+            $validated['revenue'] = array_sum($price) - array_sum($cost) - $commission;
             if (isset($payment_amount)) {
                 $price_sum = array_sum($price);
                 $payment_sum = array_sum($payment_amount);
@@ -506,6 +520,31 @@ class InvoiceController extends Controller
             }
             // Update the invoice in the database
             $invoice->update($validated);
+
+            if (isset($validated['affiliate_id']) && $validated['affiliate_id'] != null) {
+                $affiliate = Affiliate::find($validated['affiliate_id']);
+                $expense = Expense::where('invoice_id', $invoice->id)->first();
+                if ($expense) {
+                    $expense->update([
+                        'amount' => $commission,
+                        'date' => $invoice->invoice_date,
+                        'description' => 'Commission for ' . $affiliate->name . ' for invoice ' . $invoice->invoice_id
+                    ]);
+                } else {
+                    $expense = Expense::create([
+                        'user_id' => auth()->user()->id,
+                        'invoice_id' => $invoice->id,
+                        'amount' => $commission,
+                        'date' => $invoice->invoice_date,
+                        'description' => 'Commission for ' . $affiliate->name . ' for invoice ' . $invoice->invoice_id
+                    ]);
+                }
+            } else {
+                $expense = Expense::where('invoice_id', $invoice->id)->first();
+                if ($expense) {
+                    $expense->delete();
+                }
+            }
 
             // Update invoice products
             Product::where('type', 'invoice')->where('ref_id', $invoice->id)->delete();
@@ -648,6 +687,9 @@ class InvoiceController extends Controller
                 Storage::disk('public')->delete($attachment->url);
                 $attachment->delete();
             }
+            // Delete the expenses
+            Expense::where('invoice_id', $invoice->id)->delete();
+
             // Delete the invoice
             $invoice->delete();
             DB::commit();

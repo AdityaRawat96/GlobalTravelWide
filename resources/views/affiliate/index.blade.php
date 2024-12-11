@@ -147,7 +147,6 @@
                                 <th class="min-w-125px">Email</th>
                                 <th class="min-w-125px">Phone</th>
                                 <th class="min-w-125px">Added By</th>
-                                <th class="min-w-125px">Commission(%)</th>
                                 <th class="text-end min-w-70px">Actions</th>
                             </tr>
                         </thead>

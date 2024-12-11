@@ -30,6 +30,7 @@ class StoreInvoiceRequest extends FormRequest
             'company_id' => 'required',
             'customer_id' => 'required',
             'affiliate_id' => 'nullable',
+            'commission' => ['nullable', 'numeric'],
             'carrier_id' => 'required',
             'currency' => ['required', 'string', 'max:10'],
             'due_date' => ['required', 'date'],

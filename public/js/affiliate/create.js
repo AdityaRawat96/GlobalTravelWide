@@ -26,17 +26,6 @@ var KTAffiliateSettings = (function () {
                                 notEmpty: { message: "This field is required" },
                             },
                         },
-                        commission: {
-                            validators: {
-                                notEmpty: { message: "This field is required" },
-                                between: {
-                                    min: 0,
-                                    max: 100,
-                                    message:
-                                        "The commission must be between 0 and 100",
-                                },
-                            },
-                        },
                     },
                     plugins: {
                         trigger: new FormValidation.plugins.Trigger(),
@@ -159,8 +148,24 @@ var KTAffiliateSettings = (function () {
                               });
                 });
         },
+        eventChange: function () {
+            $("#customer").on("change", function () {
+                var e = $(this).val();
+                $(".customer_details").addClass("d-none"),
+                    $.ajax({
+                        url: `${siteURL}/${siteUserRole}/customer/` + e,
+                        type: "GET",
+                        success: function (e) {
+                            $("#affiliate_name").val(e.name);
+                            $("#affiliate_email").val(e.email);
+                            $("#affiliate_phone").val(e.phone);
+                        },
+                    });
+            });
+        },
     };
 })();
 KTUtil.onDOMContentLoaded(function () {
     KTAffiliateSettings.init();
+    KTAffiliateSettings.eventChange();
 });

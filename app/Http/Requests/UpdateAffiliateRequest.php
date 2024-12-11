@@ -29,7 +29,6 @@ class UpdateAffiliateRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('affiliates')->ignore($this->affiliate->id)],
             'phone' => ['required', 'string', 'max:255'],
-            'commission' => ['required', 'string', 'max:255'],
         ];
     }
 }

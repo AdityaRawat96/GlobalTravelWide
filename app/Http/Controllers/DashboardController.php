@@ -39,7 +39,7 @@ class DashboardController extends Controller
             $commission = $commission->where('user_id', Auth::id());
         }
         $commission = $commission
-            ->sum(DB::raw('(revenue / 100) * (SELECT commission FROM affiliates WHERE id = affiliate_id)'));
+            ->sum('commission');
 
         $totalRevenue = $invoicesRevenue + $refundsRevenue;
 
@@ -177,8 +177,18 @@ class DashboardController extends Controller
     function sortByMonth($a, $b)
     {
         $months = [
-            'January', 'February', 'March', 'April', 'May', 'June',
-            'July', 'August', 'September', 'October', 'November', 'December'
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December'
         ];
         return array_search($a['month'], $months) - array_search($b['month'], $months);
     }

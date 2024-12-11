@@ -447,6 +447,25 @@ var KTAppInvoicesCreate = (function () {
                     });
             });
 
+            $("#affiliate").on("change", function () {
+                var affiliate = $(this).val();
+                if (affiliate) {
+                    $("#commission_field").removeClass("d-none");
+                } else {
+                    $("#commission_field").addClass("d-none");
+                }
+            });
+
+            $("#commission").on("change", function () {
+                $("#commission_field").removeClass("d-none");
+
+                let num = wNumb({ decimals: 2, thousand: "," });
+                let commissionElement = document.getElementById("commission");
+                let commission = num.from(commissionElement.value);
+                commission = !commission || commission < 0 ? 0 : commission;
+                commissionElement.value = num.to(commission);
+            });
+
             $("#kt_create_form").on(
                 "change",
                 ".product_select",
@@ -564,6 +583,12 @@ var FormSubmission = (function () {
                         notEmpty: { message: "This field is required" },
                     },
                 },
+                commission: {
+                    validators: {
+                        notEmpty: { message: "This field is required" },
+                    },
+                },
+
                 // Add file size and number of files validation
                 // file: {
                 //     validators: {

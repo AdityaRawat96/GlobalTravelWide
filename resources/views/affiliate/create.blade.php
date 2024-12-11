@@ -65,6 +65,31 @@
                         @csrf
                         <!--begin::Card body-->
                         <div class="card-body border-top p-9">
+                            @if(!isset($affiliate))
+                            <!--begin::Input group-->
+                            <div class="row mb-6">
+                                <!--begin::Label-->
+                                <label class="col-lg-4 col-form-label fw-semibold fs-6">Customer</label>
+                                <!--end::Label-->
+                                <!--begin::Col-->
+                                <div class="col-lg-8 fv-row">
+                                    <select id="customer" name="customer_id"
+                                        class="form-select form-select-lg form-select-solid" data-control="select2"
+                                        data-placeholder="Select a customer">
+                                        <option value="">Select a customer</option>
+                                        @foreach($customers as $customer)
+                                        <option value="{{$customer->id}}"
+                                            {{isset($invoice) && $invoice->customer->id == $customer->id ? "selected"  : ""}}>
+                                            {{"C" . str_pad($customer->id, 5, '0', STR_PAD_LEFT) . " - " . $customer->name}}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                    <div class="fv-plugins-message-container invalid-feedback"></div>
+                                </div>
+                                <!--end::Col-->
+                            </div>
+                            <!--end::Input group-->
+                            @endif
                             <!--begin::Input group-->
                             <div class="row mb-6">
                                 <!--begin::Label-->
@@ -72,7 +97,7 @@
                                 <!--end::Label-->
                                 <!--begin::Col-->
                                 <div class="col-lg-8 fv-row">
-                                    <input type="text" name="name"
+                                    <input id="affiliate_name" type="text" name="name"
                                         class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"
                                         placeholder="Full name"
                                         value="{{isset($affiliate->name) ? $affiliate->name : null}}" />
@@ -90,7 +115,7 @@
                                 <!--end::Label-->
                                 <!--begin::Col-->
                                 <div class="col-lg-8 fv-row">
-                                    <input type="tel" name="phone"
+                                    <input id="affiliate_phone" type="tel" name="phone"
                                         class="form-control form-control-lg form-control-solid"
                                         placeholder="Phone number"
                                         value="{{isset($affiliate->phone) ? $affiliate->phone : null}}" />
@@ -109,26 +134,10 @@
                                 <!--end::Label-->
                                 <!--begin::Col-->
                                 <div class="col-lg-8 fv-row">
-                                    <input type="email" name="email"
+                                    <input id="affiliate_email" type="email" name="email"
                                         class="form-control form-control-lg form-control-solid"
                                         placeholder="Email address"
                                         value="{{isset($affiliate->email) ? $affiliate->email : null}}" />
-                                </div>
-                                <!--end::Col-->
-                            </div>
-                            <!--end::Input group-->
-                            <!--begin::Input group-->
-                            <div class="row mb-6">
-                                <!--begin::Label-->
-                                <label class="col-lg-4 col-form-label fw-semibold fs-6">
-                                    <span class="required">Commission(%)</span>
-                                </label>
-                                <!--end::Label-->
-                                <!--begin::Col-->
-                                <div class="col-lg-8 fv-row">
-                                    <input type="number" name="commission"
-                                        class="form-control form-control-lg form-control-solid" placeholder="Commission"
-                                        value="{{isset($affiliate->commission) ? $affiliate->commission : null}}" />
                                 </div>
                                 <!--end::Col-->
                             </div>

@@ -190,27 +190,6 @@
                                                 <div class="fv-plugins-message-container invalid-feedback"></div>
                                             </div>
                                             <!--end::Input group-->
-                                            <label class="form-label fs-6 fw-bold text-gray-700 mb-3 required">Default
-                                                currency</label>
-                                            <!--begin::Input group-->
-                                            <div class="mb-5 fv-row">
-                                                <select id="currency" name="currency"
-                                                    class="form-select form-select-lg form-select-solid"
-                                                    data-control="select2" data-placeholder="Select a currency">
-                                                    <option value="gbp"
-                                                        {{isset($invoice) && $invoice->currency == 'gbp' ? "selected"  : ""}}>
-                                                        Great British Pound (£)</option>
-                                                    <option value="pkr"
-                                                        {{isset($invoice) && $invoice->currency == 'pkr' ? "selected"  : ""}}>
-                                                        Pakistani Rupee (₨)</option>
-                                                </select>
-                                                <div class="fv-plugins-message-container invalid-feedback"></div>
-                                            </div>
-                                            <!--end::Input group-->
-                                        </div>
-                                        <!--end::Col-->
-                                        <!--begin::Col-->
-                                        <div class="col-lg-6">
                                             <label class="form-label fs-6 fw-bold text-gray-700 mb-3">Affiliate</label>
                                             <!--begin::Input group-->
                                             <div class="mb-5 fv-row">
@@ -225,6 +204,41 @@
                                                         {{"C" . str_pad($affiliate->id, 5, '0', STR_PAD_LEFT) . " - " . $affiliate->name}}
                                                     </option>
                                                     @endforeach
+                                                </select>
+                                                <div class="fv-plugins-message-container invalid-feedback"></div>
+                                            </div>
+                                            <!--end::Input group-->
+                                            <div id="commission_field"
+                                                class="{{isset($invoice) && $invoice->commission ? '' : 'd-none'}}">
+                                                <label
+                                                    class="form-label fs-6 fw-bold text-gray-700 mb-3 required">Commission(£)</label>
+                                                <!--begin::Input group-->
+                                                <div class="mb-5 fv-row">
+                                                    <input id="commission" name="commission" type="text"
+                                                        class="form-control form-control-solid"
+                                                        placeholder="Enter affiliate commission"
+                                                        value="{{isset($invoice) ? $invoice->commission : '0.00'}}" />
+                                                    <div class="fv-plugins-message-container invalid-feedback"></div>
+                                                </div>
+                                                <!--end::Input group-->
+                                            </div>
+                                        </div>
+                                        <!--end::Col-->
+                                        <!--begin::Col-->
+                                        <div class="col-lg-6">
+                                            <label class="form-label fs-6 fw-bold text-gray-700 mb-3 required">Default
+                                                currency</label>
+                                            <!--begin::Input group-->
+                                            <div class="mb-5 fv-row">
+                                                <select id="currency" name="currency"
+                                                    class="form-select form-select-lg form-select-solid"
+                                                    data-control="select2" data-placeholder="Select a currency">
+                                                    <option value="gbp"
+                                                        {{isset($invoice) && $invoice->currency == 'gbp' ? "selected"  : ""}}>
+                                                        Great British Pound (£)</option>
+                                                    <option value="pkr"
+                                                        {{isset($invoice) && $invoice->currency == 'pkr' ? "selected"  : ""}}>
+                                                        Pakistani Rupee (₨)</option>
                                                 </select>
                                                 <div class="fv-plugins-message-container invalid-feedback"></div>
                                             </div>

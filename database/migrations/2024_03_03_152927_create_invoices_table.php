@@ -24,6 +24,7 @@ class CreateInvoicesTable extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->date('due_date');
             $table->date('departure_date')->nullable();
+            $table->double('commission', 20, 2)->nullable();
             $table->double('total', 20, 2);
             $table->double('revenue', 20, 2);
             $table->date('invoice_date');

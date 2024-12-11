@@ -28,7 +28,6 @@ var KTDatatablesServerSide = (function () {
                 { data: "email" },
                 { data: "phone" },
                 { data: "added_by" },
-                { data: "commission" },
                 { data: null },
             ],
             columnDefs: [

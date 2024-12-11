@@ -28,7 +28,6 @@ class StoreAffiliateRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:affiliates'],
             'phone' => ['required', 'string', 'max:255'],
-            'commission' => ['required', 'string', 'max:255'],
         ];
     }
 }
