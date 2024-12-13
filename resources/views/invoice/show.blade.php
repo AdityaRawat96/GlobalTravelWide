@@ -79,6 +79,28 @@
                     <div class="card card-sticky">
                         <!--begin::Card body-->
                         <div class="card-body p-10">
+                            @if(isset($invoice->affiliate))
+                            <div class="mb-10">
+                                <!--begin::Label-->
+                                <label class="form-label fw-bold fs-6 text-gray-700">Commission</label>
+                                <!--end::Label-->
+                                <!--begin::Label-->
+                                <label class="d-block mt-3 form-label fw-bold fs-8 text-gray-700">Affiliate</label>
+                                <!--end::Label-->
+                                <p>
+                                    {{isset($invoice->affiliate) ? "C" . str_pad($invoice->affiliate->id, 5, '0', STR_PAD_LEFT) . " - " . $invoice->affiliate->name : '-'}}
+                                </p>
+                                <!--begin::Label-->
+                                <label class="form-label fw-bold fs-8 text-gray-700">Amount (£)</label>
+                                <!--end::Label-->
+                                <p class="text-primary fw-bold">
+                                    {{isset($invoice->commission) ? number_format($invoice->commission, 2) : '-'}}
+                                </p>
+                            </div>
+                            <!--begin::Separator-->
+                            <div class="separator separator-dashed mb-8"></div>
+                            <!--end::Separator-->
+                            @endif
                             <div class="mb-10">
                                 <!--begin::Label-->
                                 <label class="form-label fw-bold fs-6 text-gray-700">Carrier</label>
@@ -87,14 +109,7 @@
                                     {{isset($invoice->carrier) ? "C" . str_pad($invoice->carrier->id, 5, '0', STR_PAD_LEFT) . " - " . $invoice->carrier->name : '-'}}
                                 </p>
                             </div>
-                            <div class="mb-10">
-                                <!--begin::Label-->
-                                <label class="form-label fw-bold fs-6 text-gray-700">Affiliate</label>
-                                <!--end::Label-->
-                                <p>
-                                    {{isset($invoice->affiliate) ? "C" . str_pad($invoice->affiliate->id, 5, '0', STR_PAD_LEFT) . " - " . $invoice->affiliate->name : '-'}}
-                                </p>
-                            </div>
+
                             @if($invoice->notes)
                             <!--begin::Input group-->
                             <div class="mb-10">
