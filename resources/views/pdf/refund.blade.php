@@ -76,9 +76,9 @@
                     <td style="position: relative; width: 33%">
                         REFUND TO
                         <address>
-                            <strong>{{$refund->customer->name}}</strong><br />
-                            Phone: {{$refund->customer->phone}}<br />
-                            Email: {{$refund->customer->email}}
+                            <strong>{{isset($refund->customer->name) ? $refund->customer->name : ""}}</strong><br />
+                            Phone: {{isset($refund->customer->phone) ? $refund->customer->phone : ""}}<br />
+                            Email: {{isset($refund->customer->email) ? $refund->customer->email : ""}}
                         </address>
                     </td>
                     <td style="position: relative; width: 33%">
