@@ -139,7 +139,7 @@ class SalesController extends Controller
                     return $data instanceof Invoice ? $data->invoice_id : $data->refund_id;
                 })
                 ->addColumn('customer_name', function ($data) {
-                    return $data->customer->name;
+                    return isset($data->customer->name) ? $data->customer->name : '';
                 })
                 ->addColumn('type', function ($data) {
                     return $data instanceof Invoice ? 'Invoice' : 'Refund';
