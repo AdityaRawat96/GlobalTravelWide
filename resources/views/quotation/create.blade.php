@@ -162,7 +162,7 @@
                                                     <option value="">Select a customer</option>
                                                     @foreach($customers as $customer)
                                                     <option value="{{$customer->id}}"
-                                                        {{isset($quotation) && $quotation->customer->id == $customer->id ? "selected"  : ""}}>
+                                                        {{isset($quotation) && isset($quotation->customer) && $quotation->customer->id == $customer->id ? "selected"  : ""}}>
                                                         {{"C" . str_pad($customer->id, 5, '0', STR_PAD_LEFT) . " - " . $customer->name}}
                                                     </option>
                                                     @endforeach
@@ -175,7 +175,7 @@
                                                 <div class="mb-5">
                                                     <input id="customer_email" type="text"
                                                         class="form-control form-control-solid"
-                                                        value="{{isset($quotation) ? $quotation->customer->email : null}}"
+                                                        value="{{isset($quotation->customer) ? $quotation->customer->email : null}}"
                                                         placeholder="Customer Email" disabled />
                                                 </div>
                                                 <!--end::Input group-->
@@ -183,7 +183,7 @@
                                                 <div class="mb-5">
                                                     <input id="customer_phone" type="text"
                                                         class="form-control form-control-solid"
-                                                        value="{{isset($quotation) ? $quotation->customer->phone : null}}"
+                                                        value="{{isset($quotation->customer) ? $quotation->customer->phone : null}}"
                                                         placeholder="Customer Phone" disabled />
                                                 </div>
                                                 <!--end::Input group-->

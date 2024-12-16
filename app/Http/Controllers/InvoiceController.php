@@ -44,7 +44,7 @@ class InvoiceController extends Controller
             $columns = $request->columns;
 
             // Build an eloquent query using these values
-            $query = Invoice::join('customers', 'invoices.customer_id', '=', 'customers.id')
+            $query = Invoice::leftJoin('customers', 'invoices.customer_id', '=', 'customers.id')
                 ->leftJoin('carriers', 'invoices.carrier_id', '=', 'carriers.id')
                 ->select(
                     'invoices.id',
@@ -52,8 +52,8 @@ class InvoiceController extends Controller
                     'invoices.status as status',
                     'invoices.ref_number',
                     DB::raw("CONCAT('" . env('APP_SHORT', 'TW') . "', LPAD(invoices.user_id, 5, '0')) as user_id"),
-                    DB::raw("CONCAT('C', LPAD(invoices.customer_id, 5, '0')) as customer_id"),
-                    'customers.name as customer_name',
+                    DB::raw("IFNULL(CONCAT('C', LPAD(invoices.customer_id, 5, '0')), 'N/A') as customer_id"),
+                    DB::raw("IFNULL(customers.name, 'N/A') as customer_name"),
                     'carriers.name as carrier_name',
                     DB::raw("DATE_FORMAT(invoices.departure_date, '%d-%m-%Y') as departure_date"),
                     DB::raw("DATE_FORMAT(invoices.invoice_date, '%d-%m-%Y') as invoice_date"),

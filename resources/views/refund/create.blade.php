@@ -229,7 +229,7 @@
                                                     <option value="">Select a customer</option>
                                                     @foreach($customers as $customer)
                                                     <option value="{{$customer->id}}"
-                                                        {{isset($refund) && $refund->customer->id == $customer->id ? "selected"  : ""}}>
+                                                        {{isset($refund) && isset($refund->customer) && $refund->customer->id == $customer->id ? "selected"  : ""}}>
                                                         {{"C" . str_pad($customer->id, 5, '0', STR_PAD_LEFT) . " - " . $customer->name}}
                                                     </option>
                                                     @endforeach
@@ -242,7 +242,7 @@
                                                 <div class="mb-5">
                                                     <input id="customer_email" type="text"
                                                         class="form-control form-control-solid"
-                                                        value="{{isset($refund) ? $refund->customer->email : null}}"
+                                                        value="{{isset($refund->customer) ? $refund->customer->email : null}}"
                                                         placeholder="Customer Email" disabled />
                                                 </div>
                                                 <!--end::Input group-->
@@ -250,7 +250,7 @@
                                                 <div class="mb-5">
                                                     <input id="customer_phone" type="text"
                                                         class="form-control form-control-solid"
-                                                        value="{{isset($refund) ? $refund->customer->phone : null}}"
+                                                        value="{{isset($refund->customer) ? $refund->customer->phone : null}}"
                                                         placeholder="Customer Phone" disabled />
                                                 </div>
                                                 <!--end::Input group-->
@@ -867,29 +867,29 @@ $path = Storage::url($attach->path) . $attach->url;
 ?>
 
 <script>
-$("document").ready(() => {
-    var path = "{{ $path }}";
-    var fileSize = "{$fileSize}}";
-    var file = new File([path], "{{ $attach->name }}", {
-        type: "{{ $attach->mime_type }}",
-        lastModified: "{{ $attach->updated_at }}",
-        size: "{{ $attach->size }}" // Set file size in bytes
+    $("document").ready(() => {
+        var path = "{{ $path }}";
+        var fileSize = "{$fileSize}}";
+        var file = new File([path], "{{ $attach->name }}", {
+            type: "{{ $attach->mime_type }}",
+            lastModified: "{{ $attach->updated_at }}",
+            size: "{{ $attach->size }}" // Set file size in bytes
+        });
+        file['status'] = "added";
+        file['_removeLink'] = "a.dz-remove";
+        file['webkitRelativePath'] = "";
+        file['accepted'] = true;
+        file['dataURL'] = path;
+        file['upload'] = {
+            bytesSent: 0,
+            filename: "{{ $attach->name }}",
+            progress: 100,
+            total: "{{ $attach->size }}", // Set total file size in bytes
+            uuid: "{{ md5($attach->id) }}"
+        };
+        myDropzone.emit("addedfile", file, path);
+        myDropzone.files.push(file);
     });
-    file['status'] = "added";
-    file['_removeLink'] = "a.dz-remove";
-    file['webkitRelativePath'] = "";
-    file['accepted'] = true;
-    file['dataURL'] = path;
-    file['upload'] = {
-        bytesSent: 0,
-        filename: "{{ $attach->name }}",
-        progress: 100,
-        total: "{{ $attach->size }}", // Set total file size in bytes
-        uuid: "{{ md5($attach->id) }}"
-    };
-    myDropzone.emit("addedfile", file, path);
-    myDropzone.files.push(file);
-});
 </script>
 @endforeach
 @endif

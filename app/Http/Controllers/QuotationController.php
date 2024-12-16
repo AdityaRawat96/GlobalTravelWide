@@ -40,13 +40,13 @@ class QuotationController extends Controller
             $columns = $request->columns;
 
             // Build an eloquent query using these values
-            $query = Quotation::join('customers', 'quotations.customer_id', '=', 'customers.id')
+            $query = Quotation::leftJoin('customers', 'quotations.customer_id', '=', 'customers.id')
                 ->select(
                     'quotations.id',
                     'quotations.quotation_id',
                     DB::raw("CONCAT('" . env('APP_SHORT', 'TW') . "', LPAD(quotations.user_id, 5, '0')) as user_id"),
-                    DB::raw("CONCAT('C', LPAD(quotations.customer_id, 5, '0')) as customer_id"),
-                    'customers.name as customer_name',
+                    DB::raw("IFNULL(CONCAT('C', LPAD(invoices.customer_id, 5, '0')), 'N/A') as customer_id"),
+                    DB::raw("IFNULL(customers.name, 'N/A') as customer_name"),
                     DB::raw("DATE_FORMAT(quotations.quotation_date, '%d-%m-%Y') as quotation_date"),
                     'quotations.price',
                 );

@@ -6,32 +6,32 @@
 
     @if($view)
     <style>
-    @font-face {
-        font-family: "Poppins";
-        src: url("{{ asset('fonts/Poppins-Regular.ttf') }}") format("truetype");
-    }
+        @font-face {
+            font-family: "Poppins";
+            src: url("{{ asset('fonts/Poppins-Regular.ttf') }}") format("truetype");
+        }
 
-    .quotation-details {
-        line-height: 12px !important;
-    }
+        .quotation-details {
+            line-height: 12px !important;
+        }
     </style>
     @else
     <style>
-    @font-face {
-        font-family: "Poppins";
-        src: url("{{ storage_path('fonts/Poppins-Regular.ttf') }}") format("truetype");
-    }
+        @font-face {
+            font-family: "Poppins";
+            src: url("{{ storage_path('fonts/Poppins-Regular.ttf') }}") format("truetype");
+        }
     </style>
     @endif
 
     <style>
-    .content {
-        font-family: "Poppins", sans-serif !important;
-    }
+        .content {
+            font-family: "Poppins", sans-serif !important;
+        }
 
-    th {
-        background-color: #f9f9f9;
-    }
+        th {
+            background-color: #f9f9f9;
+        }
     </style>
 </head>
 
@@ -76,9 +76,9 @@
                     <td style="position: relative; width: 33%">
                         QUOTATION TO
                         <address>
-                            <strong>{{$quotation->customer->name}}</strong><br />
-                            Phone: {{$quotation->customer->phone}}<br />
-                            Email: {{$quotation->customer->email}}
+                            <strong>{{isset($quotation->customer->name) ? $quotation->customer->name : ""}}</strong><br />
+                            Phone: {{isset($quotation->customer->phone) ? $quotation->customer->phone : ""}}<br />
+                            Email: {{isset($quotation->customer->email) ? $quotation->customer->email : ""}}
                         </address>
                     </td>
                     <td style="position: relative; width: 33%">

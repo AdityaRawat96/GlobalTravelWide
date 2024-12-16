@@ -28,14 +28,14 @@ class RefundsExport implements FromCollection, WithHeadings, WithStyles, ShouldA
         $app_short_name = env('APP_SHORT', 'TW');
         // Append short name to the refund id
 
-        $refunds = Refund::join('customers', 'refunds.customer_id', '=', 'customers.id')
+        $refunds = Refund::leftJoin('customers', 'refunds.customer_id', '=', 'customers.id')
             ->select(
                 DB::raw("CONCAT(UCASE(LEFT(refunds.status, 1)), SUBSTRING(refunds.status, 2)) as status"),
                 'refunds.refund_id',
                 'refunds.ref_number',
                 DB::raw("CONCAT('" . $app_short_name . "', LPAD(refunds.user_id, 5, '0')) as user_id"),
-                DB::raw("CONCAT('C', LPAD(refunds.customer_id, 5, '0')) as customer_id"),
-                'customers.name as customer_name',
+                DB::raw("IFNULL(CONCAT('C', LPAD(refunds.customer_id, 5, '0')), 'N/A') as customer_id"),
+                DB::raw("IFNULL(customers.name, 'N/A') as customer_name"),
                 DB::raw("DATE_FORMAT(refunds.refund_date, '%d-%m-%Y') as refund_date"),
                 'refunds.total',
             );

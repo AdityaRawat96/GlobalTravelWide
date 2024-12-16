@@ -28,14 +28,14 @@ class InvoicesExport implements FromCollection, WithHeadings, WithStyles, Should
         $app_short_name = env('APP_SHORT', 'TW');
         // Append short name to the invoice id
 
-        $invoices = Invoice::join('customers', 'invoices.customer_id', '=', 'customers.id')
+        $invoices = Invoice::leftJoin('customers', 'invoices.customer_id', '=', 'customers.id')
             ->select(
                 DB::raw("CONCAT(UCASE(LEFT(invoices.status, 1)), SUBSTRING(invoices.status, 2)) as status"),
                 'invoices.invoice_id',
                 'invoices.ref_number',
                 DB::raw("CONCAT('" . $app_short_name . "', LPAD(invoices.user_id, 5, '0')) as user_id"),
-                DB::raw("CONCAT('C', LPAD(invoices.customer_id, 5, '0')) as customer_id"),
-                'customers.name as customer_name',
+                DB::raw("IFNULL(CONCAT('C', LPAD(invoices.customer_id, 5, '0')), 'N/A') as customer_id"),
+                DB::raw("IFNULL(customers.name, 'N/A') as customer_name"),
                 DB::raw("DATE_FORMAT(invoices.departure_date, '%d-%m-%Y') as departure_date"),
                 DB::raw("DATE_FORMAT(invoices.invoice_date, '%d-%m-%Y') as invoice_date"),
                 'invoices.total',

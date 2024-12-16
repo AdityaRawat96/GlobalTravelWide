@@ -41,15 +41,15 @@ class RefundController extends Controller
             $columns = $request->columns;
 
             // Build an eloquent query using these values
-            $query = Refund::join('customers', 'refunds.customer_id', '=', 'customers.id')
+            $query = Refund::leftJoin('customers', 'refunds.customer_id', '=', 'customers.id')
                 ->select(
                     'refunds.id',
                     'refunds.refund_id',
                     'refunds.status as status',
                     'refunds.ref_number',
                     DB::raw("CONCAT('" . env('APP_SHORT', 'TW') . "', LPAD(refunds.user_id, 5, '0')) as user_id"),
-                    DB::raw("CONCAT('C', LPAD(refunds.customer_id, 5, '0')) as customer_id"),
-                    'customers.name as customer_name',
+                    DB::raw("IFNULL(CONCAT('C', LPAD(refunds.customer_id, 5, '0')), 'N/A') as customer_id"),
+                    DB::raw("IFNULL(customers.name, 'N/A') as customer_name"),
                     DB::raw("DATE_FORMAT(refunds.refund_date, '%d-%m-%Y') as refund_date"),
                     'refunds.due_date',
                     'refunds.total',
