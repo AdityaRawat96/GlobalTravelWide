@@ -34,6 +34,7 @@ class AttendanceController extends Controller
                     $hours = floor($attendance->duration / 60);
                     $minutes = $attendance->duration % 60;
                     $attendance->description = 'Duration: ' . $hours . ' hours ' . $minutes . ' minutes';
+                    $attendance->title = $hours . 'h' . $minutes . 'm : ' . $attendance->title;
                 }
                 $attendance->className = 'fc-event-success';
             } else {

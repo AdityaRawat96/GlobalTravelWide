@@ -155,7 +155,10 @@ var KTAppCalendar = (function () {
         },
         N = (e) => {
             (M.id = e.id),
-                (M.eventName = e.title),
+                (M.eventName =
+                    e.title.split(" : ").length > 1
+                        ? e.title.split(" : ")[1]
+                        : e.title),
                 (M.eventDescription = e.description),
                 (M.eventLocation = e.location),
                 (M.startDate = e.startStr),

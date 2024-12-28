@@ -2,6 +2,10 @@
     display: none;
 }
 
+.fc-event-time {
+    display: none;
+}
+
 table .btn-sm {
     width: 100px !important;
     margin-left: auto;
